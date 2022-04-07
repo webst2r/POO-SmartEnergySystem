@@ -25,17 +25,34 @@ public class SmartDevice {
     public String getID() {
         return this.id;
     }
-
     public void setID(String id) {
         this.id = id;
     }
-
     public Modo getModo(){
         return this.modo;
     }
-
     public void setModo(Modo m) {
         this.modo = m;
+    }
+
+
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("ID: ").append(this.id)
+                .append("Modo: ").append(this.modo);
+        return sb.toString();
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SmartDevice sd = (SmartDevice) o;
+        return this.modo.equals(sd.getModo()) && this.id.equals(sd.getID());
+    }
+
+    public SmartDevice clone () {
+        return new SmartDevice(this);
     }
 
 }
