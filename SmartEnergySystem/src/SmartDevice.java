@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+
 public class SmartDevice {
 
     public enum Modo {
@@ -31,8 +33,17 @@ public class SmartDevice {
     public Modo getModo(){
         return this.modo;
     }
-    public void setModo(Modo m) {
-        this.modo = m;
+
+
+    public boolean turnOff(){
+        int ano = LocalDateTime.now().getYear();
+        int mes = LocalDateTime.now().getMonth().getValue();
+        int dia = LocalDateTime.now().getDayOfMonth();
+        if(LocalDateTime.now().getYear()== ano && LocalDateTime.now().getMonth().getValue() == mes && LocalDateTime.now().getDayOfMonth() > dia){
+            this.modo = Modo.OFF;
+            return true;
+        }
+        return false;
     }
 
 
