@@ -11,17 +11,18 @@ public class SmartDevice {
         this.timeOfTurningOn = LocalDateTime.now();
     }
 
+    public SmartDevice (String id, boolean on, LocalDateTime timeOfTurningOn ) {
+        this.id = id;
+        this.on = on;
+        this.timeOfTurningOn = timeOfTurningOn;
+    }
+
     public SmartDevice (SmartDevice device) {
         this.setID(device.getID());
         this.on = device.getOn();
         this.timeOfTurningOn = device.getTimeOfTurningOn();
     }
 
-    public SmartDevice (String id, boolean on, LocalDateTime timeOfTurningOn ) {
-        this.id = id;
-        this.on = on;
-        this.timeOfTurningOn = timeOfTurningOn;
-    }
 
     public String getID() {
         return this.id;

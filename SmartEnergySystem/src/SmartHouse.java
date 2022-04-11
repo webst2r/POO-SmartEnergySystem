@@ -62,7 +62,19 @@ public class SmartHouse {
         this.devices.add(smartDevice.clone());
     }
 
+    public void addRoom (String room) {
+        this.rooms.add(room);
+    }
 
+    public void addDeviceToRoom (String room, String deviceID) {
+        if (roomExists(room))
+            this.roomsNdevices.get(room).add(getDevice(deviceID));
+        else {
+            Set<SmartDevice> smartDevices = new HashSet<>();
+            smartDevices.add(getDevice(deviceID));
+            this.roomsNdevices.put(room, smartDevices);
+        }
+    }
 
     public SmartDevice getDevice (String deviceID) {
         for (SmartDevice sd : this.devices) {
@@ -121,6 +133,8 @@ public class SmartHouse {
             return device.turnOff();
         } else return false;
     }
+
+
 
     public SmartHouse clone(){
         return new SmartHouse(this);
