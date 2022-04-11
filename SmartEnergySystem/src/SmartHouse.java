@@ -49,6 +49,11 @@ public class SmartHouse {
         this.ownerName = ownerName;
     }
 
+
+    public boolean roomExists (String room) {
+        return this.roomsNdevices.containsKey(room);
+    }
+
     public boolean deviceExists (String deviceID) {
         return this.devices.contains(deviceID);
     }
@@ -56,6 +61,8 @@ public class SmartHouse {
     public void addDevice (SmartDevice smartDevice) {
         this.devices.add(smartDevice.clone());
     }
+
+
 
     public SmartDevice getDevice (String deviceID) {
         for (SmartDevice sd : this.devices) {
@@ -80,6 +87,39 @@ public class SmartHouse {
         Map<String,Set<SmartDevice>> catalog = new HashMap<>();
         this.roomsNdevices.forEach((k,v) -> catalog.put(k,new HashSet<>(v)));
         return catalog;
+    }
+
+    public boolean turnOffRoom(String room){
+        boolean turnedOff = false;
+        if(roomExists(room)){
+            this.roomsNdevices.get(room).forEach(smartDevice -> smartDevice.turnOff());
+            turnedOff = true;
+        }
+        return turnedOff;
+    }
+
+    public boolean turnOnRoom(String room){
+        boolean turnedOn = false;
+        if(roomExists(room)){
+            this.roomsNdevices.get(room).forEach(smartDevice -> smartDevice.turnOn());
+            turnedOn = true;
+        }
+        return turnedOn;
+    }
+
+    public boolean turnOnDevice(String deviceID){
+        SmartDevice device = getDevice(deviceID);
+        if(device != null){
+            device.turnOn();
+            return true;
+        } else return false;
+    }
+
+    public boolean turnOffDevice(String deviceID){
+        SmartDevice device = getDevice(deviceID);
+        if(device != null){
+            return device.turnOff();
+        } else return false;
     }
 
     public SmartHouse clone(){
