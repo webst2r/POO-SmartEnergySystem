@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+
 public class SmartSpeaker extends SmartDevice{
     private String canal;
     private String marca;
@@ -13,15 +15,15 @@ public class SmartSpeaker extends SmartDevice{
         this.consumoDiario = 0.0;
     }
 
-    public SmartSpeaker (String id, Modo modo, String canal, String marca, double volume) {
-        super (id, modo);
+    public SmartSpeaker (String id, boolean on, LocalDateTime timeOfTurningOn, String canal, String marca, double volume) {
+        super (id, on,timeOfTurningOn);
         this.canal = canal;
         this.marca = marca;
         setVolume(volume);
     }
 
     public SmartSpeaker (SmartSpeaker ss) {
-        super (ss.getID(), ss.getModo());
+        super (ss.getID(),ss.getOn(),ss.getTimeOfTurningOn());
         this.canal = ss.getCanal();
         this.marca = ss.getMarca();
         this.volume = ss.getVolume();

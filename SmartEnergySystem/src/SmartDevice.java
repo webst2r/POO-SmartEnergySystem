@@ -1,65 +1,78 @@
 import java.time.LocalDateTime;
 
 public class SmartDevice {
-
-    public enum Modo {
-        ON,
-        OFF
-    }
-    private Modo modo;
     private String id;
+    private boolean on;
+    private LocalDateTime timeOfTurningOn;
 
     public SmartDevice () {
         this.id= "";
-        this.modo = Modo.OFF;
+        this.on = false;
+        this.timeOfTurningOn = LocalDateTime.now();
     }
 
     public SmartDevice (SmartDevice device) {
         this.setID(device.getID());
-        this.modo = device.getModo();
+        this.on = device.getOn();
+        this.timeOfTurningOn = device.getTimeOfTurningOn();
     }
 
-    public SmartDevice (String id, Modo modo) {
+    public SmartDevice (String id, boolean on, LocalDateTime timeOfTurningOn ) {
         this.id = id;
-        this.modo = modo;
+        this.on = on;
+        this.timeOfTurningOn = timeOfTurningOn;
     }
 
     public String getID() {
         return this.id;
     }
+
+    public boolean getOn() { return this.on;}
+
+    public LocalDateTime getTimeOfTurningOn() { return this.timeOfTurningOn; }
+
     public void setID(String id) {
         this.id = id;
     }
-    public Modo getModo(){
-        return this.modo;
+
+
+    public void turnOn(){
+        this.timeOfTurningOn = LocalDateTime.now();
+        this.on = true;
     }
 
-
     public boolean turnOff(){
-        int ano = LocalDateTime.now().getYear();
-        int mes = LocalDateTime.now().getMonth().getValue();
-        int dia = LocalDateTime.now().getDayOfMonth();
-        if(LocalDateTime.now().getYear()== ano && LocalDateTime.now().getMonth().getValue() == mes && LocalDateTime.now().getDayOfMonth() > dia){
-            this.modo = Modo.OFF;
-            return true;
+        if(this.on == false) return true;
+
+        if(LocalDateTime.now().isAfter(this.timeOfTurningOn)){
+            if(LocalDateTime.now().getYear() == this.timeOfTurningOn.getYear() && LocalDateTime.now().getDayOfYear() == this.timeOfTurningOn.getDayOfYear())
+                return false;
+            else {
+                this.on = false;
+                return true;
+            }
         }
         return false;
     }
 
-
+    /* toString */
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("ID: ").append(this.id)
-                .append("Modo: ").append(this.modo);
+                .append("\n")
+                .append("ON: ").append(this.on)
+                .append("\n");
         return sb.toString();
     }
 
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SmartDevice sd = (SmartDevice) o;
-        return this.modo.equals(sd.getModo()) && this.id.equals(sd.getID());
+    public boolean equals(Object obj){
+        if(this == obj) return true;
+        if(obj == null || this.getClass() != obj.getClass()) return false;
+        SmartDevice smartDevice = (SmartDevice) obj;
+        return this.id.equals(smartDevice.getID())
+                && this.on == smartDevice.getOn()
+                && this.timeOfTurningOn.equals(smartDevice.getTimeOfTurningOn());
     }
 
     public SmartDevice clone () {

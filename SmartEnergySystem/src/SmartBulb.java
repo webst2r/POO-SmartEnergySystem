@@ -1,53 +1,70 @@
+import java.time.LocalDateTime;
+
 public class SmartBulb extends SmartDevice{
+    private int tone;
+    private double dimension;
+    private double consumption;
+
     public static final int WARM = 2;
     public static final int NEUTRAL = 1;
     public static final int COLD = 0;
-    private int tonalidade;
-    private double dimensao;
-    private double consumoDiario;
 
 
-    /* Construtores */
-
-    // Omissão
     public SmartBulb () {
         super();
-        this.tonalidade = NEUTRAL;
+        this.tone = NEUTRAL;
+        this.dimension = 0.0;
+        this.consumption = 0.0;
     }
 
-
-    // Parametrizado
-    public SmartBulb (String id, Modo modo, int tone) {
-        super(id, modo);
-        this.tonalidade = NEUTRAL;
+    public SmartBulb (String id,
+                      boolean on,
+                      LocalDateTime timeOfTurningOn,
+                      int tone,
+                      double dimension,
+                      double consumption) {
+        super(id, on, timeOfTurningOn);
+        this.tone = tone;
+        this.dimension = dimension;
+        this.consumption = consumption;
     }
-
-    // Por cópia
 
     public SmartBulb (SmartBulb smartBulb) {
-        super(smartBulb.getID(), smartBulb.getModo());
-        this.setTonalidade(smartBulb.getTonalidade());
+        super(smartBulb.getID(), smartBulb.getOn(),smartBulb.getTimeOfTurningOn());
+        this.setTone(smartBulb.getTone());
+        this.dimension = smartBulb.getDimension();
+        this.consumption = smartBulb.getConsumption();
     }
 
-    /* Getters & Setters */
 
-    public int getTonalidade() { return this.tonalidade;}
+    public int getTone() { return this.tone;}
 
-    public void setTonalidade(int tonalidade) { this.tonalidade = tonalidade;}
+    public double getDimension() { return this.dimension;}
 
+    public double getConsumption() { return this.consumption;}
 
-    /* Clone */
+    public void setTone(int tone) { this.tone = tone;}
 
-    public SmartBulb clone () {
-        return new SmartBulb(this);
+    public void setDimension(double dimension) {
+        this.dimension = dimension;
     }
 
-    /* Equals */
+    public void setConsumption(double consumption) {
+        this.consumption = consumption;
+    }
+
+    public String toString(){ return super.toString(); }
+
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         SmartBulb smartBulb = (SmartBulb) o;
-        return (this.tonalidade == smartBulb.tonalidade && this.getID().equals(smartBulb.getID()));
+        return super.equals(smartBulb);
     }
+
+    public SmartBulb clone () {
+        return new SmartBulb(this);
+    }
+
 }
