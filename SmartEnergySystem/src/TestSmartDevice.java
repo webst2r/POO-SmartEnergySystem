@@ -1,15 +1,12 @@
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class TestSmartDevice {
     public static void main(String[] args) {
         LocalDateTime date = LocalDateTime.of(2022,4, 10, 23, 53, 40);
-        Set<SmartDevice> devices = new HashSet<>();
-        Set<String> rooms = new HashSet<>();
-        Map<String,Set<SmartDevice>> roomsNDevices = new HashMap<>();
+        List<SmartDevice> devices = new ArrayList<>();
+        List<String> rooms = new ArrayList<>();
+        Map<String,List<SmartDevice>> roomsNDevices = new HashMap<>();
 
 
         // Criar os devices
