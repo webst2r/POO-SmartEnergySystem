@@ -4,24 +4,24 @@ public class SmartHouse {
     private String ownerName;
     private String ownerNIF;
 
-    private Set<SmartDevice> devices;
-    private Set<String> rooms;
-    private Map<String, Set<SmartDevice>> roomsNdevices;
+    private List<SmartDevice> devices;
+    private List<String> rooms;
+    private Map<String, List<SmartDevice>> roomsNdevices;
 
 
     public SmartHouse(){
         this.ownerName = "n/a";
         this.ownerNIF = "n/a";
-        this.devices = new HashSet<>();
-        this.rooms = new HashSet<>();
+        this.devices = new ArrayList<>();
+        this.rooms = new ArrayList<>();
         this.roomsNdevices = new HashMap<>();
     }
 
     public SmartHouse(String ownerName,
                       String ownerNIF,
-                      Set<SmartDevice> devices,
-                      Set<String> rooms,
-                      Map<String, Set<SmartDevice>> roomsNdevices){
+                      List<SmartDevice> devices,
+                      List<String> rooms,
+                      Map<String, List<SmartDevice>> roomsNdevices){
         this.ownerName = ownerName;
         this.ownerNIF = ownerNIF;
         this.devices = devices;
@@ -70,34 +70,34 @@ public class SmartHouse {
         if (roomExists(room))
             this.roomsNdevices.get(room).add(getDevice(deviceID));
         else {
-            Set<SmartDevice> smartDevices = new HashSet<>();
+            List<SmartDevice> smartDevices = new ArrayList<>();
             smartDevices.add(getDevice(deviceID));
             this.roomsNdevices.put(room, smartDevices);
         }
     }
 
     public SmartDevice getDevice (String deviceID) {
-        for (SmartDevice sd : this.devices) {
-            if (sd.getID().equals(deviceID)) return sd.clone();
+        for (SmartDevice smartDevice : this.devices) {
+            if (smartDevice.getID().equals(deviceID)) return smartDevice.clone();
         }
         return null;
     }
 
-    public Set<SmartDevice> getDeviceList(){
-        Set<SmartDevice> deviceList = new HashSet<>();
+    public List<SmartDevice> getDeviceList(){
+        List<SmartDevice> deviceList = new ArrayList<>();
         this.devices.forEach(d -> deviceList.add(d.clone()));
         return deviceList;
     }
 
-    public Set<String> getRoomList(){
-        Set<String> roomList = new HashSet<>();
+    public List<String> getRoomList(){
+        List<String> roomList = new ArrayList<>();
         this.rooms.forEach(room -> roomList.add(room));
         return roomList;
     }
 
-    public Map<String,Set<SmartDevice>> getRoomsNDevices() {
-        Map<String,Set<SmartDevice>> catalog = new HashMap<>();
-        this.roomsNdevices.forEach((k,v) -> catalog.put(k,new HashSet<>(v)));
+    public Map<String,List<SmartDevice>> getRoomsNDevices() {
+        Map<String,List<SmartDevice>> catalog = new HashMap<>();
+        this.roomsNdevices.forEach((k,v) -> catalog.put(k,new ArrayList<>(v)));
         return catalog;
     }
 
