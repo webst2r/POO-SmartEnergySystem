@@ -30,10 +30,5 @@ public class TestSmartDevice {
 
         for (String room : rooms)
             System.out.println(room + " has " + roomsNDevices.get(room).size() + " devices.");
-
-
-
-
-
     }
 }

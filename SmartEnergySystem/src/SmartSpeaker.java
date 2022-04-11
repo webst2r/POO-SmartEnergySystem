@@ -1,40 +1,61 @@
 import java.time.LocalDateTime;
 
 public class SmartSpeaker extends SmartDevice{
-    private String canal;
-    private String marca;
+    private String channel;
+    private String brand;
     private double volume;
-    private double consumoDiario;
+    private double consumption;
 
 
     public SmartSpeaker () {
         super();
-        this.canal = "";
-        this.marca = "";
+        this.channel = "n/a";
+        this.brand = "n/a";
         this.volume = 0.0;
-        this.consumoDiario = 0.0;
+        this.consumption = 0.0;
     }
 
-    public SmartSpeaker (String id, boolean on, LocalDateTime timeOfTurningOn, String canal, String marca, double volume) {
+    public SmartSpeaker (String id,
+                         boolean on,
+                         LocalDateTime timeOfTurningOn,
+                         String canal,
+                         String marca,
+                         double volume) {
         super (id, on,timeOfTurningOn);
-        this.canal = canal;
-        this.marca = marca;
+        this.channel = canal;
+        this.brand = marca;
         setVolume(volume);
     }
 
-    public SmartSpeaker (SmartSpeaker ss) {
-        super (ss.getID(),ss.getOn(),ss.getTimeOfTurningOn());
-        this.canal = ss.getCanal();
-        this.marca = ss.getMarca();
-        this.volume = ss.getVolume();
+    public SmartSpeaker (SmartSpeaker smartSpeaker) {
+        super (smartSpeaker.getID(),smartSpeaker.getOn(),smartSpeaker.getTimeOfTurningOn());
+        this.channel = smartSpeaker.getChannel();
+        this.brand = smartSpeaker.getBrand();
+        this.volume = smartSpeaker.getVolume();
     }
 
-    public String getCanal() { return this.canal;}
-    public String getMarca() { return this.marca;}
+    public String getChannel() { return this.channel;}
+
+    public String getBrand() { return this.brand;}
+
     public double getVolume() { return this.volume;}
+
+
+    public void setChannel(String channel) { this.channel = channel;}
+
+    public void setBrand(String brand) { this.brand = brand; }
 
     public void setVolume(double volume) { this.volume = volume;}
 
+    public String toString(){ return super.toString(); }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        SmartSpeaker smartSpeaker = (SmartSpeaker) o;
+        return super.equals(smartSpeaker);
+    }
 
     public SmartSpeaker clone() {
         return new SmartSpeaker(this);

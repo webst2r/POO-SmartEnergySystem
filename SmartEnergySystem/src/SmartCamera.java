@@ -1,35 +1,63 @@
 import java.time.LocalDateTime;
 
 public class SmartCamera extends SmartDevice{
-    private String resolucao;
-    private double tamanhoFicheiro;
-    private double consumo;
+    private String resolution;
+    private double fileSize;
+    private double consumption;
 
 
     public SmartCamera(){
-        this.resolucao = "";
-        this.tamanhoFicheiro = 0.0;
-        this.consumo = 0.0;
+        this.resolution = "";
+        this.fileSize = 0.0;
+        this.consumption = 0.0;
     }
 
-    public SmartCamera(String id, boolean on, LocalDateTime timeOfTurningOn, String resolucao, double tamanhoFicheiro, double consumo){
+    public SmartCamera(String id,
+                       boolean on,
+                       LocalDateTime timeOfTurningOn,
+                       String resolution,
+                       double fileSize,
+                       double consumption) {
         super (id, on, timeOfTurningOn);
-        this.resolucao = resolucao;
-        this.tamanhoFicheiro = tamanhoFicheiro;
-        this.consumo = consumo;
+        this.resolution = resolution;
+        this.fileSize = fileSize;
+        this.consumption = consumption;
     }
 
-    public SmartCamera(SmartCamera sc){
-        super (sc.getID(),sc.getOn(),sc.getTimeOfTurningOn());
-        this.resolucao = sc.getResolucao();
-        this.tamanhoFicheiro = sc.getTamanhoFicheiro();
-        this.consumo = sc.getConsumo();
+    public SmartCamera(SmartCamera smartCamera){
+        super (smartCamera.getID(),smartCamera.getOn(),smartCamera.getTimeOfTurningOn());
+        this.resolution = smartCamera.getResolution();
+        this.fileSize = smartCamera.getFileSize();
+        this.consumption = smartCamera.getConsumption();
     }
 
-    public String getResolucao() { return this.resolucao;}
-    public double getTamanhoFicheiro() { return this.tamanhoFicheiro; }
+    public String getResolution() { return this.resolution;}
 
-    public double getConsumo() { return this.consumo;}
+    public double getFileSize() { return this.fileSize; }
+
+    public double getConsumption() { return this.consumption;}
+
+    public void setResolution(String resolution) {
+        this.resolution = resolution;
+    }
+
+    public void setFileSize(double fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    public void setConsumption(double consumption) {
+        this.consumption = consumption;
+    }
+
+    public String toString(){ return super.toString(); }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        SmartCamera smartCamera = (SmartCamera) o;
+        return super.equals(smartCamera);
+    }
 
     public SmartCamera clone() {
         return new SmartCamera(this);

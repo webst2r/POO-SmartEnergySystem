@@ -23,7 +23,6 @@ public class SmartDevice {
         this.timeOfTurningOn = device.getTimeOfTurningOn();
     }
 
-
     public String getID() {
         return this.id;
     }
@@ -35,7 +34,6 @@ public class SmartDevice {
     public void setID(String id) {
         this.id = id;
     }
-
 
     public void turnOn(){
         this.timeOfTurningOn = LocalDateTime.now();
@@ -55,8 +53,6 @@ public class SmartDevice {
         }
         return false;
     }
-
-    /* toString */
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
@@ -79,5 +75,4 @@ public class SmartDevice {
     public SmartDevice clone () {
         return new SmartDevice(this);
     }
-
 }
