@@ -6,4 +6,4 @@ System for monitoring and recording information about energy consumption of hous
 ## Group members:    
 [Rodrigo Rodrigues](https://github.com/webst2r)  
 [Guilherme Monteiro](https://github.com/rushmetra)  
-[Harkeld](https://github.com/)
+[Harkeld](https://github.com/harkeld)
