@@ -41,6 +41,8 @@ public class SmartHouse {
 
     public String getOwnerName() { return this.ownerName;}
 
+    public int getNumberOfDevices() { return this.devices.size();}
+
     public void setOwnerNIF(String ownerNIF) {
         this.ownerNIF = ownerNIF;
     }

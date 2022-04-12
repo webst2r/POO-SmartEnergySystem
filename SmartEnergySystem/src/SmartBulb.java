@@ -53,6 +53,26 @@ public class SmartBulb extends SmartDevice{
         this.consumption = consumption;
     }
 
+    void determineConsumption(){
+        double kilowatts = 0.011;          // 11W
+        double averageTimeOfUsage = 4.00; // 4h per day
+        double multiplier = 1.0;
+
+        switch (this.tone){
+            case NEUTRAL:
+                multiplier = 1.0;
+                break;
+            case COLD:
+                multiplier = 1.25;
+                break;
+            case WARM:
+                multiplier = 1.15;
+                break;
+        }
+
+        setConsumption(kilowatts * averageTimeOfUsage * multiplier);
+    }
+
     public String toString(){ return super.toString(); }
 
     public boolean equals(Object o) {
