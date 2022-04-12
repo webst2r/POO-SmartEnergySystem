@@ -14,19 +14,18 @@ public class SmartBulb extends SmartDevice{
         super();
         this.tone = NEUTRAL;
         this.dimension = 0.0;
-        this.consumption = 0.0;
+        determineConsumption();
     }
 
     public SmartBulb (String id,
                       boolean on,
                       LocalDateTime timeOfTurningOn,
                       int tone,
-                      double dimension,
-                      double consumption) {
+                      double dimension) {
         super(id, on, timeOfTurningOn);
         this.tone = tone;
         this.dimension = dimension;
-        this.consumption = consumption;
+        determineConsumption();
     }
 
     public SmartBulb (SmartBulb smartBulb) {

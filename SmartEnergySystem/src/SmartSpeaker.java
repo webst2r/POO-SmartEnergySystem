@@ -1,30 +1,33 @@
 import java.time.LocalDateTime;
+import java.util.Map;
 
 public class SmartSpeaker extends SmartDevice{
     private String channel;
     private String brand;
     private double volume;
     private double consumption;
+    private Map<String, Double> brandsNConsumption;
 
 
     public SmartSpeaker () {
         super();
         this.channel = "n/a";
         this.brand = "n/a";
-        this.volume = 0.0;
+        this.volume = 15.0;
         this.consumption = 0.0;
     }
 
     public SmartSpeaker (String id,
                          boolean on,
                          LocalDateTime timeOfTurningOn,
-                         String canal,
-                         String marca,
+                         String channel,
+                         String brand,
                          double volume) {
         super (id, on,timeOfTurningOn);
-        this.channel = canal;
-        this.brand = marca;
+        this.channel = channel;
+        this.brand = brand;
         setVolume(volume);
+        determineConsumption();
     }
 
     public SmartSpeaker (SmartSpeaker smartSpeaker) {
@@ -32,6 +35,7 @@ public class SmartSpeaker extends SmartDevice{
         this.channel = smartSpeaker.getChannel();
         this.brand = smartSpeaker.getBrand();
         this.volume = smartSpeaker.getVolume();
+        this.consumption = smartSpeaker.getConsumption();
     }
 
     public String getChannel() { return this.channel;}
@@ -40,12 +44,25 @@ public class SmartSpeaker extends SmartDevice{
 
     public double getVolume() { return this.volume;}
 
+    public double getConsumption() { return this.consumption; }
+
 
     public void setChannel(String channel) { this.channel = channel;}
 
     public void setBrand(String brand) { this.brand = brand; }
 
+    public void setConsumption(double consumption) { this.consumption = consumption; }
+
     public void setVolume(double volume) { this.volume = volume;}
+
+    public double getBrandDailyConsumption(String brand) {
+        return this.brandsNConsumption.get(brand);
+    }
+
+    public void determineConsumption() {
+        double consumption = getBrandDailyConsumption(this.brand) * ( 1 + (this.volume / 100));
+        setConsumption(consumption);
+    }
 
     public String toString(){ return super.toString(); }
 
