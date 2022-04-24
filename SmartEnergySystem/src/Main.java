@@ -8,7 +8,5 @@ public class Main {
         View view = new View();
         Controller c = new Controller(model,view);
         c.run();
-
-
     }
 }

@@ -22,18 +22,20 @@ public class Controller {
     public void run() {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
+        int option = -1;
         while (!exit) {
             this.view.showln(Resources.menuBanner);
             this.view.prompt("Menu","SmartEnergySystem");
-            String commandline = scanner.nextLine();
-            String[] input = commandline.split(" ");
-            if (input.length > 0) {
-                switch (input[0]) {
-                    case "Exit":
-                        if (input.length == 1) exit = false;
-                        break;
-                }
+            option = option = scanner.nextInt();
+
+            switch (option) {
+                case 0:
+                    exit = true;
+                    System.out.println("See you later!");
+                    break;
+
             }
+
         }
     }
 }
