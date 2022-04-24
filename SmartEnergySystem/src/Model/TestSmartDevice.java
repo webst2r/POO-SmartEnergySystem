@@ -5,6 +5,7 @@ import java.util.*;
 
 public class TestSmartDevice {
     public static void main(String[] args) {
+        /*
         LocalDateTime date = LocalDateTime.of(2022,4, 10, 23, 53, 40);
         List<SmartDevice> devices = new ArrayList<>();
         List<String> rooms = new ArrayList<>();
@@ -32,5 +33,8 @@ public class TestSmartDevice {
 
         for (String room : rooms)
             System.out.println(room + " has " + roomsNDevices.get(room).size() + " devices.");
+
+        */
     }
+
 }
