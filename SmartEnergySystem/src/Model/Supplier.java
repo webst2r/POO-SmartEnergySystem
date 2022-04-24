@@ -1,3 +1,5 @@
+package Model;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -5,7 +7,9 @@ public class Supplier {
     private String supplierID;
     private double energyDailyCost;
 
-    private Map<String, SmartHouse> customers;   // ownerNIF -> Casas
+    private Map<String, SmartHouse> customers;   // ownerNIF -> Casa
+    /* TODO Ask if an owner can have multiple houses */
+
 
     public Supplier(){
         this.supplierID = "n/a";
@@ -17,6 +21,12 @@ public class Supplier {
         this.supplierID = supplier.getSupplierID();
         this.energyDailyCost = supplier.getEnergyDailyCost();
         this.customers = supplier.getCustomers();
+    }
+
+    public Supplier(String supplierID, double energyDailyCost) {
+        this.supplierID = supplierID;
+        this.energyDailyCost = energyDailyCost;
+        this.customers = new HashMap<>();
     }
 
     public Supplier(String supplierID,

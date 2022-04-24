@@ -1,3 +1,5 @@
+package Model;
+
 import java.time.LocalDateTime;
 
 public class SmartBulb extends SmartDevice{
@@ -21,15 +23,16 @@ public class SmartBulb extends SmartDevice{
                       boolean on,
                       LocalDateTime timeOfTurningOn,
                       int tone,
-                      double dimension) {
-        super(id, on, timeOfTurningOn);
+                      double dimension,
+                      double installationCost) {
+        super(id, on, timeOfTurningOn, installationCost);
         this.tone = tone;
         this.dimension = dimension;
         determineConsumption();
     }
 
     public SmartBulb (SmartBulb smartBulb) {
-        super(smartBulb.getID(), smartBulb.getOn(),smartBulb.getTimeOfTurningOn());
+        super(smartBulb.getID(), smartBulb.getOn(),smartBulb.getTimeOfTurningOn(), smartBulb.getInstallationCost());
         this.setTone(smartBulb.getTone());
         this.dimension = smartBulb.getDimension();
         this.consumption = smartBulb.getConsumption();
@@ -54,7 +57,7 @@ public class SmartBulb extends SmartDevice{
 
     void determineConsumption(){
         double kilowatts = 0.011;          // 11W
-        double averageTimeOfUsage = 4.00; // 4h per day
+        double averageTimeOfUsage = 6.00; // 6h per day
         double multiplier = 1.0;
 
         switch (this.tone){
@@ -77,7 +80,6 @@ public class SmartBulb extends SmartDevice{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         SmartBulb smartBulb = (SmartBulb) o;
         return super.equals(smartBulb);
     }

@@ -1,3 +1,5 @@
+package Model;
+
 import java.time.LocalDateTime;
 
 public class SmartCamera extends SmartDevice{
@@ -19,8 +21,9 @@ public class SmartCamera extends SmartDevice{
                        LocalDateTime timeOfTurningOn,
                        int resolutionX,
                        int resolutionY,
-                       double fileSize) {
-        super (id, on, timeOfTurningOn);
+                       double fileSize,
+                       double installationCost) {
+        super (id, on, timeOfTurningOn, installationCost);
         this.resolutionX = resolutionX;
         this.resolutionY = resolutionY;
         this.fileSize = fileSize;
@@ -28,7 +31,7 @@ public class SmartCamera extends SmartDevice{
     }
 
     public SmartCamera(SmartCamera smartCamera){
-        super (smartCamera.getID(),smartCamera.getOn(),smartCamera.getTimeOfTurningOn());
+        super (smartCamera.getID(),smartCamera.getOn(),smartCamera.getTimeOfTurningOn(), smartCamera.getInstallationCost());
         this.resolutionX = smartCamera.getResolutionX();
         this.resolutionY = smartCamera.getResolutionY();
         this.fileSize = smartCamera.getFileSize();
@@ -58,18 +61,14 @@ public class SmartCamera extends SmartDevice{
     }
 
     public void determineConsumption(){
-        double sum = (this.resolutionX + resolutionY) / 10000;
-        double consumption = this.fileSize * (1 + sum);
 
-        setConsumption(consumption);
     }
 
     public String toString(){ return super.toString(); }
 
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if(this == o) return true;
+        if(o == null || this.getClass() != o.getClass()) return false;
         SmartCamera smartCamera = (SmartCamera) o;
         return super.equals(smartCamera);
     }

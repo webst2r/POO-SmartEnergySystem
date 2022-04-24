@@ -1,3 +1,5 @@
+package Model;
+
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -11,7 +13,7 @@ public class TestSmartDevice {
 
         // Criar os devices
         for(int i = 1; i <= 10; i++){
-            SmartDevice device = new SmartDevice("i",true,date.plusDays(1));
+            SmartDevice device = new SmartDevice("i",true,date.plusDays(1),6.0);
             devices.add(device);
         }
 

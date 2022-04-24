@@ -1,3 +1,5 @@
+package Model;
+
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -22,8 +24,9 @@ public class SmartSpeaker extends SmartDevice{
                          LocalDateTime timeOfTurningOn,
                          String channel,
                          String brand,
-                         double volume) {
-        super (id, on,timeOfTurningOn);
+                         double volume,
+                         double installationCost) {
+        super (id, on,timeOfTurningOn, installationCost);
         this.channel = channel;
         this.brand = brand;
         setVolume(volume);
@@ -31,7 +34,7 @@ public class SmartSpeaker extends SmartDevice{
     }
 
     public SmartSpeaker (SmartSpeaker smartSpeaker) {
-        super (smartSpeaker.getID(),smartSpeaker.getOn(),smartSpeaker.getTimeOfTurningOn());
+        super (smartSpeaker.getID(),smartSpeaker.getOn(),smartSpeaker.getTimeOfTurningOn(), smartSpeaker.getInstallationCost());
         this.channel = smartSpeaker.getChannel();
         this.brand = smartSpeaker.getBrand();
         this.volume = smartSpeaker.getVolume();
@@ -67,9 +70,8 @@ public class SmartSpeaker extends SmartDevice{
     public String toString(){ return super.toString(); }
 
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || this.getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if(this == o) return true;
+        if(o == null || this.getClass() != o.getClass()) return false;
         SmartSpeaker smartSpeaker = (SmartSpeaker) o;
         return super.equals(smartSpeaker);
     }

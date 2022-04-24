@@ -1,3 +1,5 @@
+package Model;
+
 import java.util.*;
 
 public class SmartHouse {
@@ -135,8 +137,6 @@ public class SmartHouse {
             return device.turnOff();
         } else return false;
     }
-
-
 
     public SmartHouse clone(){
         return new SmartHouse(this);
