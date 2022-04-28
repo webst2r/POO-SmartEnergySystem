@@ -13,7 +13,7 @@ public class Supplier {
 
     public Supplier(){
         this.supplierID = "n/a";
-        this.energyDailyCost = 0.0;
+        this.energyDailyCost = 5.0;
         this.customers = new HashMap<>();
     }
 

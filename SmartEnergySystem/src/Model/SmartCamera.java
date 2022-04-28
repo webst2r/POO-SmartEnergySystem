@@ -13,7 +13,7 @@ public class SmartCamera extends SmartDevice{
         this.resolutionX = 1024;
         this.resolutionY = 768;
         this.fileSize = 500;
-        determineConsumption();
+        this.consumption = 15.0;
     }
 
     public SmartCamera(String id,
@@ -22,12 +22,13 @@ public class SmartCamera extends SmartDevice{
                        int resolutionX,
                        int resolutionY,
                        double fileSize,
+                       double consumption,
                        double installationCost) {
         super (id, on, timeOfTurningOn, installationCost);
         this.resolutionX = resolutionX;
         this.resolutionY = resolutionY;
         this.fileSize = fileSize;
-        determineConsumption();
+        this.consumption = consumption;
     }
 
     public SmartCamera(SmartCamera smartCamera){
@@ -61,7 +62,7 @@ public class SmartCamera extends SmartDevice{
     }
 
     public void determineConsumption(){
-
+        // ...
     }
 
     public String toString(){ return super.toString(); }

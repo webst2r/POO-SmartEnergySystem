@@ -100,7 +100,7 @@ public class LoadFile {
     /* Function that builds a smartSpeaker from an array of strings */
     public static SmartSpeaker buildSmartSpeaker(String[] args){
         String ID, channel, brand;
-        double volume, installationCost;
+        double volume, consumption, installationCost;
         LocalDateTime timeOfTurningOn;
         boolean on;
 
@@ -111,14 +111,15 @@ public class LoadFile {
             channel = args[3];
             brand = args[4];
             volume = Double.parseDouble(args[5]);
-            installationCost = Double.parseDouble(args[6]);
+            consumption = Double.parseDouble(args[6]);
+            installationCost = Double.parseDouble(args[7]);
         }
 
         catch (InputMismatchException | NumberFormatException e){
             return null;
         }
 
-        return new SmartSpeaker(ID,on,timeOfTurningOn,channel,brand,volume,installationCost);
+        return new SmartSpeaker(ID,on,timeOfTurningOn,channel,brand,volume,consumption,installationCost);
     }
 
     /* Function that builds a smartCamera from an array of strings */
@@ -127,7 +128,7 @@ public class LoadFile {
         boolean on;
         LocalDateTime timeOfTurningOn;
         int resolutionX, resolutionY;
-        double fileSize, installationCost;
+        double fileSize, consumption,installationCost;
 
         try{
             ID = args[0];
@@ -136,15 +137,15 @@ public class LoadFile {
             resolutionX = Integer.parseInt(args[3]);
             resolutionY = Integer.parseInt(args[4]);
             fileSize = Double.parseDouble(args[5]);
-            installationCost = Double.parseDouble(args[6]);
-
+            consumption = Double.parseDouble(args[6]);
+            installationCost = Double.parseDouble(args[7]);
         }
 
         catch (InputMismatchException | NumberFormatException e){
             return null;
         }
 
-        return new SmartCamera(ID,on,timeOfTurningOn,resolutionX,resolutionY,fileSize,installationCost);
+        return new SmartCamera(ID,on,timeOfTurningOn,resolutionX,resolutionY,fileSize,consumption,installationCost);
     }
 
     /* Function that builds a smartCamera from an array of strings */

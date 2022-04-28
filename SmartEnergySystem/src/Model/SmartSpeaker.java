@@ -16,7 +16,7 @@ public class SmartSpeaker extends SmartDevice{
         this.channel = "n/a";
         this.brand = "n/a";
         this.volume = 15.0;
-        this.consumption = 0.0;
+        this.consumption = 15.0;
     }
 
     public SmartSpeaker (String id,
@@ -25,12 +25,13 @@ public class SmartSpeaker extends SmartDevice{
                          String channel,
                          String brand,
                          double volume,
+                         double consumption,
                          double installationCost) {
         super (id, on,timeOfTurningOn, installationCost);
         this.channel = channel;
         this.brand = brand;
         setVolume(volume);
-        determineConsumption();
+        this.consumption = consumption;
     }
 
     public SmartSpeaker (SmartSpeaker smartSpeaker) {
@@ -63,8 +64,7 @@ public class SmartSpeaker extends SmartDevice{
     }
 
     public void determineConsumption() {
-        double consumption = getBrandDailyConsumption(this.brand) * ( 1 + (this.volume / 100));
-        setConsumption(consumption);
+        // ...
     }
 
     public String toString(){ return super.toString(); }
