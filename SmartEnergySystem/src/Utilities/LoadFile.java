@@ -77,7 +77,7 @@ public class LoadFile {
         boolean on;
         int tone;
         LocalDateTime timeOfTurningOn;
-        double dimension, installationCost;
+        double dimension, consumption, installationCost;
 
 
         try{
@@ -86,14 +86,15 @@ public class LoadFile {
             timeOfTurningOn = LocalDateTime.parse(args[2]);
             tone = Integer.parseInt(args[3]);
             dimension = Double.parseDouble(args[4]);
-            installationCost = Double.parseDouble(args[5]);
+            consumption = Double.parseDouble(args[5]);
+            installationCost = Double.parseDouble(args[6]);
         }
 
         catch (InputMismatchException | NumberFormatException e){
             return null;
         }
 
-        return new SmartBulb(ID,on,timeOfTurningOn,tone,dimension,installationCost);
+        return new SmartBulb(ID,on,timeOfTurningOn,tone,dimension,consumption,installationCost);
     }
 
     /* Function that builds a smartSpeaker from an array of strings */

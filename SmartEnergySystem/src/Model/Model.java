@@ -22,14 +22,14 @@ public class Model {
      * Adds a SmartDevice to the system
      */
     public void add(SmartDevice s) {
-        this.devices.put(s.getID(),s);
+        this.devices.put(s.getID(),s.clone());
     }
 
     /**
      * Adds a Supplier to the system
      */
     public void add(Supplier sup) {
-        this.suppliers.put(sup.getSupplierID(),sup);
+        this.suppliers.put(sup.getSupplierID(),sup.clone());
     }
 
 

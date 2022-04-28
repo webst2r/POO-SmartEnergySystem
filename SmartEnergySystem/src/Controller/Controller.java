@@ -26,7 +26,7 @@ public class Controller {
         while (!exit) {
             this.view.showln(Resources.menuBanner);
             this.view.prompt("Menu","SmartEnergySystem");
-            option = option = scanner.nextInt();
+            option = scanner.nextInt();
 
             switch (option) {
                 case 0:

@@ -5,7 +5,8 @@ import java.time.LocalDateTime;
 public class SmartBulb extends SmartDevice{
     private int tone;
     private double dimension;
-    private double consumption;
+    private double consumption; // consumo base
+                                // no Menu, quando for a criar um SmartDevice, passar o consumo etc
 
     public static final int WARM = 2;
     public static final int NEUTRAL = 1;
@@ -16,7 +17,7 @@ public class SmartBulb extends SmartDevice{
         super();
         this.tone = NEUTRAL;
         this.dimension = 0.0;
-        determineConsumption();
+        this.consumption = 15.0;
     }
 
     public SmartBulb (String id,
@@ -24,11 +25,12 @@ public class SmartBulb extends SmartDevice{
                       LocalDateTime timeOfTurningOn,
                       int tone,
                       double dimension,
+                      double consumption,
                       double installationCost) {
         super(id, on, timeOfTurningOn, installationCost);
         this.tone = tone;
         this.dimension = dimension;
-        determineConsumption();
+        this.consumption = consumption;
     }
 
     public SmartBulb (SmartBulb smartBulb) {
@@ -55,9 +57,7 @@ public class SmartBulb extends SmartDevice{
         this.consumption = consumption;
     }
 
-    void determineConsumption(){
-        double kilowatts = 0.011;          // 11W
-        double averageTimeOfUsage = 6.00; // 6h per day
+    public double determineConsumption(){
         double multiplier = 1.0;
 
         switch (this.tone){
@@ -71,8 +71,7 @@ public class SmartBulb extends SmartDevice{
                 multiplier = 1.15;
                 break;
         }
-
-        setConsumption(kilowatts * averageTimeOfUsage * multiplier);
+        return (consumption * multiplier);
     }
 
     public String toString(){ return super.toString(); }
