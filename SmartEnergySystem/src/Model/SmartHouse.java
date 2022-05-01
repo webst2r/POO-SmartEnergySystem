@@ -4,23 +4,23 @@ import java.util.*;
 
 public class SmartHouse {
     private String ownerName;
-    private String ownerNIF;
+    private int ownerNIF;
 
     private List<SmartDevice> devices;
     private List<String> rooms;
     private Map<String, List<SmartDevice>> roomsNdevices;
 
 
-    public SmartHouse(){
-        this.ownerName = "n/a";
-        this.ownerNIF = "n/a";
+    public SmartHouse(String ownerName, int ownerNIF){
+        this.ownerName = ownerName;
+        this.ownerNIF = ownerNIF;
         this.devices = new ArrayList<>();
         this.rooms = new ArrayList<>();
         this.roomsNdevices = new HashMap<>();
     }
 
     public SmartHouse(String ownerName,
-                      String ownerNIF,
+                      int ownerNIF,
                       List<SmartDevice> devices,
                       List<String> rooms,
                       Map<String, List<SmartDevice>> roomsNdevices){
@@ -31,6 +31,8 @@ public class SmartHouse {
         this.roomsNdevices = roomsNdevices;
     }
 
+
+
     public SmartHouse(SmartHouse smarthouse){
         this.ownerName = smarthouse.getOwnerName();
         this.ownerNIF = smarthouse.getOwnerNIF();
@@ -39,13 +41,13 @@ public class SmartHouse {
         this.roomsNdevices = smarthouse.getRoomsNDevices();
     }
 
-    public String getOwnerNIF() { return this.ownerName;}
+    public int getOwnerNIF() { return this.ownerNIF;}
 
     public String getOwnerName() { return this.ownerName;}
 
     public int getNumberOfDevices() { return this.devices.size();}
 
-    public void setOwnerNIF(String ownerNIF) {
+    public void setOwnerNIF(int ownerNIF) {
         this.ownerNIF = ownerNIF;
     }
 
@@ -66,19 +68,13 @@ public class SmartHouse {
         this.devices.add(smartDevice.clone());
     }
 
-    public void addRoom (String room) {
-        this.rooms.add(room);
+    public void addRoom (String room, List<SmartDevice> dispositivos) {
+        List<SmartDevice> deviceList = new ArrayList<>();
+        for(SmartDevice d : dispositivos)
+            deviceList.add(d.clone());
+        this.roomsNdevices.put(room,deviceList);
     }
 
-    public void addDeviceToRoom (String room, String deviceID) {
-        if (roomExists(room))
-            this.roomsNdevices.get(room).add(getDevice(deviceID));
-        else {
-            List<SmartDevice> smartDevices = new ArrayList<>();
-            smartDevices.add(getDevice(deviceID));
-            this.roomsNdevices.put(room, smartDevices);
-        }
-    }
 
     public SmartDevice getDevice (String deviceID) {
         for (SmartDevice smartDevice : this.devices) {
@@ -95,7 +91,7 @@ public class SmartHouse {
 
     public List<String> getRoomList(){
         List<String> roomList = new ArrayList<>();
-        this.rooms.forEach(room -> roomList.add(room));
+        this.roomsNdevices.forEach((room,listDev) -> roomList.add(room));
         return roomList;
     }
 
@@ -136,6 +132,13 @@ public class SmartHouse {
         if(device != null){
             return device.turnOff();
         } else return false;
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Owner: ").append(this.ownerName).append("\n")
+                .append("NIF: ").append(this.ownerNIF).append("\n");
+        return sb.toString();
     }
 
     public SmartHouse clone(){

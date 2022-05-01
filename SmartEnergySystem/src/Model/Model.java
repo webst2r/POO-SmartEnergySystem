@@ -1,13 +1,15 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Model {
 
     // Maps of devices/houses/suppliers on the system
     private Map<String, SmartDevice> devices;
-    private Map<String, SmartHouse> houses;
+    private Map<Integer, SmartHouse> houses;
     private Map<String, Supplier> suppliers;
 
 
@@ -33,8 +35,29 @@ public class Model {
     }
 
 
+    /**
+     * Adds a SmartHouse to the system
+     */
+    public void add(SmartHouse house) { this.houses.put(house.getOwnerNIF(),house.clone()); }
 
 
+    public SmartHouse getHouse(int NIF){
+        return this.houses.get(NIF);
+    }
 
+    public List<SmartDevice> getDevices(){
+        List<SmartDevice> devs = new ArrayList<>();
+        for(SmartDevice s : this.devices.values())
+            devs.add(s.clone());
 
+        return devs;
+    }
+
+    public List<SmartHouse> getHouses(){
+        List<SmartHouse> smartHouses = new ArrayList<>();
+        for(SmartHouse s : this.houses.values())
+            smartHouses.add(s.clone());
+
+        return smartHouses;
+    }
 }

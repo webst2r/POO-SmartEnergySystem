@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class SmartCamera extends SmartDevice{
     private int resolutionX;
     private int resolutionY;
-    private double fileSize; // MBytes
+    private double fileSize;
     private double consumption;
 
 
@@ -16,15 +16,11 @@ public class SmartCamera extends SmartDevice{
         this.consumption = 15.0;
     }
 
-    public SmartCamera(String id,
-                       boolean on,
-                       LocalDateTime timeOfTurningOn,
-                       int resolutionX,
+    public SmartCamera(int resolutionX,
                        int resolutionY,
                        double fileSize,
-                       double consumption,
-                       double installationCost) {
-        super (id, on, timeOfTurningOn, installationCost);
+                       double consumption) {
+        super();
         this.resolutionX = resolutionX;
         this.resolutionY = resolutionY;
         this.fileSize = fileSize;

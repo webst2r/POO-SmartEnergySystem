@@ -17,17 +17,18 @@ public class Supplier {
         this.customers = new HashMap<>();
     }
 
+    public Supplier(String supplierID) {
+        this.supplierID = supplierID;
+        this.energyDailyCost = 5.0;
+        this.customers = new HashMap<>();
+    }
+
     public Supplier(Supplier supplier){
         this.supplierID = supplier.getSupplierID();
         this.energyDailyCost = supplier.getEnergyDailyCost();
         this.customers = supplier.getCustomers();
     }
 
-    public Supplier(String supplierID, double energyDailyCost) {
-        this.supplierID = supplierID;
-        this.energyDailyCost = energyDailyCost;
-        this.customers = new HashMap<>();
-    }
 
     public Supplier(String supplierID,
                     double energyDailyCost,

@@ -19,15 +19,11 @@ public class SmartSpeaker extends SmartDevice{
         this.consumption = 15.0;
     }
 
-    public SmartSpeaker (String id,
-                         boolean on,
-                         LocalDateTime timeOfTurningOn,
-                         String channel,
+    public SmartSpeaker (String channel,
                          String brand,
                          double volume,
-                         double consumption,
-                         double installationCost) {
-        super (id, on,timeOfTurningOn, installationCost);
+                         double consumption) {
+        super();
         this.channel = channel;
         this.brand = brand;
         setVolume(volume);

@@ -12,13 +12,12 @@ public class Resources {
             "╚═╝ ┴ └─┘ ┴ └─┘┴ ┴",
             "\u001B[0m",
         " OPTIONS:",
-            " 1) Login",
-            " 2) Register",
+            " 1) Create Smart Device",
+            " 2) Create Smart House",
             " 3) House with most costs",
             " 4) Supplier with the most volume",
             " 5) Load",
             " 6) Save",
             " 0) Exit"
     };
-
 }

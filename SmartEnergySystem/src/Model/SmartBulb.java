@@ -4,9 +4,8 @@ import java.time.LocalDateTime;
 
 public class SmartBulb extends SmartDevice{
     private int tone;
-    private double dimension;
-    private double consumption; // consumo base
-                                // no Menu, quando for a criar um SmartDevice, passar o consumo etc
+    private int diameter;
+    private double consumption;
 
     public static final int WARM = 2;
     public static final int NEUTRAL = 1;
@@ -16,41 +15,37 @@ public class SmartBulb extends SmartDevice{
     public SmartBulb () {
         super();
         this.tone = NEUTRAL;
-        this.dimension = 0.0;
+        this.diameter = 3;
         this.consumption = 15.0;
     }
 
-    public SmartBulb (String id,
-                      boolean on,
-                      LocalDateTime timeOfTurningOn,
-                      int tone,
-                      double dimension,
-                      double consumption,
-                      double installationCost) {
-        super(id, on, timeOfTurningOn, installationCost);
+    public SmartBulb (int tone,
+                      int diameter,
+                      double consumption) {
+        super();
         this.tone = tone;
-        this.dimension = dimension;
+        this.diameter = diameter;
         this.consumption = consumption;
     }
 
     public SmartBulb (SmartBulb smartBulb) {
         super(smartBulb.getID(), smartBulb.getOn(),smartBulb.getTimeOfTurningOn(), smartBulb.getInstallationCost());
         this.setTone(smartBulb.getTone());
-        this.dimension = smartBulb.getDimension();
+        this.diameter = smartBulb.getDiameter();
         this.consumption = smartBulb.getConsumption();
     }
 
 
     public int getTone() { return this.tone;}
 
-    public double getDimension() { return this.dimension;}
+    public int getDiameter() { return this.diameter;}
 
     public double getConsumption() { return this.consumption;}
 
     public void setTone(int tone) { this.tone = tone;}
 
-    public void setDimension(double dimension) {
-        this.dimension = dimension;
+    public void setDiameter(int diameter) {
+        this.diameter = diameter;
     }
 
     public void setConsumption(double consumption) {
