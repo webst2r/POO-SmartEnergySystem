@@ -37,12 +37,13 @@ public class Controller {
                     // Create House
                     break;
                 case 7:
-                    int sum = 0;
+
                     for(SmartHouse h : model.getHouses()){
-                        view.showln(h);
+                        int sum = 0;
                         for(String divisao : h.getRoomList())
-                            sum++;
-                        view.showln("NUM DIV: " + sum);
+                            view.showln(divisao);
+                        //view.showln("NUM DIV: " + sum + "");
+                        view.showln(h);
                     }
 
 
@@ -57,7 +58,7 @@ public class Controller {
                     view.showln("See you later!");
                     break;
                 default:
-                    view.showln("Por favor insira uma opcao invalida.");
+                    view.showln("Por favor insira uma opcao valida.");
             }
 
         }

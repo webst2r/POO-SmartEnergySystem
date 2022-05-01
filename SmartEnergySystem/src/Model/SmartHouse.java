@@ -91,7 +91,8 @@ public class SmartHouse {
 
     public List<String> getRoomList(){
         List<String> roomList = new ArrayList<>();
-        this.roomsNdevices.forEach((room,listDev) -> roomList.add(room));
+        for(String room : this.roomsNdevices.keySet())
+            roomList.add(room);
         return roomList;
     }
 

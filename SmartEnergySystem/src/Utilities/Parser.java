@@ -1,9 +1,6 @@
 package Utilities;
 
 import Model.*;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -55,17 +52,26 @@ public class Parser {
                     break;
                 case "SmartBulb":
                     SmartBulb bulb = buildSmartBulb(args);
-                    if(bulb != null) model.add(bulb);
+                    if(bulb != null){
+                        model.add(bulb);
+                        dispositivos.add(bulb);
+                    }
                     else System.out.println("Invalid BULB!");
                     break;
                 case "SmartCamera":
                     SmartCamera camera = buildSmartCamera(args);
-                    if(camera != null) model.add(camera);
+                    if(camera != null) {
+                        model.add(camera);
+                        dispositivos.add(camera);
+                    }
                     else System.out.println("Invalid CAMERA!");
                     break;
                 case "SmartSpeaker":
                     SmartSpeaker speaker = buildSmartSpeaker(args);
-                    if(speaker != null) model.add(speaker);
+                    if(speaker != null) {
+                        model.add(speaker);
+                        dispositivos.add(speaker);
+                    }
                     else System.out.println("Invalid SPEAKER!");
                     break;
             }
