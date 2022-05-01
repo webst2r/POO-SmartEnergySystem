@@ -99,23 +99,27 @@ public class Controller {
             case 2:
                 // SmartCamera: (1366x768), 63, 4.74
                 // <Resolucao>,<Tamanho>,<Consumo>
-                view.showln("Insert the resolution(x,y).");
-                view.show("x:");
-                int resolutionX = Integer.parseInt(scanner.nextLine());
-                view.show("y:");
-                int resolutionY = Integer.parseInt(scanner.nextLine());
-                view.show("Insert the file size: ");
-                double fileSize = Double.parseDouble(scanner.nextLine());
-                view.show("Insert the consumption: ");
-                double consumptionC = Double.parseDouble(scanner.nextLine());
+                try {
+                    view.showln("Insert the resolution(x,y).");
+                    view.show("x:");
+                    int resolutionX = Integer.parseInt(scanner.nextLine());
+                    view.show("y:");
+                    int resolutionY = Integer.parseInt(scanner.nextLine());
+                    view.show("Insert the file size: ");
+                    double fileSize = Double.parseDouble(scanner.nextLine());
+                    view.show("Insert the consumption: ");
+                    double consumptionC = Double.parseDouble(scanner.nextLine());
 
-                SmartCamera camera = new SmartCamera();
-                camera.setResolutionX(resolutionX);
-                camera.setResolutionY(resolutionY);
-                camera.setFileSize(fileSize);
-                camera.setConsumption(consumptionC);
+                    SmartCamera camera = new SmartCamera();
+                    camera.setResolutionX(resolutionX);
+                    camera.setResolutionY(resolutionY);
+                    camera.setFileSize(fileSize);
+                    camera.setConsumption(consumptionC);
 
-                this.model.add(camera);
+                    this.model.add(camera);
+                } catch (NumberFormatException e){
+                    e.printStackTrace();
+                }
                 break;
             case 3:
                 // SmartSpeaker:30,RTP Antena 1 98.3 FM,JBL,5.53
