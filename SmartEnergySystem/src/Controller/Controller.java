@@ -41,9 +41,8 @@ public class Controller {
                     for(SmartHouse h : model.getHouses()){
                         int sum = 0;
                         for(String divisao : h.getRoomList())
-                            view.showln(divisao);
-                        //view.showln("NUM DIV: " + sum + "");
-                        view.showln(h);
+                            sum++;
+                        view.showln("NUM DIV: " + sum + "");
                     }
 
 

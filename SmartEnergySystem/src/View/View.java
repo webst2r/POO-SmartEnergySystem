@@ -36,7 +36,7 @@ public class View {
         menu.addOption("Supplier with the most volume");
         menu.addOption("Load");
         menu.addOption("Save");
-        menu.addOption("Devices on the system");
+        menu.addOption("Houses on the system");
         menu.addOption("Logs");
         menu.addOption("Exit ❌");
         menu.showMainMenu(true);

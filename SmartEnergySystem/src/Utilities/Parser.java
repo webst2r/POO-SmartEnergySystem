@@ -38,6 +38,10 @@ public class Parser {
                         ultimaCasa = h;
                     }
                     else if (h != null) {
+                        if(ultimaDivisao != null){
+                            ultimaCasa.addRoom(ultimaDivisao,dispositivos);
+                            dispositivos.clear();
+                        }
                         model.add(ultimaCasa);
                         ultimaCasa = h;
                     } else System.out.println("Invalid house!");
@@ -76,6 +80,7 @@ public class Parser {
                     break;
             }
         }
+        ultimaCasa.addRoom(ultimaDivisao,dispositivos);
         model.add(ultimaCasa);
     }
 
