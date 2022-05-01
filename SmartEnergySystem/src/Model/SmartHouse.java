@@ -4,38 +4,25 @@ import java.util.*;
 
 public class SmartHouse {
     private String ownerName;
+    private String supplier;
     private int ownerNIF;
-
     private List<SmartDevice> devices;
     private List<String> rooms;
     private Map<String, List<SmartDevice>> roomsNdevices;
 
-
-    public SmartHouse(String ownerName, int ownerNIF){
+    public SmartHouse(String ownerName, int ownerNIF, String supplier){
         this.ownerName = ownerName;
         this.ownerNIF = ownerNIF;
+        this.supplier = supplier;
         this.devices = new ArrayList<>();
         this.rooms = new ArrayList<>();
         this.roomsNdevices = new HashMap<>();
     }
 
-    public SmartHouse(String ownerName,
-                      int ownerNIF,
-                      List<SmartDevice> devices,
-                      List<String> rooms,
-                      Map<String, List<SmartDevice>> roomsNdevices){
-        this.ownerName = ownerName;
-        this.ownerNIF = ownerNIF;
-        this.devices = devices;
-        this.rooms = rooms;
-        this.roomsNdevices = roomsNdevices;
-    }
-
-
-
     public SmartHouse(SmartHouse smarthouse){
         this.ownerName = smarthouse.getOwnerName();
         this.ownerNIF = smarthouse.getOwnerNIF();
+        this.supplier = smarthouse.getSupplier();
         this.devices = smarthouse.getDeviceList();
         this.rooms = smarthouse.getRoomList();
         this.roomsNdevices = smarthouse.getRoomsNDevices();
@@ -44,6 +31,8 @@ public class SmartHouse {
     public int getOwnerNIF() { return this.ownerNIF;}
 
     public String getOwnerName() { return this.ownerName;}
+
+    public String getSupplier() { return this.supplier; }
 
     public int getNumberOfDevices() { return this.devices.size();}
 
@@ -55,6 +44,7 @@ public class SmartHouse {
         this.ownerName = ownerName;
     }
 
+    public void setSupplier(String supplier) { this.supplier = supplier; }
 
     public boolean roomExists (String room) {
         return this.roomsNdevices.containsKey(room);

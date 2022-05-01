@@ -109,7 +109,7 @@ public class Parser {
             return null;
         }
 
-        return new SmartHouse(owner,NIF);
+        return new SmartHouse(owner,NIF,supplier);
     }
 
 

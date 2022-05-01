@@ -32,6 +32,8 @@ public class View {
         menu.setTitle("SmartEnergySystem");
         menu.addOption("Create Smart Device");
         menu.addOption("Create Smart House");
+        menu.addOption("Create Energy Supplier");
+        menu.addOption("Advance to date");
         menu.addOption("House with most costs");
         menu.addOption("Supplier with the most volume");
         menu.addOption("Load");

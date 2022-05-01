@@ -1,6 +1,7 @@
 package Model;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 import java.util.UUID;
 
 public abstract class SmartDevice {
@@ -11,7 +12,8 @@ public abstract class SmartDevice {
 
     public SmartDevice () {
         this.id = UUID.randomUUID().toString();
-        this.on = false;
+        Random random = new Random();
+        this.on = random.nextBoolean();;
         this.timeOfTurningOn = LocalDateTime.now();
         this.installationCost = 4.99; // default installation cost
     }
