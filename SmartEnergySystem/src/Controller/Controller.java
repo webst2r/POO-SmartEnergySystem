@@ -34,6 +34,7 @@ public class Controller {
             switch (option) {
                 case 1:
                     createDevice();
+                    System.out.println("h1");
                     break;
                 case 2:
                     createHouse();
@@ -62,6 +63,7 @@ public class Controller {
                 case 9:
                     // Check houses on the system
                     checkHousesOnTheSystem();
+                    break;
                 case 10:
                     // Logs
                     parser.parse(this.model);
