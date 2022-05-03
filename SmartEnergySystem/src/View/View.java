@@ -41,7 +41,7 @@ public class View {
         menu.addOption("Houses on the system");
         menu.addOption("Logs");
         menu.addOption("Exit ❌");
-        menu.showMainMenu(true);
+        menu.showMainMenu();
     }
 
     public void showCreateDeviceMenu(){

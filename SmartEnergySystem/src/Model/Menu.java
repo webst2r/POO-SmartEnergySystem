@@ -41,7 +41,7 @@ public class Menu {
     /**
      * Show Menu Options.
      */
-    public void showMainMenu(boolean cursorVisible){
+    public void showMainMenu(){
         System.out.println("\u001B[34m");
         System.out.println("╔═╗┌┬┐┌─┐┬─┐┌┬┐╔═╗┌┐┌┌─┐┬─┐┌─┐┬ ┬");
         System.out.println("╚═╗│││├─┤├┬┘ │ ║╣ │││├┤ ├┬┘│ ┬└┬┘");
@@ -56,6 +56,5 @@ public class Menu {
             System.out.println("(" + i + "): " + string);
             i++;
         }
-        if(cursorVisible) System.out.print("> ");
     }
 }

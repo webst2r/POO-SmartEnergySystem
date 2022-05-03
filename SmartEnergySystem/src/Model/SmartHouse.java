@@ -1,8 +1,9 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class SmartHouse {
+public class SmartHouse implements Serializable {
     private String ownerName;
     private String supplier;
     private int ownerNIF;

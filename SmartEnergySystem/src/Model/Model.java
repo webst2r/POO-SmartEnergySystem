@@ -1,11 +1,12 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Model {
+public class Model implements Serializable {
 
     // Maps of devices/houses/suppliers on the system
     private Map<String, SmartDevice> devices;

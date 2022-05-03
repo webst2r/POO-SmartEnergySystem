@@ -69,6 +69,7 @@ public class Controller {
                 case 11:
                     // Exit
                     exit = true;
+                    scanner.close();
                     view.showln("See you later!");
                     break;
                 default:
@@ -80,18 +81,9 @@ public class Controller {
     public void checkHousesOnTheSystem(){
         if(model.getHouses().size() == 0) view.showln("There are no houses on the system yet.");
         else {
-            for(SmartHouse h : model.getHouses()){
+            for (SmartHouse h : model.getHouses())
                 view.showln(h);
-                /*
-                int sum = 0;
-                for(String divisao : h.getRoomList())
-                    sum++;
-                view.showln("NUM DIV: " + sum + "");
-
-                 */
-            }
         }
-
     }
 
     public void createDevice(){
@@ -154,7 +146,7 @@ public class Controller {
                     double volume = Double.parseDouble(scanner.nextLine());
                     view.show("Radio station: ");
                     String radio = scanner.nextLine();
-                    view.show("\nBrand: ");
+                    view.show("Brand: ");
                     String brand = scanner.nextLine();
                     view.show("Consumption: ");
                     double consumptionS = Double.parseDouble(scanner.nextLine());
