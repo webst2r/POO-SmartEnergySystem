@@ -29,7 +29,7 @@ public class Controller {
         while (!exit) {
             this.view.showMainMenu();
             this.view.prompt("Menu","SmartEnergySystem");
-            option = scanner.nextInt();
+            option = Integer.parseInt(scanner.nextLine());
 
             switch (option) {
                 case 1:
@@ -60,16 +60,8 @@ public class Controller {
                     view.showln("Successfuly saved on: " + filepath);
                     break;
                 case 9:
-                    for(SmartHouse h : model.getHouses()){
-                        view.showln(h);
-                        /*
-                        int sum = 0;
-                        for(String divisao : h.getRoomList())
-                            sum++;
-                        view.showln("NUM DIV: " + sum + "");
-
-                         */
-                    }
+                    // Check houses on the system
+                    checkHousesOnTheSystem();
                 case 10:
                     // Logs
                     parser.parse(this.model);
@@ -83,6 +75,23 @@ public class Controller {
                     view.showln("Por favor insira uma opcao valida.");
             }
         }
+    }
+
+    public void checkHousesOnTheSystem(){
+        if(model.getHouses().size() == 0) view.showln("There are no houses on the system yet.");
+        else {
+            for(SmartHouse h : model.getHouses()){
+                view.showln(h);
+                /*
+                int sum = 0;
+                for(String divisao : h.getRoomList())
+                    sum++;
+                view.showln("NUM DIV: " + sum + "");
+
+                 */
+            }
+        }
+
     }
 
     public void createDevice(){
@@ -192,7 +201,7 @@ public class Controller {
         view.show("Name: ");
         String supplierName = scanner.nextLine();
         view.show("Daily energy cost: ");
-        double energyCost = scanner.nextDouble();
+        double energyCost = Double.parseDouble(scanner.nextLine());
 
         Supplier supplier = new Supplier(supplierName,energyCost);
         this.model.add(supplier);
