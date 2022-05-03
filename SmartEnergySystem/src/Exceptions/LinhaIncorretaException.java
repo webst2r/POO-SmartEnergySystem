@@ -1,4 +1,4 @@
-package Utilities;
+package Exceptions;
 
 public class LinhaIncorretaException extends Exception {
 

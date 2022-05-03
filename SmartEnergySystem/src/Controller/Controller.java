@@ -1,8 +1,8 @@
 package Controller;
 
 import Model.*;
-import Utilities.LinhaIncorretaException;
-import Utilities.Parser;
+import Exceptions.LinhaIncorretaException;
+import Model.Parser;
 import View.*;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class Controller {
         while (!exit) {
             this.view.showMainMenu();
             this.view.prompt("Menu","SmartEnergySystem");
-            option = Integer.parseInt(scanner.nextLine());
+            option = scanInteger(scanner);
 
             switch (option) {
                 case 1:
@@ -48,7 +48,7 @@ public class Controller {
                     // Carregar estado
                     view.show("Load from file: ");
                     String filename = scanner.nextLine();
-                    model = parser.readBin(filename);
+                    model = parser.readBin("../data/" + filename);
                     view.showln(model.getHouses().size() + " houses read from " + filename);
                     view.showln(model.getDevices().size() + " devices read from " + filename);
                     break;
@@ -56,7 +56,7 @@ public class Controller {
                     // Guardar estado
                     view.show("Save to file: ");
                     String filepath = scanner.nextLine();
-                    parser.saveBin(filepath,model);
+                    parser.saveBin("SmartEnergySystem/data/"+filepath,model);
                     view.showln("Successfuly saved on: " + filepath);
                     break;
                 case 9:
@@ -79,18 +79,60 @@ public class Controller {
         }
     }
 
+    /**
+     * Waits for an integer input from user, keeps asking again until the input is correct
+     * @return the integer read
+     */
+    public int scanInteger(Scanner scanner){
+        int input = 0;
+        while(true) {
+            try {
+                input = Integer.parseInt(scanner.nextLine());
+                break;
+            }catch (NumberFormatException e) {
+                view.showln("Oops, wrong input... Please enter an integer");
+                continue;
+            }
+        }
+        return input;
+    }
+
+    /**
+     * Waits for a Double from user, keeps asking again until the input is correct
+     * @return the double
+     */
+
+    public double scanDouble(Scanner scanner){
+        double input = 0.0;
+        while(true) {
+            try {
+                input = Double.parseDouble(scanner.nextLine());
+                break;
+            }catch (NumberFormatException e) {
+                view.showln("Oops, wrong input... Please enter a double");
+                continue;
+            }
+        }
+        return input;
+    }
+
+
     public void checkHousesOnTheSystem(){
+        int sum = 0;
         if(model.getHouses().size() == 0) view.showln("There are no houses on the system yet.");
         else {
-            for (SmartHouse h : model.getHouses())
-                view.showln(h);
+            for (SmartHouse h : model.getHouses()) {
+                sum++;
+                // view.showln(h);
+            }
         }
+        view.showln("Number of houses: " + sum);
     }
 
     public void createDevice(){
         view.showCreateDeviceMenu();
         Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
-        int option = Integer.parseInt(scanner.nextLine());
+        int option = scanInteger(scanner);
 
         switch(option) {
             case 1:
@@ -98,11 +140,11 @@ public class Controller {
                 // SmartBulb:<Tonalidade>,<Diametro>,<Consumo>
                 try {
                     view.show("Insert the tone (WARM - 2, NEUTRAL - 1, COLD - 0): ");
-                    int tone = Integer.parseInt(scanner.nextLine());
+                    int tone = scanInteger(scanner);
                     view.show("Diameter: ");
-                    int diameter = Integer.parseInt(scanner.nextLine());
+                    int diameter = scanInteger(scanner);
                     view.show("Consumption: ");
-                    double consumption = Double.parseDouble(scanner.nextLine());
+                    double consumption = scanDouble(scanner);
 
                     SmartBulb bulb = new SmartBulb();
                     bulb.setTone(tone);
@@ -120,13 +162,13 @@ public class Controller {
                 try {
                     view.showln("Insert the resolution(x,y).");
                     view.show("x:");
-                    int resolutionX = Integer.parseInt(scanner.nextLine());
+                    int resolutionX = scanInteger(scanner);
                     view.show("y:");
-                    int resolutionY = Integer.parseInt(scanner.nextLine());
+                    int resolutionY = scanInteger(scanner);
                     view.show("Insert the file size: ");
-                    double fileSize = Double.parseDouble(scanner.nextLine());
+                    double fileSize = scanDouble(scanner);
                     view.show("Insert the consumption: ");
-                    double consumptionC = Double.parseDouble(scanner.nextLine());
+                    double consumptionC = scanDouble(scanner);
 
                     SmartCamera camera = new SmartCamera();
                     camera.setResolutionX(resolutionX);
@@ -144,13 +186,13 @@ public class Controller {
                 // SmartSpeaker:<Volume>,<CanalRadio>,<Marca>,<Consumo>
                 try{
                     view.show("Volume: ");
-                    double volume = Double.parseDouble(scanner.nextLine());
+                    double volume = scanDouble(scanner);
                     view.show("Radio station: ");
                     String radio = scanner.nextLine();
                     view.show("Brand: ");
                     String brand = scanner.nextLine();
                     view.show("Consumption: ");
-                    double consumptionS = Double.parseDouble(scanner.nextLine());
+                    double consumptionS = scanDouble(scanner);
 
 
                     SmartSpeaker speaker = new SmartSpeaker();
@@ -178,7 +220,7 @@ public class Controller {
             view.show("Owner name: ");
             String owner = scanner.nextLine();
             view.show("NIF: ");
-            int NIF = Integer.parseInt(scanner.nextLine());
+            int NIF = scanInteger(scanner);
             view.show("Energy supplier: ");
             String supplier = scanner.nextLine();
             SmartHouse house = new SmartHouse(owner,NIF,supplier);
@@ -195,7 +237,7 @@ public class Controller {
         view.show("Name: ");
         String supplierName = scanner.nextLine();
         view.show("Daily energy cost: ");
-        double energyCost = Double.parseDouble(scanner.nextLine());
+        double energyCost = scanDouble(scanner);
 
         Supplier supplier = new Supplier(supplierName,energyCost);
         this.model.add(supplier);

@@ -1,9 +1,10 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Supplier {
+public class Supplier implements Serializable {
     private String supplierID;
     private double energyDailyCost;
     private Map<String, SmartHouse> customers;

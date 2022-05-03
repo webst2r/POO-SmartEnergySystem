@@ -1,10 +1,11 @@
 package Model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.UUID;
 
-public abstract class SmartDevice {
+public abstract class SmartDevice implements Serializable {
     private String id;
     private boolean on;
     private LocalDateTime timeOfTurningOn;

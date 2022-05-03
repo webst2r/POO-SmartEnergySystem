@@ -1,7 +1,6 @@
 import Controller.Controller;
 import Model.Model;
-import Utilities.LinhaIncorretaException;
-import Utilities.Parser;
+import Exceptions.LinhaIncorretaException;
 import View.View;
 
 import java.io.IOException;

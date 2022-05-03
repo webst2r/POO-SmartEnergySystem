@@ -1,6 +1,6 @@
-package Utilities;
+package Model;
 
-import Model.*;
+import Exceptions.LinhaIncorretaException;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -14,14 +14,14 @@ public class Parser {
     private String path;
 
     public Parser(){
-        this.path = "SmartEnergySystem/data/logs2.txt";
+        this.path = "SmartEnergySystem/data/logs.txt";
     }
 
 
     /**
      * Função que permite guardar o estado do modelo num ficheiro binário
      */
-    public void saveBin(String nomeFicheiro,Model model) throws FileNotFoundException, IOException {
+    public void saveBin(String nomeFicheiro,Model model) throws IOException {
         FileOutputStream bf = new FileOutputStream(nomeFicheiro);
         ObjectOutputStream oos = new ObjectOutputStream(bf);
         oos.writeObject(model);
