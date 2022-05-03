@@ -51,6 +51,7 @@ public class Controller {
                     model = parser.readBin("../data/" + filename);
                     view.showln(model.getHouses().size() + " houses read from " + filename);
                     view.showln(model.getDevices().size() + " devices read from " + filename);
+                    view.pressKeyToContinue(scanner);
                     break;
                 case 8:
                     // Guardar estado
@@ -58,14 +59,17 @@ public class Controller {
                     String filepath = scanner.nextLine();
                     parser.saveBin("SmartEnergySystem/data/"+filepath,model);
                     view.showln("Successfuly saved on: " + filepath);
+                    view.pressKeyToContinue(scanner);
                     break;
                 case 9:
                     // Check houses on the system
                     checkHousesOnTheSystem();
+                    view.pressKeyToContinue(scanner);
                     break;
                 case 10:
                     // Logs
                     parser.parse(this.model);
+                    view.pressKeyToContinue(scanner);
                     break;
                 case 11:
                     // Exit
@@ -90,7 +94,7 @@ public class Controller {
                 input = Integer.parseInt(scanner.nextLine());
                 break;
             }catch (NumberFormatException e) {
-                view.showln("Oops, wrong input... Please enter an integer");
+                view.showln("Oops, wrong input... Please try again");
                 continue;
             }
         }
@@ -109,7 +113,7 @@ public class Controller {
                 input = Double.parseDouble(scanner.nextLine());
                 break;
             }catch (NumberFormatException e) {
-                view.showln("Oops, wrong input... Please enter a double");
+                view.showln("Oops, wrong input... Please try again");
                 continue;
             }
         }
@@ -138,73 +142,64 @@ public class Controller {
             case 1:
                 // SmartBulb:Neutral,7,0.24
                 // SmartBulb:<Tonalidade>,<Diametro>,<Consumo>
-                try {
-                    view.show("Insert the tone (WARM - 2, NEUTRAL - 1, COLD - 0): ");
-                    int tone = scanInteger(scanner);
-                    view.show("Diameter: ");
-                    int diameter = scanInteger(scanner);
-                    view.show("Consumption: ");
-                    double consumption = scanDouble(scanner);
+                view.showSmartBulbMenu();
+                int tone = scanInteger(scanner);
+                view.show("Diameter: ");
+                int diameter = scanInteger(scanner);
+                view.show("Consumption: ");
+                double consumption = scanDouble(scanner);
 
-                    SmartBulb bulb = new SmartBulb();
-                    bulb.setTone(tone);
-                    bulb.setDiameter(diameter);
-                    bulb.setConsumption(consumption);
+                SmartBulb bulb = new SmartBulb();
+                bulb.setTone(tone);
+                bulb.setDiameter(diameter);
+                bulb.setConsumption(consumption);
 
-                    this.model.add(bulb);
-                } catch (NumberFormatException e){
-                    view.showln("Formato de input errado.");
-                }
+                this.model.add(bulb);
                 break;
             case 2:
                 // SmartCamera: (1366x768), 63, 4.74
                 // <Resolucao>,<Tamanho>,<Consumo>
-                try {
-                    view.showln("Insert the resolution(x,y).");
-                    view.show("x:");
-                    int resolutionX = scanInteger(scanner);
-                    view.show("y:");
-                    int resolutionY = scanInteger(scanner);
-                    view.show("Insert the file size: ");
-                    double fileSize = scanDouble(scanner);
-                    view.show("Insert the consumption: ");
-                    double consumptionC = scanDouble(scanner);
 
-                    SmartCamera camera = new SmartCamera();
-                    camera.setResolutionX(resolutionX);
-                    camera.setResolutionY(resolutionY);
-                    camera.setFileSize(fileSize);
-                    camera.setConsumption(consumptionC);
+                view.showln("Insert the resolution(x,y).");
+                view.show("x:");
+                int resolutionX = scanInteger(scanner);
+                view.show("y:");
+                int resolutionY = scanInteger(scanner);
+                view.show("Insert the file size: ");
+                double fileSize = scanDouble(scanner);
+                view.show("Insert the consumption: ");
+                double consumptionC = scanDouble(scanner);
 
-                    this.model.add(camera);
-                } catch (NumberFormatException e){
-                    e.printStackTrace();
-                }
+                SmartCamera camera = new SmartCamera();
+                camera.setResolutionX(resolutionX);
+                camera.setResolutionY(resolutionY);
+                camera.setFileSize(fileSize);
+                camera.setConsumption(consumptionC);
+
+                this.model.add(camera);
                 break;
             case 3:
                 // SmartSpeaker:30,RTP Antena 1 98.3 FM,JBL,5.53
                 // SmartSpeaker:<Volume>,<CanalRadio>,<Marca>,<Consumo>
-                try{
-                    view.show("Volume: ");
-                    double volume = scanDouble(scanner);
-                    view.show("Radio station: ");
-                    String radio = scanner.nextLine();
-                    view.show("Brand: ");
-                    String brand = scanner.nextLine();
-                    view.show("Consumption: ");
-                    double consumptionS = scanDouble(scanner);
+
+                view.show("Volume: ");
+                double volume = scanDouble(scanner);
+                view.show("Radio station: ");
+                String radio = scanner.nextLine();
+                view.show("Brand: ");
+                String brand = scanner.nextLine();
+                view.show("Consumption: ");
+                double consumptionS = scanDouble(scanner);
 
 
-                    SmartSpeaker speaker = new SmartSpeaker();
-                    speaker.setVolume(volume);
-                    speaker.setChannel(radio);
-                    speaker.setBrand(brand);
-                    speaker.setConsumption(consumptionS);
+                SmartSpeaker speaker = new SmartSpeaker();
+                speaker.setVolume(volume);
+                speaker.setChannel(radio);
+                speaker.setBrand(brand);
+                speaker.setConsumption(consumptionS);
 
-                    this.model.add(speaker);
-                } catch (NumberFormatException e){
-                    e.printStackTrace();
-                }
+                this.model.add(speaker);
+
                 break;
             default:
                 break;
@@ -217,6 +212,7 @@ public class Controller {
         Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
 
         try {
+            view.showCreateMenu("Create a SmartHouse");
             view.show("Owner name: ");
             String owner = scanner.nextLine();
             view.show("NIF: ");
@@ -232,8 +228,8 @@ public class Controller {
 
     public void createSupplier(){
         // Fornecedor:MEO Energia
-
         Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
+        view.showCreateMenu("Create an Energy Supplier");
         view.show("Name: ");
         String supplierName = scanner.nextLine();
         view.show("Daily energy cost: ");

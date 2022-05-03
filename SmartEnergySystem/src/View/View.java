@@ -2,6 +2,8 @@ package View;
 
 import Model.Menu;
 
+import java.util.Scanner;
+
 public class View {
 
     public void showln(String msg){
@@ -55,7 +57,31 @@ public class View {
         menu.show(true);
     }
 
+    public void showSmartBulbMenu(){
+        clearScreen();
+        Menu menu = new Menu();
+        menu.setTitle("Please choose the tone");
+        menu.addOption("WARM");
+        menu.addOption("NEUTRAL");
+        menu.addOption("COLD");
+        menu.show(true);
+    }
 
+    public void showCreateMenu(String title){
+        clearScreen();
+        System.out.println("\u001B[36m" + title + "\u001B[0m");
+        System.out.println("-----------------------------");
+    }
+
+
+
+    /**
+     * Displays a message asking the user to press enter in order to continue
+     */
+    public static void pressKeyToContinue(Scanner scanner){
+        System.out.println("\n\n--- press enter to continue ---");
+        scanner.nextLine();
+    }
 
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
