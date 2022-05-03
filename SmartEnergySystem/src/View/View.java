@@ -51,6 +51,7 @@ public class View {
         menu.addOption("Smart Bulb");
         menu.addOption("Smart Camera");
         menu.addOption("Smart Speaker");
+        menu.addOption("Cancel");
         menu.show(true);
     }
 
