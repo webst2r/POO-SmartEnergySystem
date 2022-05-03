@@ -1,7 +1,8 @@
 package Utilities;
 
 import Model.*;
-import java.io.IOException;
+
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -14,6 +15,29 @@ public class Parser {
 
     public Parser(){
         this.path = "SmartEnergySystem/data/logs2.txt";
+    }
+
+
+    /**
+     * Função que permite guardar o estado do modelo num ficheiro binário
+     */
+    public void saveBin(String nomeFicheiro,Model model) throws FileNotFoundException, IOException {
+        FileOutputStream bf = new FileOutputStream(nomeFicheiro);
+        ObjectOutputStream oos = new ObjectOutputStream(bf);
+        oos.writeObject(model);
+        oos.flush();
+        oos.close();
+    }
+
+    /**
+     * Função que permite ler um ficheiro binário com um estado da aplicação
+     */
+    public Model readBin(String nomeFich) throws IOException, ClassNotFoundException{
+        FileInputStream bf = new FileInputStream(nomeFich);
+        ObjectInputStream ois = new ObjectInputStream(bf);
+        Model m = (Model) ois.readObject();
+        ois.close();
+        return m;
     }
 
     public void parse(Model model) throws LinhaIncorretaException {

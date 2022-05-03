@@ -5,6 +5,7 @@ import Utilities.LinhaIncorretaException;
 import Utilities.Parser;
 import View.*;
 
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
@@ -19,8 +20,10 @@ public class Controller {
     }
 
     /** Function that start the program and puts the system running */
-    public void run() throws LinhaIncorretaException {
+    public void run() throws LinhaIncorretaException, IOException, ClassNotFoundException {
         Scanner scanner = new Scanner(System.in);
+        Parser parser = new Parser();
+
         boolean exit = false;
         int option = -1;
         while (!exit) {
@@ -42,6 +45,21 @@ public class Controller {
                     //advanceToDate();
                     break;
                 case 7:
+                    // Carregar estado
+                    view.show("Load from file: ");
+                    String filename = scanner.nextLine();
+                    model = parser.readBin(filename);
+                    view.showln(model.getHouses().size() + " houses read from " + filename);
+                    view.showln(model.getDevices().size() + " devices read from " + filename);
+                    break;
+                case 8:
+                    // Guardar estado
+                    view.show("Save to file: ");
+                    String filepath = scanner.nextLine();
+                    parser.saveBin(filepath,model);
+                    view.showln("Successfuly saved on: " + filepath);
+                    break;
+                case 9:
                     for(SmartHouse h : model.getHouses()){
                         view.showln(h);
                         /*
@@ -53,8 +71,7 @@ public class Controller {
                          */
                     }
                 case 10:
-                    // logs
-                    Parser parser = new Parser();
+                    // Logs
                     parser.parse(this.model);
                     break;
                 case 11:
@@ -65,7 +82,6 @@ public class Controller {
                 default:
                     view.showln("Por favor insira uma opcao valida.");
             }
-
         }
     }
 
