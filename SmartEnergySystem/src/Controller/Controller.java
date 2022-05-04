@@ -116,12 +116,21 @@ public class Controller {
                     } else view.show("You can't reach that page.\nAction:");
                     break;
                 case 'S':
-                    view.show("Select house (NIF):");
+                    view.show("House number:");
+                    int houseNumber = scanInteger(scanner);
+                    SmartHouse chosenHouse = pages.get(page).get(houseNumber);
+                    view.showHouseOperationsMenu(chosenHouse.getOwnerName());
+                    int opt = scanInteger(scanner);
+                    handleHouseOperations(opt, chosenHouse.getOwnerNIF(),scanner);
+                    view.showPagination(page,pages.get(page-1),total);
+                    break;
+                case 'F':
+                    view.show("NIF:");
                     int houseNIF = scanInteger(scanner);
                     if(model.houseExists(houseNIF)){
-                        view.showHouseOperationsMenu();
-                        int opt = scanInteger(scanner);
-                        handleHouseOperations(opt, houseNIF,scanner);
+                        view.showHouseOperationsMenu(model.getHouse(houseNIF).getOwnerName());
+                        int o = scanInteger(scanner);
+                        handleHouseOperations(o, houseNIF,scanner);
                         view.showPagination(page,pages.get(page-1),total);
                     } else view.show("Invalid NIF. Couldn't select house.\nAction:");
                     break;
@@ -138,7 +147,7 @@ public class Controller {
                     // Check devices
                     view.showHouseDevices(model.getHouseDevices(nif));
                     view.pressKeyToContinue(scanner);
-                    view.showHouseOperationsMenu();
+                    view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
                     break;
                 case 2:
                     List<String> rooms = model.getRooms(nif);
@@ -155,7 +164,7 @@ public class Controller {
                         view.showln("Successfuly turned off all the devices of " + room);
                     }
                     view.pressKeyToContinue(scanner);
-                    view.showHouseOperationsMenu();
+                    view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
                     break;
                 case 3:
                     break;

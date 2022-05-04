@@ -99,14 +99,15 @@ public class View {
         System.out.println("B      -> Go back");
         System.out.println("J      -> Jump to page");
         System.out.println("S      -> Select house");
+        System.out.println("F      -> Find house by NIF");
         System.out.println("E      -> Exit");
         System.out.print("Action:");
     }
 
-    public void showHouseOperationsMenu(){
+    public void showHouseOperationsMenu(String owner){
         clearScreen();
         Menu menu = new Menu();
-        menu.setTitle("SmartHouse Options");
+        menu.setTitle(owner + "'s SmartHouse Options");
         menu.addOption("Check devices");
         menu.addOption("Turn off room");
         menu.addOption("Cancel");
