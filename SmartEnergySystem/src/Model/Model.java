@@ -54,6 +54,11 @@ public class Model implements Serializable {
         return devs;
     }
 
+    public List<SmartDevice> getHouseDevices(int nif){
+        List<SmartDevice> devs = new ArrayList<>();
+        return this.houses.get(nif).getDeviceList();
+    }
+
     public List<SmartHouse> getHouses(){
         List<SmartHouse> smartHouses = new ArrayList<>();
         for(SmartHouse s : this.houses.values())

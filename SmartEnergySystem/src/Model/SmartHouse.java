@@ -76,7 +76,12 @@ public class SmartHouse implements Serializable {
 
     public List<SmartDevice> getDeviceList(){
         List<SmartDevice> deviceList = new ArrayList<>();
-        this.devices.forEach(d -> deviceList.add(d.clone()));
+        for(List<SmartDevice> room : this.roomsNdevices.values()){
+            for(SmartDevice dev : room){
+                deviceList.add(dev);
+            }
+        }
+
         return deviceList;
     }
 

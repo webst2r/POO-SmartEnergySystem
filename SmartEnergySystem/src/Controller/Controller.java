@@ -89,7 +89,7 @@ public class Controller {
     }
 
     public void pagination(List<List<SmartHouse>> pages, Scanner scanner){
-        int page = 1, total = pages.size();
+        int page = 1, total = pages.size(), totalHouses = pages.size() * 5;
         view.showPagination(page,pages.get(0),total);
         char op = 'A';
         while(( op = scanChar(scanner)) != 'E'){
@@ -98,13 +98,13 @@ public class Controller {
                     if(page < total){
                         page++;
                         view.showPagination(page,pages.get(page-1),total);
-                    } else view.show("You can't reach that page.\nSelect:");
+                    } else view.show("You can't reach that page.\nAction:");
                     break;
                 case 'B':
                     if(page > 1){
                         page--;
                         view.showPagination(page,pages.get(page-1),total);
-                    } else view.show("You can't reach that page.\nSelect:");
+                    } else view.show("You can't reach that page.\nAction:");
                     break;
                 case 'J':
                     view.show("Jump to page:");
@@ -113,11 +113,39 @@ public class Controller {
                     if(scannedValue >= 1 && scannedValue <= total){
                         page = scannedValue;
                         view.showPagination(page,pages.get(page-1),total);
-                    } else view.show("You can't reach that page.\nSelect:");
+                    } else view.show("You can't reach that page.\nAction:");
+                    break;
+                case 'S':
+                    view.show("Select house (NIF):");
+                    int houseNIF = scanInteger(scanner);
+                    if(model.houseExists(houseNIF)){
+                        view.showHouseOperationsMenu();
+                        int opt = scanInteger(scanner);
+                        handleHouseOperations(opt, houseNIF,scanner);
+                    } else view.show("Invalid NIF. Couldn't select house.\nAction:");
                     break;
             }
         }
 
+    }
+
+    public void handleHouseOperations(int option,int nif,Scanner scanner){
+        List<SmartDevice> houseDevices = new ArrayList<>();
+        switch (option){
+            case 1:
+                // Check devices
+                houseDevices = model.getHouseDevices(nif);
+                view.showHouseDevices(houseDevices);
+                view.pressKeyToContinue(scanner);
+                view.showHouseOperationsMenu();
+                break;
+            case 2:
+                // Turn off all devices
+                break;
+            case 3:
+                view.show("Action:");
+                break;
+        }
     }
 
     /**

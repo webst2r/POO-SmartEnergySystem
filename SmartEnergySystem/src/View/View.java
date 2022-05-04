@@ -1,6 +1,7 @@
 package View;
 
 import Model.Menu;
+import Model.SmartDevice;
 import Model.SmartHouse;
 
 import java.util.List;
@@ -85,27 +86,46 @@ public class View {
     }
 
     public void showPagination(int page, List<SmartHouse> content, int total){
+        int i = (5 * (page -1)) + 1;
         for(SmartHouse house : content){
-            System.out.println("———————————————————————————————————————————————————————");
+            System.out.println("—————————————————————————— House " + i + " ——————————————————————————");
             System.out.println("\uD83C\uDFE0 House owner: " + house.getOwnerName());
             System.out.println("NIF: " + house.getOwnerNIF());
-            //System.out.println("———————————————————————————————————————————————————————");
+            i++;
         }
 
         System.out.println("\n——————————————————Page " + page + " of " + total + "——————————————————");
         System.out.println("A      -> Advance");
         System.out.println("B      -> Go back");
         System.out.println("J      -> Jump to page");
+        System.out.println("S      -> Select house");
         System.out.println("E      -> Exit");
-        System.out.print("Select:");
+        System.out.print("Action:");
+    }
 
-
-
-
+    public void showHouseOperationsMenu(){
+        clearScreen();
+        Menu menu = new Menu();
+        menu.setTitle("SmartHouse Options");
+        menu.addOption("Check devices");
+        menu.addOption("Turn off all devices");
+        menu.addOption("Cancel");
+        menu.show(true);
     }
 
 
+    public void showHouseDevices(List<SmartDevice> devices){
+        int i = 1;
+        String state = null;
 
+        for(SmartDevice device : devices){
+            if(device.getOn()){
+                state = "ON";
+            } else state = "OFF";
+            System.out.println("\uD83D\uDCBB" + "Device" + i + " state: " + state);
+            i++;
+        }
+    }
     /**
      * Displays a message asking the user to press enter in order to continue
      */
