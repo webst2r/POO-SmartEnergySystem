@@ -158,17 +158,19 @@ public class Controller {
     }
 
     public char scanChar(Scanner scanner){
-        char input = 'A';
+        String input = null;
+        char inputC = 'A';
         while(true) {
-            try {
-                input = scanner.nextLine().charAt(0);
+            input = scanner.nextLine();
+            if(!input.equals("")) {
+                inputC = input.charAt(0);
                 break;
-            }catch (NumberFormatException e) {
-                view.showln("Oops, wrong input... Please try again");
+            } else {
+                view.showln("Please insert a VALID letter");
                 continue;
             }
         }
-        return input;
+        return inputC;
     }
 
     public String scanSupplier(Scanner scanner){
