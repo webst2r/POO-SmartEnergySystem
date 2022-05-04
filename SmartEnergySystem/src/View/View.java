@@ -75,6 +75,15 @@ public class View {
         System.out.println("-----------------------------");
     }
 
+    public void showChooseSupplierMenu(List<String> suppliers){
+        clearScreen();
+        System.out.println("-----------------------------");
+        System.out.println("Available Energy Suppliers:");
+        for(String s : suppliers){
+            System.out.println("🔋" + s);
+        }
+    }
+
     public void showPagination(int page, List<SmartHouse> content, int total){
         for(SmartHouse house : content){
             System.out.println("———————————————————————————————————————————————————————");

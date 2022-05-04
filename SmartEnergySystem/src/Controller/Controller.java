@@ -166,6 +166,17 @@ public class Controller {
         return input;
     }
 
+    public String scanSupplier(Scanner scanner){
+        String supplier = null;
+        view.show("Sign contract with: ");
+        supplier = scanner.nextLine();
+        while(!this.model.anySupplierMatch(supplier)){
+            view.showln("Please insert a valid Energy supplier");
+            supplier = scanner.nextLine();
+        }
+        return supplier;
+    }
+
 
     public static <T> List<List<T>> getPages(Collection<T> c, Integer pageSize) {
         if (c == null)
@@ -276,10 +287,13 @@ public class Controller {
             String owner = scanner.nextLine();
             view.show("NIF: ");
             int NIF = scanInteger(scanner);
-            view.show("Energy supplier: ");
-            String supplier = scanner.nextLine();
-            SmartHouse house = new SmartHouse(owner,NIF,supplier);
-            this.model.add(house);
+            List<String> availableSuppliers = this.model.getSupplierNames();
+            view.showChooseSupplierMenu(availableSuppliers);
+            String supplier = scanSupplier(scanner);
+            if(!this.model.houseAlreadyExists(NIF)){
+                SmartHouse house = new SmartHouse(owner,NIF,supplier);
+                this.model.add(house);
+            } else view.showln("A house associated with this NIF already exists...");
         } catch (InputMismatchException e){
             e.printStackTrace();
         }
@@ -294,7 +308,10 @@ public class Controller {
         view.show("Daily energy cost: ");
         double energyCost = scanDouble(scanner);
 
-        Supplier supplier = new Supplier(supplierName,energyCost);
-        this.model.add(supplier);
+        if(!model.anySupplierMatch(supplierName)){
+            Supplier supplier = new Supplier(supplierName,energyCost);
+            this.model.add(supplier);
+        } else view.showln("Couldn't create supplier. Reason: A supplier with this name already exists.");
+
     }
 }

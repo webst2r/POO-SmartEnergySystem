@@ -62,5 +62,28 @@ public class Model implements Serializable {
         return smartHouses;
     }
 
+    public List<Supplier> getSuppliers(){
+        List<Supplier> sups = new ArrayList<>();
+        for(Supplier s : this.suppliers.values())
+            sups.add(s.clone());
+
+        return sups;
+    }
+
+    public List<String> getSupplierNames(){
+        List<String> availableSuppliers = new ArrayList<>();
+        for(Supplier s : this.suppliers.values())
+            availableSuppliers.add(s.getSupplierID());
+        return availableSuppliers;
+    }
+
+    public boolean anySupplierMatch(String supplier){
+        return this.suppliers.containsKey(supplier);
+    }
+
+    public boolean houseAlreadyExists(int nif){
+        return this.houses.containsKey(nif);
+    }
+
 
 }
