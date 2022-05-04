@@ -132,31 +132,35 @@ public class Controller {
 
     public void handleHouseOperations(int option,int nif,Scanner scanner){
 
-        switch (option){
-            case 1:
-                // Check devices
-                view.showHouseDevices(model.getHouseDevices(nif));
-                view.pressKeyToContinue(scanner);
-                view.showHouseOperationsMenu();
-                break;
-            case 2:
-                List<String> rooms = model.getRooms(nif);
-                view.displayRooms(rooms);
-                view.show("Select: ");
-                String room = scanner.nextLine();
-                while(!rooms.contains(room)){
-                    view.show("Please insert a valid room.\nSelect:");
-                    room = scanner.nextLine();
-                }
-                if(!model.turnOffRoom(room, nif)) {
-                    view.showln("Couldn't turn off room. Reason: One or more devices were turned ON today.");
-                } else {
-                    view.showln("Successfuly turned off all the devices of " + room);
-                }
-                view.pressKeyToContinue(scanner);
-                break;
-            case 3:
-                break;
+        while(option != 3){
+            switch (option){
+                case 1:
+                    // Check devices
+                    view.showHouseDevices(model.getHouseDevices(nif));
+                    view.pressKeyToContinue(scanner);
+                    view.showHouseOperationsMenu();
+                    break;
+                case 2:
+                    List<String> rooms = model.getRooms(nif);
+                    view.displayRooms(rooms);
+                    view.show("Select: ");
+                    String room = scanner.nextLine();
+                    while(!rooms.contains(room)){
+                        view.show("Please insert a valid room.\nSelect:");
+                        room = scanner.nextLine();
+                    }
+                    if(!model.turnOffRoom(room, nif)) {
+                        view.showln("One or more devices were turned ON today therefore couldn't be turned off.");
+                    } else {
+                        view.showln("Successfuly turned off all the devices of " + room);
+                    }
+                    view.pressKeyToContinue(scanner);
+                    view.showHouseOperationsMenu();
+                    break;
+                case 3:
+                    break;
+            }
+            option = scanInteger(scanner);
         }
     }
 

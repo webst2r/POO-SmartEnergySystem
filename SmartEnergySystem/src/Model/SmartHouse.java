@@ -101,10 +101,10 @@ public class SmartHouse implements Serializable {
     public boolean turnOffRoom(String room){
         boolean turnedOff = false;
         if(roomExists(room)){
-            this.roomsNdevices.get(room).forEach(smartDevice -> smartDevice.turnOff());
-            turnedOff = true;
+            for(SmartDevice device : this.roomsNdevices.get(room))
+                turnedOff = device.turnOff();
         }
-        return turnedOff;
+        return turnedOff; // it is only true if all devices were successfully turned off
     }
 
     public boolean turnOnRoom(String room){
