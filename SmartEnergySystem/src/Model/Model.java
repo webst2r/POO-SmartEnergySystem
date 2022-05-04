@@ -77,11 +77,11 @@ public class Model implements Serializable {
         return availableSuppliers;
     }
 
-    public boolean anySupplierMatch(String supplier){
+    public boolean supplierExists(String supplier){
         return this.suppliers.containsKey(supplier);
     }
 
-    public boolean houseAlreadyExists(int nif){
+    public boolean houseExists(int nif){
         return this.houses.containsKey(nif);
     }
 

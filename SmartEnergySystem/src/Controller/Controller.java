@@ -60,38 +60,11 @@ public class Controller {
                     view.pressKeyToContinue(scanner);
                     break;
                 case 9:
-                    // Check houses on the system
-                    //checkHousesOnTheSystem();
+                    // See houses on the system
                     List<List<SmartHouse>> pages = getPages(this.model.getHouses(), 5);
-                    int page = 1, total = pages.size();
-                    if(this.model.getHouses().size() > 0){
-                        view.showPagination(page,pages.get(0),total);
-                        char op = 'A';
-                        while(( op = scanChar(scanner)) != 'E'){
-                            switch (op) {
-                                case 'A':
-                                    if(page < total){
-                                        page++;
-                                        view.showPagination(page,pages.get(page-1),total);
-                                    } else view.showln("You can't reach that page...");
-                                    break;
-                                case 'B':
-                                    if(page > 1){
-                                        page--;
-                                        view.showPagination(page,pages.get(page-1),total);
-                                    } else view.showln("You can't reach that page...");
-                                    break;
-                                case 'J':
-                                    view.show("Jump to page:");
-                                    while((page = scanInteger(scanner)) <= 0){
-                                        page = scanInteger(scanner);
-                                    }
 
-                                    if(page <= total){
-                                        view.showPagination(page,pages.get(page-1),total);
-                                    } else view.showln("You can't reach that page...");
-                            }
-                        }
+                    if(this.model.getHouses().size() > 0){
+                        pagination(pages,scanner);
                     } else {
                         view.showln("There are no houses in the system.");
                         view.pressKeyToContinue(scanner);
@@ -110,9 +83,41 @@ public class Controller {
                     view.showln("See you later!");
                     break;
                 default:
-                    view.showln("Por favor insira uma opcao valida.");
+                    view.showln("Please select a valid option.");
             }
         }
+    }
+
+    public void pagination(List<List<SmartHouse>> pages, Scanner scanner){
+        int page = 1, total = pages.size();
+        view.showPagination(page,pages.get(0),total);
+        char op = 'A';
+        while(( op = scanChar(scanner)) != 'E'){
+            switch (op) {
+                case 'A':
+                    if(page < total){
+                        page++;
+                        view.showPagination(page,pages.get(page-1),total);
+                    } else view.show("You can't reach that page.\nSelect:");
+                    break;
+                case 'B':
+                    if(page > 1){
+                        page--;
+                        view.showPagination(page,pages.get(page-1),total);
+                    } else view.show("You can't reach that page.\nSelect:");
+                    break;
+                case 'J':
+                    view.show("Jump to page:");
+                    int scannedValue = scanInteger(scanner);
+
+                    if(scannedValue >= 1 && scannedValue <= total){
+                        page = scannedValue;
+                        view.showPagination(page,pages.get(page-1),total);
+                    } else view.show("You can't reach that page.\nSelect:");
+                    break;
+            }
+        }
+
     }
 
     /**
@@ -170,7 +175,7 @@ public class Controller {
         String supplier = null;
         view.show("Sign contract with: ");
         supplier = scanner.nextLine();
-        while(!this.model.anySupplierMatch(supplier)){
+        while(!this.model.supplierExists(supplier)){
             view.showln("Please insert a valid Energy supplier");
             supplier = scanner.nextLine();
         }
@@ -191,17 +196,6 @@ public class Controller {
         return pages;
     }
 
-    public void checkHousesOnTheSystem(){
-        int sum = 0;
-        if(model.getHouses().size() == 0) view.showln("There are no houses on the system yet.");
-        else {
-            for (SmartHouse h : model.getHouses()) {
-                sum++;
-                // view.showln(h);
-            }
-        }
-        view.showln("Number of houses: " + sum);
-    }
 
     public void createDevice(){
         view.showCreateDeviceMenu();
@@ -290,7 +284,7 @@ public class Controller {
             List<String> availableSuppliers = this.model.getSupplierNames();
             view.showChooseSupplierMenu(availableSuppliers);
             String supplier = scanSupplier(scanner);
-            if(!this.model.houseAlreadyExists(NIF)){
+            if(!this.model.houseExists(NIF)){
                 SmartHouse house = new SmartHouse(owner,NIF,supplier);
                 this.model.add(house);
             } else view.showln("A house associated with this NIF already exists...");
@@ -308,7 +302,7 @@ public class Controller {
         view.show("Daily energy cost: ");
         double energyCost = scanDouble(scanner);
 
-        if(!model.anySupplierMatch(supplierName)){
+        if(!model.supplierExists(supplierName)){
             Supplier supplier = new Supplier(supplierName,energyCost);
             this.model.add(supplier);
         } else view.showln("Couldn't create supplier. Reason: A supplier with this name already exists.");
