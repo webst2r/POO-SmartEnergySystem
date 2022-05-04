@@ -83,7 +83,10 @@ public class Controller {
                                     break;
                                 case 'J':
                                     view.show("Jump to page:");
-                                    page = scanInteger(scanner);
+                                    while((page = scanInteger(scanner)) <= 0){
+                                        page = scanInteger(scanner);
+                                    }
+
                                     if(page <= total){
                                         view.showPagination(page,pages.get(page-1),total);
                                     } else view.showln("You can't reach that page...");
@@ -91,8 +94,8 @@ public class Controller {
                         }
                     } else {
                         view.showln("There are no houses in the system.");
+                        view.pressKeyToContinue(scanner);
                     }
-                    view.pressKeyToContinue(scanner);
                     break;
                 case 10:
                     // Logs
