@@ -131,13 +131,11 @@ public class Controller {
     }
 
     public void handleHouseOperations(int option,int nif,Scanner scanner){
-        List<SmartDevice> houseDevices = new ArrayList<>();
 
         switch (option){
             case 1:
                 // Check devices
-                houseDevices = model.getHouseDevices(nif);
-                view.showHouseDevices(houseDevices);
+                view.showHouseDevices(model.getHouseDevices(nif));
                 view.pressKeyToContinue(scanner);
                 view.showHouseOperationsMenu();
                 break;
