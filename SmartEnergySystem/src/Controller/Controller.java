@@ -6,9 +6,7 @@ import Model.Parser;
 import View.*;
 
 import java.io.IOException;
-import java.util.InputMismatchException;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 public class Controller {
     private Model model;
@@ -63,12 +61,43 @@ public class Controller {
                     break;
                 case 9:
                     // Check houses on the system
-                    checkHousesOnTheSystem();
+                    //checkHousesOnTheSystem();
+                    List<List<SmartHouse>> pages = getPages(this.model.getHouses(), 5);
+                    int page = 1, total = pages.size();
+                    if(this.model.getHouses().size() > 0){
+                        view.showPagination(page,pages.get(0),total);
+                        char op = 'A';
+                        while(( op = scanChar(scanner)) != 'E'){
+                            switch (op) {
+                                case 'A':
+                                    if(page < total){
+                                        page++;
+                                        view.showPagination(page,pages.get(page-1),total);
+                                    } else view.showln("You can't reach that page...");
+                                    break;
+                                case 'B':
+                                    if(page > 1){
+                                        page--;
+                                        view.showPagination(page,pages.get(page-1),total);
+                                    } else view.showln("You can't reach that page...");
+                                    break;
+                                case 'J':
+                                    view.show("Jump to page:");
+                                    page = scanInteger(scanner);
+                                    if(page <= total){
+                                        view.showPagination(page,pages.get(page-1),total);
+                                    } else view.showln("You can't reach that page...");
+                            }
+                        }
+                    } else {
+                        view.showln("There are no houses in the system.");
+                    }
                     view.pressKeyToContinue(scanner);
                     break;
                 case 10:
                     // Logs
                     parser.parse(this.model);
+                    view.showln("Successfully processed logs.");
                     view.pressKeyToContinue(scanner);
                     break;
                 case 11:
@@ -120,6 +149,33 @@ public class Controller {
         return input;
     }
 
+    public char scanChar(Scanner scanner){
+        char input = 'A';
+        while(true) {
+            try {
+                input = scanner.nextLine().charAt(0);
+                break;
+            }catch (NumberFormatException e) {
+                view.showln("Oops, wrong input... Please try again");
+                continue;
+            }
+        }
+        return input;
+    }
+
+
+    public static <T> List<List<T>> getPages(Collection<T> c, Integer pageSize) {
+        if (c == null)
+            return Collections.emptyList();
+        List<T> list = new ArrayList<T>(c);
+        if (pageSize == null || pageSize <= 0 || pageSize > list.size())
+            pageSize = list.size();
+        int numPages = (int) Math.ceil((double)list.size() / (double)pageSize);
+        List<List<T>> pages = new ArrayList<List<T>>(numPages);
+        for (int pageNum = 0; pageNum < numPages;)
+            pages.add(list.subList(pageNum * pageSize, Math.min(++pageNum * pageSize, list.size())));
+        return pages;
+    }
 
     public void checkHousesOnTheSystem(){
         int sum = 0;

@@ -1,7 +1,9 @@
 package View;
 
 import Model.Menu;
+import Model.SmartHouse;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class View {
@@ -71,6 +73,26 @@ public class View {
         clearScreen();
         System.out.println("\u001B[36m" + title + "\u001B[0m");
         System.out.println("-----------------------------");
+    }
+
+    public void showPagination(int page, List<SmartHouse> content, int total){
+        for(SmartHouse house : content){
+            System.out.println("———————————————————————————————————————————————————————");
+            System.out.println("\uD83C\uDFE0 House owner: " + house.getOwnerName());
+            System.out.println("NIF: " + house.getOwnerNIF());
+            //System.out.println("———————————————————————————————————————————————————————");
+        }
+
+        System.out.println("\n——————————————————Page " + page + " of " + total + "——————————————————");
+        System.out.println("A      -> Advance");
+        System.out.println("B      -> Go back");
+        System.out.println("J      -> Jump to page");
+        System.out.println("E      -> Exit");
+        System.out.print("Select:");
+
+
+
+
     }
 
 
