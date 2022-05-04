@@ -118,11 +118,21 @@ public class Controller {
                 case 'S':
                     view.show("House number:");
                     int houseNumber = scanInteger(scanner);
-                    SmartHouse chosenHouse = pages.get(page).get(houseNumber);
-                    view.showHouseOperationsMenu(chosenHouse.getOwnerName());
-                    int opt = scanInteger(scanner);
-                    handleHouseOperations(opt, chosenHouse.getOwnerNIF(),scanner);
-                    view.showPagination(page,pages.get(page-1),total);
+
+                    int a = (5 * (page -1)) + 1, b = (5 * (page -1)) + 5;
+                    if(houseNumber >= a && houseNumber <= b){
+                        // pagina 3 -> 15 casas
+                        // casa 12 é a segunda da pagina 3
+                        int numberInsidePage = houseNumber - a;
+                        SmartHouse chosenHouse = pages.get(page -1).get(numberInsidePage);
+                        view.showHouseOperationsMenu(chosenHouse.getOwnerName());
+                        int opt = scanInteger(scanner);
+                        handleHouseOperations(opt, chosenHouse.getOwnerNIF(),scanner);
+                        view.showPagination(page,pages.get(page-1),total);
+                    } else {
+                        view.showln("Please select a house from this page.");
+                        view.showPagination(page,pages.get(page-1),total);
+                    }
                     break;
                 case 'F':
                     view.show("NIF:");
