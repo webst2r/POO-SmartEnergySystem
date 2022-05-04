@@ -122,6 +122,7 @@ public class Controller {
                         view.showHouseOperationsMenu();
                         int opt = scanInteger(scanner);
                         handleHouseOperations(opt, houseNIF,scanner);
+                        view.showPagination(page,pages.get(page-1),total);
                     } else view.show("Invalid NIF. Couldn't select house.\nAction:");
                     break;
             }
@@ -131,6 +132,7 @@ public class Controller {
 
     public void handleHouseOperations(int option,int nif,Scanner scanner){
         List<SmartDevice> houseDevices = new ArrayList<>();
+
         switch (option){
             case 1:
                 // Check devices
@@ -140,10 +142,22 @@ public class Controller {
                 view.showHouseOperationsMenu();
                 break;
             case 2:
-                // Turn off all devices
+                List<String> rooms = model.getRooms(nif);
+                view.displayRooms(rooms);
+                view.show("Select: ");
+                String room = scanner.nextLine();
+                while(!rooms.contains(room)){
+                    view.show("Please insert a valid room.\nSelect:");
+                    room = scanner.nextLine();
+                }
+                if(!model.turnOffRoom(room, nif)) {
+                    view.showln("Couldn't turn off room. Reason: One or more devices were turned ON today.");
+                } else {
+                    view.showln("Successfuly turned off all the devices of " + room);
+                }
+                view.pressKeyToContinue(scanner);
                 break;
             case 3:
-                view.show("Action:");
                 break;
         }
     }

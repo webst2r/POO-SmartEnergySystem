@@ -59,6 +59,15 @@ public class Model implements Serializable {
         return this.houses.get(nif).getDeviceList();
     }
 
+    public boolean turnOffRoom(String room, int nif){
+        return this.houses.get(nif).turnOffRoom(room);
+    }
+
+    public List<String> getRooms(int nif){
+        return this.houses.get(nif).getRoomList();
+    }
+
+
     public List<SmartHouse> getHouses(){
         List<SmartHouse> smartHouses = new ArrayList<>();
         for(SmartHouse s : this.houses.values())

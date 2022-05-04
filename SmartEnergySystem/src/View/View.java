@@ -108,9 +108,19 @@ public class View {
         Menu menu = new Menu();
         menu.setTitle("SmartHouse Options");
         menu.addOption("Check devices");
-        menu.addOption("Turn off all devices");
+        menu.addOption("Turn off room");
         menu.addOption("Cancel");
         menu.show(true);
+    }
+
+    public void displayRooms(List<String> rooms){
+        clearScreen();
+        System.out.println("-----------------------------");
+        System.out.println("Rooms");
+        for(String r : rooms){
+            System.out.println("\uD83D\uDECF️" + r);
+        }
+
     }
 
 
