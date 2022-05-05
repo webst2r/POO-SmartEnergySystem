@@ -51,7 +51,9 @@ public class Model implements Serializable {
         }
 
     }
-
+    /**
+     * Returns a list of clients of an Energy Supplier
+     */
     public List<SmartHouse> getClients(String supplier){
         List<SmartHouse> clients = new ArrayList<>();
         if(supplierExists(supplier)){
@@ -59,6 +61,21 @@ public class Model implements Serializable {
         }
         return clients;
     }
+
+    public List<Invoice> getInvoices(int nif){
+        List<Invoice> invoices = new ArrayList<>();
+        if(houseExists(nif)){
+            invoices = this.houses.get(nif).getInvoices();
+        }
+        return invoices;
+    }
+
+    public void addInvoiceToHouse(int nif, Invoice invoice){
+        if(houseExists(nif)){
+            this.houses.get(nif).addInvoice(invoice);
+        }
+    }
+
 
     public SmartHouse getHouse(int NIF){
         return this.houses.get(NIF);

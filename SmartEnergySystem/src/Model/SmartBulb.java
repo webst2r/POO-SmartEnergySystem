@@ -1,8 +1,5 @@
 package Model;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 public class SmartBulb extends SmartDevice{
     private int tone;
     private int diameter;

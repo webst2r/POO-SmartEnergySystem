@@ -1,9 +1,6 @@
 package View;
 
-import Model.Menu;
-import Model.SmartDevice;
-import Model.SmartHouse;
-import Model.Supplier;
+import Model.*;
 
 import java.util.List;
 import java.util.Scanner;
@@ -110,11 +107,31 @@ public class View {
             System.out.println("\uD83D\uDC68 " + house.getOwnerName());
         }
         System.out.println("Supplier " + "\u001B[31m" + supplier.getSupplierID() + "\u001B[0m" + " has " + "\u001B[32m" + clients.size() + "\u001B[0m" + " clients");
-
     }
 
 
-    public void showPagination(int page, List<SmartHouse> content, int total){
+    public void showInvoicePagination(int page, List<Invoice> invoices, int total){
+
+        for(Invoice i : invoices){
+            System.out.println("—————————————————————————— " + "\uD83E\uDDFE" + i.getSupplier() + " Invoice "+ "——————————————————————————");
+            System.out.println("House owner: " + i.getHouseOwner());
+            System.out.println("NIF: " + i.getNIF());
+            System.out.println("Consumption: " + i.getConsumption());
+            System.out.println("Cost: " + i.getCost());
+            System.out.println("\u001B[31m" + "Billing period: " + "\u001B[0m" + i.getStart() + " to " + i.getEnd() + "\n");
+
+        }
+
+        System.out.println("\n——————————————————Page " + page + " of " + total + "——————————————————");
+        System.out.println("A      -> Advance");
+        System.out.println("B      -> Go back");
+        System.out.println("J      -> Jump to page");
+        System.out.println("E      -> Exit");
+        System.out.print("Action:");
+    }
+
+
+    public void showHousePagination(int page, List<SmartHouse> content, int total){
         int i = (5 * (page -1)) + 1;
         for(SmartHouse house : content){
             System.out.println("—————————————————————————— House " + i + " ——————————————————————————");

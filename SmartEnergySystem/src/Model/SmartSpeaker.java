@@ -51,8 +51,8 @@ public class SmartSpeaker extends SmartDevice{
     public void setVolume(double volume) { this.volume = volume;}
 
 
-    public void determineConsumption() {
-        // ...
+    public double determineConsumption() {
+        return 1.0;
     }
 
     public String toString(){ return super.toString(); }

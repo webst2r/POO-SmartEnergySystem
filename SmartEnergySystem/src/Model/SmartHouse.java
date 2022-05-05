@@ -10,6 +10,7 @@ public class SmartHouse implements Serializable {
     private List<SmartDevice> devices;
     private List<String> rooms;
     private Map<String, List<SmartDevice>> roomsNdevices;
+    private List<Invoice> invoices;
 
     public SmartHouse(String ownerName, int ownerNIF, String supplier){
         this.ownerName = ownerName;
@@ -18,6 +19,7 @@ public class SmartHouse implements Serializable {
         this.devices = new ArrayList<>();
         this.rooms = new ArrayList<>();
         this.roomsNdevices = new HashMap<>();
+        this.invoices = new ArrayList<>();
     }
 
     public SmartHouse(SmartHouse smarthouse){
@@ -27,6 +29,7 @@ public class SmartHouse implements Serializable {
         this.devices = smarthouse.getDeviceList();
         this.rooms = smarthouse.getRoomList();
         this.roomsNdevices = smarthouse.getRoomsNDevices();
+        this.invoices = smarthouse.getInvoices();
     }
 
     public int getOwnerNIF() { return this.ownerNIF;}
@@ -36,6 +39,14 @@ public class SmartHouse implements Serializable {
     public String getSupplier() { return this.supplier; }
 
     public int getNumberOfDevices() { return this.devices.size();}
+
+    public List<Invoice> getInvoices() {
+        List<Invoice> invoiceList = new ArrayList<>();
+        for(Invoice i : this.invoices){
+            invoiceList.add(i.clone());
+        }
+        return this.invoices;
+    }
 
     public void setOwnerNIF(int ownerNIF) {
         this.ownerNIF = ownerNIF;
@@ -47,6 +58,8 @@ public class SmartHouse implements Serializable {
 
     public void setSupplier(String supplier) { this.supplier = supplier; }
 
+
+
     public boolean roomExists (String room) {
         return this.roomsNdevices.containsKey(room);
     }
@@ -57,6 +70,10 @@ public class SmartHouse implements Serializable {
 
     public void addDevice (SmartDevice smartDevice) {
         this.devices.add(smartDevice.clone());
+    }
+
+    public void addInvoice(Invoice invoice){
+        this.invoices.add(invoice.clone());
     }
 
     public void addRoom (String room, List<SmartDevice> dispositivos) {
@@ -97,6 +114,17 @@ public class SmartHouse implements Serializable {
         this.roomsNdevices.forEach((k,v) -> catalog.put(k,new ArrayList<>(v)));
         return catalog;
     }
+
+    public double determineDailyConsumption(){
+        double consumption = 0.0;
+        for(List<SmartDevice> room : this.roomsNdevices.values()){
+            for(SmartDevice d : room){
+                consumption += d.determineConsumption();
+            }
+        }
+        return consumption;
+    }
+
 
     public boolean turnOffRoom(String room){
         boolean turnedOff = true;

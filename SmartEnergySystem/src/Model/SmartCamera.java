@@ -1,7 +1,5 @@
 package Model;
 
-import java.time.LocalDateTime;
-
 public class SmartCamera extends SmartDevice{
     private int resolutionX;
     private int resolutionY;
@@ -57,8 +55,8 @@ public class SmartCamera extends SmartDevice{
         this.consumption = consumption;
     }
 
-    public void determineConsumption(){
-        // ...
+    public double determineConsumption(){
+        return 1.0;
     }
 
     public String toString(){ return super.toString(); }

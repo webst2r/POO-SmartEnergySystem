@@ -6,7 +6,12 @@ import Model.Parser;
 import View.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class Controller {
     private Model model;
@@ -27,6 +32,7 @@ public class Controller {
         while (!exit) {
             this.view.showMainMenu();
             this.view.prompt("Menu","SmartEnergySystem");
+            LocalDateTime start = LocalDateTime.now();
             option = scanInteger(scanner);
 
             switch (option) {
@@ -40,7 +46,9 @@ public class Controller {
                     createSupplier();
                     break;
                 case 4:
-                    //advanceToDate();
+                    LocalDateTime newDate = scanDate(scanner);
+                    handleSimulation(start,newDate,scanner);
+                    view.pressKeyToContinue(scanner);
                     break;
                 case 7:
                     // Carregar estado
@@ -64,7 +72,7 @@ public class Controller {
                     List<List<SmartHouse>> pages = getPages(this.model.getHouses(), 5);
 
                     if(this.model.getHouses().size() > 0){
-                        pagination(pages,scanner);
+                        housePagination(pages,scanner);
                     } else {
                         view.showln("There are no houses in the system.");
                         view.pressKeyToContinue(scanner);
@@ -96,22 +104,41 @@ public class Controller {
         }
     }
 
-    public void pagination(List<List<SmartHouse>> pages, Scanner scanner){
-        int page = 1, total = pages.size(), totalHouses = pages.size() * 5;
-        view.showPagination(page,pages.get(0),total);
+    public void handleSimulation(LocalDateTime start, LocalDateTime end,Scanner scanner){
+        int days = (int) ChronoUnit.DAYS.between(start,end);
+        List<Invoice> invoices = new ArrayList<>();
+        for(SmartHouse house : this.model.getHouses()){
+            Supplier supplier = this.model.getSupplier(house.getSupplier());
+            double dailyConsumption = house.determineDailyConsumption();
+            int NIF = house.getOwnerNIF();
+            String owner = house.getOwnerName();
+            double pricePerDay = supplier.getEnergyDailyCost();
+            double totalCost = (dailyConsumption * pricePerDay) * days;
+            Invoice invoice = new Invoice(start,end,NIF,owner,supplier.getSupplierID(),dailyConsumption,totalCost);
+            this.model.addInvoiceToHouse(NIF,invoice);
+            invoices.add(invoice);
+        }
+        List<List<Invoice>> pages = getPages(invoices, 5);
+
+        invoicePagination(pages,scanner);
+    }
+
+    public void invoicePagination(List<List<Invoice>> pages, Scanner scanner){
+        int page = 1, total = pages.size(), totalInvoices = pages.size() * 5;
+        view.showInvoicePagination(page,pages.get(0),total);
         char op = 'A';
         while(( op = scanChar(scanner)) != 'E'){
             switch (op) {
                 case 'A':
                     if(page < total){
                         page++;
-                        view.showPagination(page,pages.get(page-1),total);
+                        view.showInvoicePagination(page,pages.get(page-1),total);
                     } else view.show("You can't reach that page.\nAction:");
                     break;
                 case 'B':
                     if(page > 1){
                         page--;
-                        view.showPagination(page,pages.get(page-1),total);
+                        view.showInvoicePagination(page,pages.get(page-1),total);
                     } else view.show("You can't reach that page.\nAction:");
                     break;
                 case 'J':
@@ -120,7 +147,39 @@ public class Controller {
 
                     if(scannedValue >= 1 && scannedValue <= total){
                         page = scannedValue;
-                        view.showPagination(page,pages.get(page-1),total);
+                        view.showInvoicePagination(page,pages.get(page-1),total);
+                    } else view.show("You can't reach that page.\nAction:");
+                    break;
+            }
+        }
+    }
+
+
+    public void housePagination(List<List<SmartHouse>> pages, Scanner scanner){
+        int page = 1, total = pages.size(), totalHouses = pages.size() * 5;
+        view.showHousePagination(page,pages.get(0),total);
+        char op = 'A';
+        while(( op = scanChar(scanner)) != 'E'){
+            switch (op) {
+                case 'A':
+                    if(page < total){
+                        page++;
+                        view.showHousePagination(page,pages.get(page-1),total);
+                    } else view.show("You can't reach that page.\nAction:");
+                    break;
+                case 'B':
+                    if(page > 1){
+                        page--;
+                        view.showHousePagination(page,pages.get(page-1),total);
+                    } else view.show("You can't reach that page.\nAction:");
+                    break;
+                case 'J':
+                    view.show("Jump to page:");
+                    int scannedValue = scanInteger(scanner);
+
+                    if(scannedValue >= 1 && scannedValue <= total){
+                        page = scannedValue;
+                        view.showHousePagination(page,pages.get(page-1),total);
                     } else view.show("You can't reach that page.\nAction:");
                     break;
                 case 'S':
@@ -136,10 +195,10 @@ public class Controller {
                         view.showHouseOperationsMenu(chosenHouse.getOwnerName());
                         int opt = scanInteger(scanner);
                         handleHouseOperations(opt, chosenHouse.getOwnerNIF(),scanner);
-                        view.showPagination(page,pages.get(page-1),total);
+                        view.showHousePagination(page,pages.get(page-1),total);
                     } else {
                         view.showln("Please select a house from this page.");
-                        view.showPagination(page,pages.get(page-1),total);
+                        view.showHousePagination(page,pages.get(page-1),total);
                     }
                     break;
                 case 'F':
@@ -149,12 +208,15 @@ public class Controller {
                         view.showHouseOperationsMenu(model.getHouse(houseNIF).getOwnerName());
                         int o = scanInteger(scanner);
                         handleHouseOperations(o, houseNIF,scanner);
-                        view.showPagination(page,pages.get(page-1),total);
-                    } else view.show("Invalid NIF. Couldn't select house.\nAction:");
+                        view.showHousePagination(page,pages.get(page-1),total);
+                    } else {
+                        view.show("Invalid NIF. Couldn't select house.");
+                        view.pressKeyToContinue(scanner);
+                        view.showHousePagination(page,pages.get(page-1),total);
+                    }
                     break;
             }
         }
-
     }
 
     public void handleSupplierOperations(String option, Scanner scanner){
@@ -276,6 +338,23 @@ public class Controller {
         }
         return supplier;
     }
+
+    public LocalDateTime scanDate(Scanner scanner){
+        String date = null;
+        view.show("Date(dd/MM/YYYY):");
+        date = scanner.nextLine();
+        String dateRegEx="^\\d{2}/\\d{2}/\\d{4}$";
+        while(!date.matches(dateRegEx)){
+            view.show("Wrong format... Try again\nDate:");
+            date = scanner.nextLine();
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDateTime newDate = LocalDate.parse(date, formatter).atStartOfDay();
+
+        return newDate;
+    }
+
+
 
 
     public static <T> List<List<T>> getPages(Collection<T> c, Integer pageSize) {
