@@ -71,12 +71,20 @@ public class Controller {
                     }
                     break;
                 case 10:
+                    // Supplier info
+                    List<Supplier> listSuppliers = this.model.getSuppliers();
+                    view.showSupplierInfoMenu(listSuppliers);
+                    String chosenSupplier = scanSupplier(scanner);
+                    handleSupplierOperations(chosenSupplier, scanner);
+                    view.pressKeyToContinue(scanner);
+                    break;
+                case 11:
                     // Logs
                     parser.parse(this.model);
                     view.showln("Successfully processed logs.");
                     view.pressKeyToContinue(scanner);
                     break;
-                case 11:
+                case 12:
                     // Exit
                     exit = true;
                     scanner.close();
@@ -147,6 +155,28 @@ public class Controller {
             }
         }
 
+    }
+
+    public void handleSupplierOperations(String option, Scanner scanner){
+        List<SmartHouse> clients = null;
+        Supplier supplier = this.model.getSupplier(option);
+        view.showSupplierInfoOptions();
+
+        int opt = scanInteger(scanner);
+        while(opt != 3){
+            switch (opt){
+                case 1:
+                    clients = this.model.getClients(supplier.getSupplierID());
+                    view.showSupplierClients(supplier,clients);
+                    view.showSupplierInfoOptions();
+                    break;
+                case 2:
+                    view.showln("Nothing to see here.");
+                    view.showSupplierInfoOptions();
+                    break;
+            }
+            opt = scanInteger(scanner);
+        }
     }
 
     public void handleHouseOperations(int option,int nif,Scanner scanner){
@@ -238,7 +268,7 @@ public class Controller {
 
     public String scanSupplier(Scanner scanner){
         String supplier = null;
-        view.show("Sign contract with: ");
+        view.show("Choose supplier: ");
         supplier = scanner.nextLine();
         while(!this.model.supplierExists(supplier)){
             view.showln("Please insert a valid Energy supplier");
@@ -349,9 +379,11 @@ public class Controller {
             List<String> availableSuppliers = this.model.getSupplierNames();
             view.showChooseSupplierMenu(availableSuppliers);
             String supplier = scanSupplier(scanner);
+
             if(!this.model.houseExists(NIF)){
                 SmartHouse house = new SmartHouse(owner,NIF,supplier);
                 this.model.add(house);
+                this.model.addClient(supplier,house);
             } else view.showln("A house associated with this NIF already exists...");
         } catch (InputMismatchException e){
             e.printStackTrace();

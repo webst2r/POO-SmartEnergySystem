@@ -3,6 +3,7 @@ package View;
 import Model.Menu;
 import Model.SmartDevice;
 import Model.SmartHouse;
+import Model.Supplier;
 
 import java.util.List;
 import java.util.Scanner;
@@ -44,6 +45,7 @@ public class View {
         menu.addOption("Load");
         menu.addOption("Save");
         menu.addOption("Houses on the system");
+        menu.addOption("Suppliers on the system");
         menu.addOption("Logs");
         menu.addOption("Exit ❌");
         menu.showMainMenu();
@@ -84,6 +86,33 @@ public class View {
             System.out.println("🔋" + s);
         }
     }
+
+    public void showSupplierInfoMenu(List<Supplier> suppliers){
+        System.out.println("-----------------------------");
+        System.out.println("Select INFO about:");
+        for(Supplier sup : suppliers){
+           System.out.println("🔋" + sup.getSupplierID());
+        }
+    }
+
+    public void showSupplierInfoOptions(){
+        clearScreen();
+        Menu menu = new Menu();
+        menu.setTitle("Select option");
+        menu.addOption("Clients (energy contracts)");
+        menu.addOption("Other");
+        menu.addOption("Cancel");
+        menu.show(true);
+    }
+
+    public void showSupplierClients(Supplier supplier, List<SmartHouse> clients){
+        for(SmartHouse house : clients){
+            System.out.println("\uD83D\uDC68 " + house.getOwnerName());
+        }
+        System.out.println("Supplier " + "\u001B[31m" + supplier.getSupplierID() + "\u001B[0m" + " has " + "\u001B[32m" + clients.size() + "\u001B[0m" + " clients");
+
+    }
+
 
     public void showPagination(int page, List<SmartHouse> content, int total){
         int i = (5 * (page -1)) + 1;

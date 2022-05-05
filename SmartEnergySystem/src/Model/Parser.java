@@ -67,6 +67,7 @@ public class Parser {
                             dispositivos.clear();
                         }
                         model.add(ultimaCasa);
+                        model.addClient(ultimaCasa.getSupplier(),ultimaCasa);
                         ultimaCasa = h;
                     } else System.out.println("Invalid house!");
                     break;

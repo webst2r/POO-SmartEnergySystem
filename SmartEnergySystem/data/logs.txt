@@ -6096,7 +6096,7 @@ Divisao:Garagem
 SmartBulb:Neutral,12,3.97
 Divisao:Casa de Banho 2
 SmartCamera:(2160x1440),24,5.90
-Casa:Miguel Ã‚ngelo Silva Senra,004216686,EDA
+Casa:Miguel Ãngelo Silva Senra,004216686,EDA
 Divisao:Garagem
 SmartSpeaker:36,M80 Radio,Sony,4.21
 SmartSpeaker:58,RFM Oceano Pacifico,LG,5.27

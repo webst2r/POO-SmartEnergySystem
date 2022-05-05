@@ -42,9 +42,29 @@ public class Model implements Serializable {
     public void add(SmartHouse house) { this.houses.put(house.getOwnerNIF(),house.clone()); }
 
 
+    /**
+     * Adds a client (SmartHouse) to a supplier
+     */
+    public void addClient(String supplier, SmartHouse client){
+        if(supplierExists(supplier)){
+            this.suppliers.get(supplier).addClient(client);
+        }
+
+    }
+
+    public List<SmartHouse> getClients(String supplier){
+        List<SmartHouse> clients = new ArrayList<>();
+        if(supplierExists(supplier)){
+            return this.suppliers.get(supplier).getListClients();
+        }
+        return clients;
+    }
+
     public SmartHouse getHouse(int NIF){
         return this.houses.get(NIF);
     }
+
+    public Supplier getSupplier(String supplier) { return this.suppliers.get(supplier); }
 
     public List<SmartDevice> getDevices(){
         List<SmartDevice> devs = new ArrayList<>();
