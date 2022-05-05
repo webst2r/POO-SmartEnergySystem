@@ -116,7 +116,7 @@ public class View {
             System.out.println("—————————————————————————— " + "\uD83E\uDDFE" + i.getSupplier() + " Invoice "+ "——————————————————————————");
             System.out.println("House owner: " + i.getHouseOwner());
             System.out.println("NIF: " + i.getNIF());
-            System.out.println("Consumption: " + i.getConsumption());
+            System.out.println("Total consumption: " + i.getConsumption());
             System.out.println("Cost: " + i.getCost());
             System.out.println("\u001B[31m" + "Billing period: " + "\u001B[0m" + i.getStart() + " to " + i.getEnd() + "\n");
 
@@ -156,6 +156,7 @@ public class View {
         menu.setTitle(owner + "'s SmartHouse Options");
         menu.addOption("Check devices");
         menu.addOption("Turn off room");
+        menu.addOption("See bills");
         menu.addOption("Cancel");
         menu.show(true);
     }

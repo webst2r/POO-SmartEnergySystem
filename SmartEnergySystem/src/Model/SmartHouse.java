@@ -38,7 +38,6 @@ public class SmartHouse implements Serializable {
 
     public String getSupplier() { return this.supplier; }
 
-    public int getNumberOfDevices() { return this.devices.size();}
 
     public List<Invoice> getInvoices() {
         List<Invoice> invoiceList = new ArrayList<>();
@@ -115,10 +114,18 @@ public class SmartHouse implements Serializable {
         return catalog;
     }
 
-    public double determineDailyConsumption(){
+    public int getNumberOfDevices(){
+        int number = 0;
+        for(List<SmartDevice> room : this.roomsNdevices.values())
+            number += room.size();
+
+        return number;
+    }
+
+    public double getTotalDailyConsumption() {
         double consumption = 0.0;
-        for(List<SmartDevice> room : this.roomsNdevices.values()){
-            for(SmartDevice d : room){
+        for (List<SmartDevice> room : this.roomsNdevices.values()) {
+            for (SmartDevice d : room) {
                 consumption += d.determineConsumption();
             }
         }

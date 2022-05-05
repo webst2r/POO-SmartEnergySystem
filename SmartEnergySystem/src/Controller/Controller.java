@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.regex.Pattern;
 
 public class Controller {
     private Model model;
@@ -26,13 +25,13 @@ public class Controller {
     public void run() throws LinhaIncorretaException, IOException, ClassNotFoundException {
         Scanner scanner = new Scanner(System.in);
         Parser parser = new Parser();
-
+        LocalDateTime start = LocalDateTime.now();
         boolean exit = false;
         int option = -1;
         while (!exit) {
             this.view.showMainMenu();
             this.view.prompt("Menu","SmartEnergySystem");
-            LocalDateTime start = LocalDateTime.now();
+
             option = scanInteger(scanner);
 
             switch (option) {
@@ -48,6 +47,7 @@ public class Controller {
                 case 4:
                     LocalDateTime newDate = scanDate(scanner);
                     handleSimulation(start,newDate,scanner);
+                    start = newDate;
                     view.pressKeyToContinue(scanner);
                     break;
                 case 7:
@@ -109,17 +109,17 @@ public class Controller {
         List<Invoice> invoices = new ArrayList<>();
         for(SmartHouse house : this.model.getHouses()){
             Supplier supplier = this.model.getSupplier(house.getSupplier());
-            double dailyConsumption = house.determineDailyConsumption();
             int NIF = house.getOwnerNIF();
             String owner = house.getOwnerName();
-            double pricePerDay = supplier.getEnergyDailyCost();
-            double totalCost = (dailyConsumption * pricePerDay) * days;
-            Invoice invoice = new Invoice(start,end,NIF,owner,supplier.getSupplierID(),dailyConsumption,totalCost);
+
+            double totalConsumption = house.getTotalDailyConsumption() * days;
+            double totalCost = supplier.determineCostPerDay(house) * days;
+            Invoice invoice = new Invoice(start,end,NIF,owner,supplier.getSupplierID(),totalConsumption,totalCost);
+
             this.model.addInvoiceToHouse(NIF,invoice);
             invoices.add(invoice);
         }
         List<List<Invoice>> pages = getPages(invoices, 5);
-
         invoicePagination(pages,scanner);
     }
 
@@ -243,7 +243,7 @@ public class Controller {
 
     public void handleHouseOperations(int option,int nif,Scanner scanner){
 
-        while(option != 3){
+        while(option != 4){
             switch (option){
                 case 1:
                     // Check devices
@@ -269,6 +269,13 @@ public class Controller {
                     view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
                     break;
                 case 3:
+                    List<Invoice> invoiceList = this.model.getInvoices(nif);
+                    if(invoiceList.size() > 0) {
+                        List<List<Invoice>> pages = getPages(invoiceList, 5);
+                        invoicePagination(pages,scanner);
+                    } else view.showln("This house does not have bills yet.");
+                    view.pressKeyToContinue(scanner);
+                    view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
                     break;
             }
             option = scanInteger(scanner);

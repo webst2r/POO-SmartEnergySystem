@@ -70,19 +70,20 @@ public class Supplier implements Serializable {
         this.clients.put(client.getOwnerNIF(),client.clone());
     }
 
-
-    public double determineDailyCost(SmartHouse house){
-        double baseValue = 3.00;
+    public double determineCostPerDay(SmartHouse house){
+        double consumption = house.getTotalDailyConsumption();
+        double costPerDay = 0.0;
         double tax = 0.15; // 15 % imposto
-        double deviceConsumption = -1; //
-        double dailyCostPerDevice = 0.0;
         int numberOfDevices = house.getNumberOfDevices();
-        if( numberOfDevices > 10)
-            dailyCostPerDevice = baseValue * deviceConsumption * (1+tax) * 0.9;
-        else
-            dailyCostPerDevice = baseValue * deviceConsumption * (1+tax) * 0.75;
 
-        return dailyCostPerDevice * numberOfDevices;
+        if( numberOfDevices > 10)
+            costPerDay = this.energyDailyCost * consumption * (1+tax) * 0.9;
+        else
+            costPerDay = this.energyDailyCost * consumption * (1+tax) * 0.75;
+
+        // Se tiver mais de 10 devices paga mais
+        // Custo diário de uma casa = valorBase + consumoTotalDiario + imposto * 0.9 (ou 0.75)
+        return costPerDay;
     }
 
 
