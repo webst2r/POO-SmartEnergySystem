@@ -39,10 +39,10 @@ public class View {
         menu.addOption("Advance to date");
         menu.addOption("House with most costs");
         menu.addOption("Supplier with the most volume");
-        menu.addOption("Load");
-        menu.addOption("Save");
         menu.addOption("Houses on the system");
         menu.addOption("Suppliers on the system");
+        menu.addOption("Load");
+        menu.addOption("Save");
         menu.addOption("Logs");
         menu.addOption("Exit ❌");
         menu.showMainMenu();
@@ -86,7 +86,7 @@ public class View {
 
     public void showSupplierInfoMenu(List<Supplier> suppliers){
         System.out.println("-----------------------------");
-        System.out.println("Select INFO about:");
+        System.out.println("Available Suppliers:");
         for(Supplier sup : suppliers){
            System.out.println("🔋" + sup.getSupplierID());
         }

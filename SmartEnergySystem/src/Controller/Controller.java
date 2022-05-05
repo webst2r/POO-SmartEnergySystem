@@ -51,6 +51,29 @@ public class Controller {
                     view.pressKeyToContinue(scanner);
                     break;
                 case 7:
+                    // See houses on the system
+                    List<List<SmartHouse>> pages = getPages(this.model.getHouses(), 5);
+
+                    if(this.model.getHouses().size() > 0){
+                        housePagination(pages,scanner);
+                    } else {
+                        view.showln("There are no houses yet.");
+                        view.pressKeyToContinue(scanner);
+                    }
+                    break;
+                case 8:
+                    // Supplier info
+                    List<Supplier> listSuppliers = this.model.getSuppliers();
+                    if(listSuppliers.size() > 0){
+                        view.showSupplierInfoMenu(listSuppliers);
+                        String chosenSupplier = scanSupplier(scanner);
+                        handleSupplierOperations(chosenSupplier, scanner);
+                    } else {
+                        view.showln("There are no suppliers yet.");
+                        view.pressKeyToContinue(scanner);
+                    }
+                    break;
+                case 9:
                     // Carregar estado
                     view.show("Load from file: ");
                     String filename = scanner.nextLine();
@@ -59,31 +82,12 @@ public class Controller {
                     view.showln(model.getDevices().size() + " devices read from " + filename);
                     view.pressKeyToContinue(scanner);
                     break;
-                case 8:
+                case 10:
                     // Guardar estado
                     view.show("Save to file: ");
                     String filepath = scanner.nextLine();
                     parser.saveBin("SmartEnergySystem/data/"+filepath,model);
                     view.showln("Successfuly saved on: " + filepath);
-                    view.pressKeyToContinue(scanner);
-                    break;
-                case 9:
-                    // See houses on the system
-                    List<List<SmartHouse>> pages = getPages(this.model.getHouses(), 5);
-
-                    if(this.model.getHouses().size() > 0){
-                        housePagination(pages,scanner);
-                    } else {
-                        view.showln("There are no houses in the system.");
-                        view.pressKeyToContinue(scanner);
-                    }
-                    break;
-                case 10:
-                    // Supplier info
-                    List<Supplier> listSuppliers = this.model.getSuppliers();
-                    view.showSupplierInfoMenu(listSuppliers);
-                    String chosenSupplier = scanSupplier(scanner);
-                    handleSupplierOperations(chosenSupplier, scanner);
                     view.pressKeyToContinue(scanner);
                     break;
                 case 11:
