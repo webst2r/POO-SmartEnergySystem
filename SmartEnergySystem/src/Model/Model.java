@@ -186,4 +186,45 @@ public class Model implements Serializable {
     }
 
 
+    /**
+     * Turn ON a list of devices as per requested by the user
+     * @param nif
+     * @param devs
+     */
+    public void TurnON (int nif, List<SmartDevice> devs) {
+        if(houseExists(nif)){
+            SmartHouse house = this.houses.get(nif);
+            for(SmartDevice d : devs){
+                house.turnOnDevice(d.getID());
+            }
+        }
+    }
+
+    /**
+     * Turn OFF a list of devices as per requested by the user
+     * @param nif
+     * @param devs
+     */
+    public void TurnOFF (int nif, List<SmartDevice> devs) {
+        if(houseExists(nif)){
+            SmartHouse house = this.houses.get(nif);
+            for(SmartDevice d : devs){
+                house.turnOffDevice(d.getID());
+            }
+        }
+    }
+
+
+
+    public List<SmartDevice> getRoomDevices(int nif, String room) {
+        List<SmartDevice> roomDevices = new ArrayList<>();
+        SmartHouse house = this.houses.get(nif);
+        if(house != null && house.roomExists(room)){
+            roomDevices = this.houses.get(nif).getRoomDevices(room);
+        }
+
+        return roomDevices;
+    }
+
+
 }

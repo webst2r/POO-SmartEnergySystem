@@ -54,8 +54,13 @@ public class Controller {
                     List<Request> requestList = this.model.getRequests();
                     view.showln(requestList.size() + " requests being processed will start having effect in the next simulation round.");
                     for(Request r : requestList){
-                        if(r.getType().equals("CS")){
+                        String requestType = r.getType();
+                        if(requestType.equals("CS")){
                             this.model.changeSupplier(r.getNif(),this.model.getSupplier(r.getNewSupplier()));
+                        } else if(requestType.equals("TON")){
+                            this.model.TurnON(r.getNif(),r.getDevices());
+                        } else if(requestType.equals("TOFF")){
+                            this.model.TurnOFF(r.getNif(),r.getDevices());
                         }
                     }
 
@@ -263,7 +268,7 @@ public class Controller {
             switch (option){
                 case 1:
                     // Check devices
-                    view.showHouseDevices(model.getHouseDevices(nif));
+                    view.showHouseDevices(model.getHouse(nif));
                     view.pressKeyToContinue(scanner);
                     view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
                     break;
@@ -300,13 +305,13 @@ public class Controller {
                         view.show("Please insert a valid room.\nSelect:");
                         room = scanner.nextLine();
                     }
-                    if(!model.turnOffRoom(room, nif)) {
-                        view.showln("One or more devices were turned ON today therefore couldn't be turned off.");
-                    } else {
-                        view.showln("Successfuly turned off all the devices of " + room);
-                    }
+
                     view.pressKeyToContinue(scanner);
                     view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
+
+                    List<SmartDevice> roomDevices = model.getRoomDevices(nif,room);
+                    Request turnOffRequest = new Request("TOFF",nif,roomDevices);
+                    this.model.addRequest(turnOffRequest);
                     break;
             }
             option = scanInteger(scanner);
@@ -520,6 +525,5 @@ public class Controller {
             Supplier supplier = new Supplier(supplierName,energyCost);
             this.model.add(supplier);
         } else view.showln("Couldn't create supplier. Reason: A supplier with this name already exists.");
-
     }
 }

@@ -4,6 +4,7 @@ import Model.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class View {
@@ -180,16 +181,34 @@ public class View {
     }
 
 
-    public void showHouseDevices(List<SmartDevice> devices){
+    public void showHouseDevices(SmartHouse house){
+        Map<String,List<SmartDevice>> devices = house.getRoomsNDevices();
         int i = 1;
         String state = null;
+        for(String s : devices.keySet()){
+            System.out.println("\nRoom: " + "\u001B[34m" + s + "\u001B[0m");
+            List<SmartDevice> room = house.getRoomDevices(s);
+            for(SmartDevice device : room){
+                String smartDevice = device.getClass().getSimpleName();
+                if(smartDevice.startsWith("SmartBulb")){
+                    if(device.getOn()){
+                        state = "ON";
+                    } else state = "OFF";
+                    System.out.println("\uD83D\uDCA1" + smartDevice + i + " state: " + state);
+                } else if(smartDevice.startsWith("SmartSpeaker")){
+                    if(device.getOn()){
+                        state = "ON";
+                    } else state = "OFF";
+                    System.out.println("\uD83D\uDD0A" + smartDevice + i + " state: " + state);
+                } else {
+                    if(device.getOn()){
+                        state = "ON";
+                    } else state = "OFF";
+                    System.out.println("\uD83D\uDCF7" + smartDevice + i + " state: " + state);
+                }
 
-        for(SmartDevice device : devices){
-            if(device.getOn()){
-                state = "ON";
-            } else state = "OFF";
-            System.out.println("\uD83D\uDCBB" + "Device" + i + " state: " + state);
-            i++;
+                i++;
+            }
         }
     }
     /**

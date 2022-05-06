@@ -63,6 +63,14 @@ public class SmartHouse implements Serializable {
         return this.roomsNdevices.containsKey(room);
     }
 
+    public List<SmartDevice> getRoomDevices(String room){
+        List<SmartDevice> roomDevices = new ArrayList<>();
+        for(SmartDevice d : this.roomsNdevices.get(room)){
+            roomDevices.add(d.clone());
+        }
+        return roomDevices;
+    }
+
     public boolean deviceExists (String deviceID) {
         return this.devices.contains(deviceID);
     }
