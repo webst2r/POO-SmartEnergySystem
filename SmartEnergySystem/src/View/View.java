@@ -193,18 +193,27 @@ public class View {
                 if(smartDevice.startsWith("SmartBulb")){
                     if(device.getOn()){
                         state = "ON";
-                    } else state = "OFF";
-                    System.out.println("\uD83D\uDCA1" + smartDevice + i + " state: " + state);
+                        System.out.println("\uD83D\uDCA1" + smartDevice + i + " state: " + "\u001B[32m" + state + "\u001B[0m");
+                    } else {
+                        state = "OFF";
+                        System.out.println("\uD83D\uDCA1" + smartDevice + i + " state: " + "\u001B[31m" + state + "\u001B[0m");
+                    }
                 } else if(smartDevice.startsWith("SmartSpeaker")){
                     if(device.getOn()){
                         state = "ON";
-                    } else state = "OFF";
-                    System.out.println("\uD83D\uDD0A" + smartDevice + i + " state: " + state);
+                        System.out.println("\uD83D\uDCA1" + smartDevice + i + " state: " + "\u001B[32m" + state + "\u001B[0m");
+                    } else {
+                        state = "OFF";
+                        System.out.println("\uD83D\uDCA1" + smartDevice + i + " state: " + "\u001B[31m" + state + "\u001B[0m");
+                    }
                 } else {
                     if(device.getOn()){
                         state = "ON";
-                    } else state = "OFF";
-                    System.out.println("\uD83D\uDCF7" + smartDevice + i + " state: " + state);
+                        System.out.println("\uD83D\uDCA1" + smartDevice + i + " state: " + "\u001B[32m" + state + "\u001B[0m");
+                    } else {
+                        state = "OFF";
+                        System.out.println("\uD83D\uDCA1" + smartDevice + i + " state: " + "\u001B[31m" + state + "\u001B[0m");
+                    }
                 }
 
                 i++;
