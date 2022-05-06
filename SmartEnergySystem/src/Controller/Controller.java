@@ -45,9 +45,21 @@ public class Controller {
                     createSupplier();
                     break;
                 case 4:
+                    view.showln("GALP CLIENTS: " + this.model.numberOfClients("Galp Energia"));
                     LocalDateTime newDate = scanDate(scanner);
                     handleSimulation(start,newDate,scanner);
                     start = newDate;
+
+                    // as soon as the simulation is done, we process all the requests before we start a new simulation
+                    List<Request> requestList = this.model.getRequests();
+                    view.showln(requestList.size() + " requests being processed will start having effect in the next simulation round.");
+                    for(Request r : requestList){
+                        if(r.getType().equals("CS")){
+                            this.model.changeSupplier(r.getNif(),this.model.getSupplier(r.getNewSupplier()));
+                        }
+                    }
+
+                    this.model.clearRequests();
                     view.pressKeyToContinue(scanner);
                     break;
                 case 7:
@@ -247,7 +259,7 @@ public class Controller {
 
     public void handleHouseOperations(int option,int nif,Scanner scanner){
 
-        while(option != 4){
+        while(option != 5){
             switch (option){
                 case 1:
                     // Check devices
@@ -256,6 +268,30 @@ public class Controller {
                     view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
                     break;
                 case 2:
+                    List<Invoice> invoiceList = this.model.getInvoices(nif);
+                    if(invoiceList.size() > 0) {
+                        List<List<Invoice>> pages = getPages(invoiceList, 5);
+                        invoicePagination(pages,scanner);
+                    } else view.showln("This house does not have bills yet.");
+                    view.pressKeyToContinue(scanner);
+                    view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
+                    break;
+                case 3:
+                    // request a change of energy supplier
+                    view.showSupplierInfoMenu(this.model.getSuppliers());
+
+                    Supplier oldSupplier = this.model.getSupplier(this.model.getHouse(nif).getSupplier());
+                    String newSup = scanSupplier(scanner);
+                    Supplier newSupplier = this.model.getSupplier(newSup);
+
+                    view.showChangeSupplierContract(oldSupplier.getSupplierID(),newSupplier.getSupplierID());
+                    view.pressKeyToContinue(scanner);
+                    view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
+
+                    Request changeSupplierRequest = new Request(nif,oldSupplier.getSupplierID(),newSupplier.getSupplierID());
+                    this.model.addRequest(changeSupplierRequest);
+                    break;
+                case 4:
                     List<String> rooms = model.getRooms(nif);
                     view.displayRooms(rooms);
                     view.show("Select: ");
@@ -269,15 +305,6 @@ public class Controller {
                     } else {
                         view.showln("Successfuly turned off all the devices of " + room);
                     }
-                    view.pressKeyToContinue(scanner);
-                    view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
-                    break;
-                case 3:
-                    List<Invoice> invoiceList = this.model.getInvoices(nif);
-                    if(invoiceList.size() > 0) {
-                        List<List<Invoice>> pages = getPages(invoiceList, 5);
-                        invoicePagination(pages,scanner);
-                    } else view.showln("This house does not have bills yet.");
                     view.pressKeyToContinue(scanner);
                     view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
                     break;

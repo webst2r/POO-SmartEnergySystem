@@ -70,6 +70,10 @@ public class Supplier implements Serializable {
         this.clients.put(client.getOwnerNIF(),client.clone());
     }
 
+    public void removeClient(SmartHouse client){
+        this.clients.remove(client.getOwnerNIF());
+    }
+
     public double determineCostPerDay(SmartHouse house){
         double consumption = house.getTotalDailyConsumption();
         double costPerDay = 0.0;

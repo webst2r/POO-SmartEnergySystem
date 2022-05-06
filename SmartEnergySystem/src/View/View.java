@@ -2,6 +2,7 @@ package View;
 
 import Model.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -109,6 +110,11 @@ public class View {
         System.out.println("Supplier " + "\u001B[31m" + supplier.getSupplierID() + "\u001B[0m" + " has " + "\u001B[32m" + clients.size() + "\u001B[0m" + " clients");
     }
 
+    public void showChangeSupplierContract(String old, String newS){
+        System.out.println("\uD83D\uDCDD Registered the request for changing from Energy Supplier " + "\u001B[31m" + old + "\u001B[0m" + " to "+ "\u001B[32m" + newS + "\u001B[0m");
+        System.out.println("This contractual change will have effect when the next simulation period is opened.");
+    }
+
 
     public void showInvoicePagination(int page, List<Invoice> invoices, int total){
 
@@ -137,6 +143,7 @@ public class View {
             System.out.println("—————————————————————————— House " + i + " ——————————————————————————");
             System.out.println("\uD83C\uDFE0 House owner: " + house.getOwnerName());
             System.out.println("NIF: " + house.getOwnerNIF());
+            System.out.println("Supplied by: " + house.getSupplier());
             i++;
         }
 
@@ -155,9 +162,10 @@ public class View {
         Menu menu = new Menu();
         menu.setTitle(owner + "'s SmartHouse Options");
         menu.addOption("Check devices");
-        menu.addOption("Turn off room");
         menu.addOption("See bills");
-        menu.addOption("Cancel");
+        menu.addOption("Request a change of energy supplier");
+        menu.addOption("Turn off room");
+        menu.addOption("Exit");
         menu.show(true);
     }
 

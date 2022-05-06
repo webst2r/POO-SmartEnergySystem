@@ -1,7 +1,6 @@
 package Model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,12 +12,14 @@ public class Model implements Serializable {
     private Map<String, SmartDevice> devices;
     private Map<Integer, SmartHouse> houses;
     private Map<String, Supplier> suppliers;
+    private List<Request> requests; // Change supplier / Turn ON-OFF
 
 
     public Model(){
         this.devices = new HashMap<>();
         this.houses = new HashMap<>();
         this.suppliers = new HashMap<>();
+        this.requests = new ArrayList<>();
     }
 
 
@@ -75,6 +76,36 @@ public class Model implements Serializable {
         if(houseExists(nif)){
             this.houses.get(nif).addInvoice(invoice);
         }
+    }
+
+    /**
+     * Sets a new energy supplier for a SmartHouse
+     */
+    public void changeSupplier(int ownerNif, Supplier newSupplier){
+        SmartHouse client = this.houses.get(ownerNif);
+
+        // Break old contract
+        Supplier oldSupplier = getSupplier(client.getSupplier());
+        removeClient(oldSupplier,client);
+
+        // Sign new contract
+        client.setSupplier(newSupplier.getSupplierID());
+        newSupplier.addClient(client);
+
+
+    }
+
+    public int numberOfClients(String supplierID){
+        return this.suppliers.get(supplierID).getListClients().size();
+    }
+
+    /**
+     * remove a client from supplier's list of clients
+     */
+
+    public void removeClient(Supplier supplier, SmartHouse client){
+        if(supplierExists(supplier.getSupplierID()) && houseExists(client.getOwnerNIF()) )
+            this.suppliers.get(supplier.getSupplierID()).removeClient(client);
     }
 
 
@@ -135,6 +166,23 @@ public class Model implements Serializable {
 
     public boolean houseExists(int nif){
         return this.houses.containsKey(nif);
+    }
+
+
+    public List<Request> getRequests(){
+        List<Request> requestList = new ArrayList<>();
+        for(Request r : this.requests){
+            requestList.add(r.clone());
+        }
+        return requestList;
+    }
+
+    public void addRequest(Request req){
+        this.requests.add(req.clone());
+    }
+
+    public void clearRequests(){
+        this.requests.clear();
     }
 
 
