@@ -1,6 +1,7 @@
 package Model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class SmartHouse implements Serializable {
@@ -92,9 +93,10 @@ public class SmartHouse implements Serializable {
 
 
     public SmartDevice getDevice (String deviceID) {
-        for (SmartDevice smartDevice : this.devices) {
-            if (smartDevice.getID().equals(deviceID)) return smartDevice.clone();
-        }
+        for(List<SmartDevice> room : this.roomsNdevices.values())
+            for (SmartDevice smartDevice : room) {
+                if (smartDevice.getID().equals(deviceID)) return smartDevice.clone();
+            }
         return null;
     }
 
@@ -102,7 +104,7 @@ public class SmartHouse implements Serializable {
         List<SmartDevice> deviceList = new ArrayList<>();
         for(List<SmartDevice> room : this.roomsNdevices.values()){
             for(SmartDevice dev : room){
-                deviceList.add(dev);
+                deviceList.add(dev.clone());
             }
         }
 
@@ -141,11 +143,11 @@ public class SmartHouse implements Serializable {
     }
 
 
-    public boolean turnOffRoom(String room){
+    public boolean turnOffRoom(String room, LocalDateTime timeStamp){
         boolean turnedOff = true;
         if(roomExists(room)){
             for(SmartDevice device : this.roomsNdevices.get(room))
-                if(!device.turnOff()) turnedOff = false;
+                if(!device.turnOff(timeStamp)) turnedOff = false;
         }
         return turnedOff; // it is only true if all devices were successfully turned off
     }
@@ -159,19 +161,26 @@ public class SmartHouse implements Serializable {
         return turnedOn;
     }
 
-    public boolean turnOnDevice(String deviceID){
-        SmartDevice device = getDevice(deviceID);
-        if(device != null){
-            device.turnOn();
-            return true;
-        } else return false;
+    public void turnOnDevice(String deviceID){
+        for(List<SmartDevice> room : this.roomsNdevices.values()){
+            for(SmartDevice d : room){
+                if(d.getID().equals(deviceID)){
+                    d.turnOn();
+                    break;
+                }
+            }
+        }
     }
 
-    public boolean turnOffDevice(String deviceID){
-        SmartDevice device = getDevice(deviceID);
-        if(device != null){
-            return device.turnOff();
-        } else return false;
+    public void turnOffDevice(String deviceID, LocalDateTime timeStamp){
+        for(List<SmartDevice> room : this.roomsNdevices.values()){
+            for(SmartDevice d : room){
+                if(d.getID().equals(deviceID)){
+                    d.turnOff(timeStamp);
+                    break;
+                }
+            }
+        }
     }
 
     public String toString() {

@@ -56,12 +56,14 @@ public abstract class SmartDevice implements Serializable {
         }
     }
 
-    public boolean turnOff(){
+    public boolean turnOff(LocalDateTime timeStamp){
         if(this.on == false) return true; // success (it was already turned off)
 
-        if(LocalDateTime.now().isAfter(this.timeOfTurningOn)){
-            if(LocalDateTime.now().getYear() == this.timeOfTurningOn.getYear() && LocalDateTime.now().getDayOfYear() == this.timeOfTurningOn.getDayOfYear())
+        if(timeStamp.isAfter(this.timeOfTurningOn)){
+            if(timeStamp.getYear() == this.timeOfTurningOn.getYear() && timeStamp.getDayOfYear() == this.timeOfTurningOn.getDayOfYear()){
+                System.out.println("ENTREI AQUIIIIIIIIIIIIIIIIIii");
                 return false; // unsuccessful bc its the same day that it was turned on
+            }
             else {
                 this.on = false;
                 return true; // successfully turned it off

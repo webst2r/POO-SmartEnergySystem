@@ -45,7 +45,6 @@ public class Controller {
                     createSupplier();
                     break;
                 case 4:
-                    view.showln("GALP CLIENTS: " + this.model.numberOfClients("Galp Energia"));
                     LocalDateTime newDate = scanDate(scanner);
                     handleSimulation(start,newDate,scanner);
                     start = newDate;
@@ -60,7 +59,7 @@ public class Controller {
                         } else if(requestType.equals("TON")){
                             this.model.TurnON(r.getNif(),r.getDevices());
                         } else if(requestType.equals("TOFF")){
-                            this.model.TurnOFF(r.getNif(),r.getDevices());
+                            this.model.TurnOFF(r.getNif(),r.getDevices(),start);
                         }
                     }
 
@@ -264,7 +263,7 @@ public class Controller {
 
     public void handleHouseOperations(int option,int nif,Scanner scanner){
 
-        while(option != 5){
+        while(option != 6){
             switch (option){
                 case 1:
                     // Check devices
@@ -312,6 +311,9 @@ public class Controller {
                     List<SmartDevice> roomDevices = model.getRoomDevices(nif,room);
                     Request turnOffRequest = new Request("TOFF",nif,roomDevices);
                     this.model.addRequest(turnOffRequest);
+                    break;
+                case 5:
+                    // Turn ON DEVICE
                     break;
             }
             option = scanInteger(scanner);

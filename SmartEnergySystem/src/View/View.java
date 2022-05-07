@@ -165,7 +165,8 @@ public class View {
         menu.addOption("Check devices");
         menu.addOption("See bills");
         menu.addOption("Request a change of energy supplier");
-        menu.addOption("Turn off room");
+        menu.addOption("Turn OFF room");
+        menu.addOption("Turn ON device");
         menu.addOption("Exit");
         menu.show(true);
     }
@@ -177,7 +178,6 @@ public class View {
         for(String r : rooms){
             System.out.println("\uD83D\uDECF️" + r);
         }
-
     }
 
 
@@ -215,7 +215,6 @@ public class View {
                         System.out.println("\uD83D\uDCA1" + smartDevice + i + " state: " + "\u001B[31m" + state + "\u001B[0m");
                     }
                 }
-
                 i++;
             }
         }
@@ -233,5 +232,16 @@ public class View {
         System.out.flush();
     }
 
-
+    public void showTurnOnDevice(List<SmartDevice> devices) {
+        Menu m = new Menu();
+        m.setTitle("Choose device to turn ON:");
+        for(SmartDevice d : devices){
+            String smartDevice = d.getClass().getSimpleName();
+            if(!d.getOn()){
+                m.addOption(smartDevice);
+            }
+        }
+        m.show(true);
+    }
 }
+

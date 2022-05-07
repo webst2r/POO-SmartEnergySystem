@@ -1,6 +1,7 @@
 package Model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -128,14 +129,13 @@ public class Model implements Serializable {
         return this.houses.get(nif).getDeviceList();
     }
 
-    public boolean turnOffRoom(String room, int nif){
-        return this.houses.get(nif).turnOffRoom(room);
+    public boolean turnOffRoom(String room, int nif,LocalDateTime timeStamp){
+        return this.houses.get(nif).turnOffRoom(room,timeStamp);
     }
 
     public List<String> getRooms(int nif){
         return this.houses.get(nif).getRoomList();
     }
-
 
     public List<SmartHouse> getHouses(){
         List<SmartHouse> smartHouses = new ArrayList<>();
@@ -205,11 +205,11 @@ public class Model implements Serializable {
      * @param nif
      * @param devs
      */
-    public void TurnOFF (int nif, List<SmartDevice> devs) {
+    public void TurnOFF (int nif, List<SmartDevice> devs, LocalDateTime timeStamp) {
         if(houseExists(nif)){
             SmartHouse house = this.houses.get(nif);
             for(SmartDevice d : devs){
-                house.turnOffDevice(d.getID());
+                house.turnOffDevice(d.getID(),timeStamp);
             }
         }
     }
