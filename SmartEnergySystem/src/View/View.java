@@ -166,8 +166,9 @@ public class View {
         menu.addOption("Check devices");
         menu.addOption("See bills");
         menu.addOption("Request a change of energy supplier");
-        menu.addOption("Turn OFF room");
         menu.addOption("Turn ON device");
+        menu.addOption("Turn OFF device");
+        menu.addOption("Turn OFF room");
         menu.addOption("Exit");
         menu.show(true);
     }
@@ -258,6 +259,35 @@ public class View {
         }
         SmartDevice chosenDevice = options.get(opt-1);
         System.out.println("\u001B[34m" + chosenDevice.getClass().getSimpleName() + "\u001B[0m" + " in " + "\u001B[31m" + house.getRoomOfDevice(chosenDevice) + "\u001B[0m" + " will be turned " + "\u001B[32m"+ "ON" + "\u001B[0m");
+
+        return chosenDevice;
+    }
+
+    public SmartDevice showTurnOffDevice(SmartHouse house,Map<String, List<SmartDevice>> turnedOffDevices, Scanner scanner) {
+        Menu m = new Menu();
+        m.setTitle("Choose one of the devices below:");
+        List<SmartDevice> options = new ArrayList<>();
+        for(String r : turnedOffDevices.keySet()){
+            for(SmartDevice d : house.getRoomDevicesON(r)){
+                String smartDevice = d.getClass().getSimpleName();
+                options.add(d);
+                m.addOption(smartDevice + "\u001B[31m " + "(" + r + ")" + "\u001B[0m");
+            }
+        }
+        m.show(true);
+
+        int opt;
+        while(true) {
+            try {
+                opt = Integer.parseInt(scanner.nextLine());
+                break;
+            }catch (NumberFormatException e) {
+                System.out.println("Oops, wrong input... Please try again");
+                continue;
+            }
+        }
+        SmartDevice chosenDevice = options.get(opt-1);
+        System.out.println("\u001B[34m" + chosenDevice.getClass().getSimpleName() + "\u001B[0m" + " in " + "\u001B[31m" + house.getRoomOfDevice(chosenDevice) + "\u001B[0m" + " will be turned " + "\u001B[31m" + "OFF" + "\u001B[0m");
 
         return chosenDevice;
     }

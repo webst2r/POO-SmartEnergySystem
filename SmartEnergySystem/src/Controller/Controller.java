@@ -45,7 +45,7 @@ public class Controller {
                     createSupplier();
                     break;
                 case 4:
-                    LocalDateTime newDate = scanDate(scanner);
+                    LocalDateTime newDate = scanDate(start, scanner);
                     handleSimulation(start,newDate,scanner);
                     start = newDate;
 
@@ -293,7 +293,7 @@ public class Controller {
      */
     public void handleHouseOperations(int option,int nif,Scanner scanner){
 
-        while(option != 6){
+        while(option != 7){
             switch (option){
                 case 1:
                     // Check devices
@@ -326,6 +326,32 @@ public class Controller {
                     this.model.addRequest(changeSupplierRequest);
                     break;
                 case 4:
+                    // Turn ON DEVICE
+                    Map<String, List<SmartDevice>> turnedOffDevices = this.model.getDevicesTurnedOff(nif);
+                    SmartDevice device = view.showTurnOnDevice(this.model.getHouse(nif),turnedOffDevices,scanner);
+
+                    view.pressKeyToContinue(scanner);
+                    view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
+
+                    List<SmartDevice> devicesToTurnOn = new ArrayList<>();
+                    devicesToTurnOn.add(device);
+                    Request turnOnRequest = new Request("TON",nif,devicesToTurnOn);
+                    this.model.addRequest(turnOnRequest);
+                    break;
+                case 5:
+                    // turn OFF DEVICE
+                    Map<String, List<SmartDevice>> turnedOnDevices = this.model.getDevicesTurnedOn(nif);
+                    SmartDevice chosenDevice = view.showTurnOffDevice(this.model.getHouse(nif),turnedOnDevices,scanner);
+
+                    view.pressKeyToContinue(scanner);
+                    view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
+
+                    List<SmartDevice> devicesToTurnOff = new ArrayList<>();
+                    devicesToTurnOff.add(chosenDevice);
+                    Request turnOffRequest = new Request("TOFF",nif,devicesToTurnOff);
+                    this.model.addRequest(turnOffRequest);
+                    break;
+                case 6:
                     List<String> rooms = model.getRooms(nif);
                     view.displayRooms(rooms);
                     view.show("Select: ");
@@ -339,21 +365,8 @@ public class Controller {
                     view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
 
                     List<SmartDevice> roomDevices = model.getRoomDevices(nif,room);
-                    Request turnOffRequest = new Request("TOFF",nif,roomDevices);
-                    this.model.addRequest(turnOffRequest);
-                    break;
-                case 5:
-                    // Turn ON DEVICE
-                    Map<String, List<SmartDevice>> turnedOffDevices = this.model.getDevicesTurnedOff(nif);
-                    SmartDevice device = view.showTurnOnDevice(this.model.getHouse(nif),turnedOffDevices,scanner);
-
-                    view.pressKeyToContinue(scanner);
-                    view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
-
-                    List<SmartDevice> devicesToTurnOn = new ArrayList<>();
-                    devicesToTurnOn.add(device);
-                    Request turnOnRequest = new Request("TON",nif,devicesToTurnOn);
-                    this.model.addRequest(turnOnRequest);
+                    Request turnOffRoomRequest = new Request("TOFF",nif,roomDevices);
+                    this.model.addRequest(turnOffRoomRequest);
                     break;
             }
             option = scanInteger(scanner);
@@ -436,7 +449,7 @@ public class Controller {
      * @return the double
      */
 
-    public LocalDateTime scanDate(Scanner scanner){
+    public LocalDateTime scanDate(LocalDateTime currentDate, Scanner scanner){
         String date = null;
         view.show("Date(dd/MM/YYYY):");
         date = scanner.nextLine();
@@ -445,10 +458,25 @@ public class Controller {
             view.show("Wrong format... Try again\nDate:");
             date = scanner.nextLine();
         }
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDateTime newDate = LocalDate.parse(date, formatter).atStartOfDay();
 
+        while(!isAfter(newDate, currentDate)){
+            view.show("Please advance at least a day... Try again\nDate:");
+            date = scanner.nextLine();
+            newDate = LocalDate.parse(date, formatter).atStartOfDay();
+        }
+
         return newDate;
+    }
+
+    public boolean isAfter(LocalDateTime d1, LocalDateTime d2){
+        if(d1.getYear() < d2.getYear()) return false;
+        else if(d1.getYear() > d2.getYear()) return true;
+        else if(d1.getDayOfYear() > d2.getDayOfYear()){
+            return true;
+        } else return false;
     }
 
     /**

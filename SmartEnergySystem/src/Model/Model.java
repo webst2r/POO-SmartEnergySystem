@@ -279,10 +279,26 @@ public class Model implements Serializable {
             List<SmartDevice> offDevices = new ArrayList<>();
             for(SmartDevice d : house.getRoomDevices(r)){
                 if(!d.getOn()){
-                    offDevices.add(d);
+                    offDevices.add(d.clone());
                 }
             }
             res.put(r,offDevices);
+        }
+        return res;
+    }
+
+    public Map<String, List<SmartDevice>> getDevicesTurnedOn(int nif) {
+        SmartHouse house = this.houses.get(nif);
+        Map<String, List<SmartDevice>> res = new HashMap<>();
+
+        for(String r : house.getRoomsNDevices().keySet()){
+            List<SmartDevice> onDevices = new ArrayList<>();
+            for(SmartDevice d : house.getRoomDevices(r)){
+                if(d.getOn()){
+                    onDevices.add(d.clone());
+                }
+            }
+            res.put(r,onDevices);
         }
         return res;
     }

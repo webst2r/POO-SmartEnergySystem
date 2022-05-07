@@ -61,7 +61,6 @@ public abstract class SmartDevice implements Serializable {
 
         if(timeStamp.isAfter(this.timeOfTurningOn)){
             if(timeStamp.getYear() == this.timeOfTurningOn.getYear() && timeStamp.getDayOfYear() == this.timeOfTurningOn.getDayOfYear()){
-                System.out.println("ENTREI AQUIIIIIIIIIIIIIIIIIii");
                 return false; // unsuccessful bc its the same day that it was turned on
             }
             else {
