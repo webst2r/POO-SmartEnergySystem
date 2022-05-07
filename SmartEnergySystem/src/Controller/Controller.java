@@ -21,7 +21,7 @@ public class Controller {
         this.view = view;
     }
 
-    /** Function that start the program and puts the system running */
+    /** Function that starts the program and puts the system running */
     public void run() throws LinhaIncorretaException, IOException, ClassNotFoundException {
         Scanner scanner = new Scanner(System.in);
         Parser parser = new Parser();
@@ -124,6 +124,13 @@ public class Controller {
         }
     }
 
+    /**
+     * Function that handles the simulation (advance to a new date, generate invoices)
+     * @param start
+     * @param end
+     * @param scanner
+     */
+
     public void handleSimulation(LocalDateTime start, LocalDateTime end,Scanner scanner){
         int days = (int) ChronoUnit.DAYS.between(start,end);
         List<Invoice> invoices = new ArrayList<>();
@@ -142,6 +149,12 @@ public class Controller {
         List<List<Invoice>> pages = getPages(invoices, 5);
         invoicePagination(pages,scanner);
     }
+
+    /**
+     * Functions that handles the pagination of the invoices shown at the end of a simulation round
+     * @param pages
+     * @param scanner
+     */
 
     public void invoicePagination(List<List<Invoice>> pages, Scanner scanner){
         int page = 1, total = pages.size(), totalInvoices = pages.size() * 5;
@@ -174,6 +187,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Functions that handles the pagination of the houses
+     * @param pages
+     * @param scanner
+     */
 
     public void housePagination(List<List<SmartHouse>> pages, Scanner scanner){
         int page = 1, total = pages.size(), totalHouses = pages.size() * 5;
@@ -239,6 +257,12 @@ public class Controller {
         }
     }
 
+    /**
+     * Function that handles Energy Supplier operations
+     * @param option
+     * @param scanner
+     */
+
     public void handleSupplierOperations(String option, Scanner scanner){
         List<SmartHouse> clients = null;
         Supplier supplier = this.model.getSupplier(option);
@@ -261,6 +285,12 @@ public class Controller {
         }
     }
 
+    /**
+     * Functions that handles house operations
+     * @param option
+     * @param nif
+     * @param scanner
+     */
     public void handleHouseOperations(int option,int nif,Scanner scanner){
 
         while(option != 6){
@@ -332,7 +362,7 @@ public class Controller {
     }
 
     /**
-     * Waits for an integer input from user, keeps asking again until the input is correct
+     * Waits for an integer input from user, keeps asking until the input is correct
      * @return the integer read
      */
     public int scanInteger(Scanner scanner){
@@ -350,7 +380,7 @@ public class Controller {
     }
 
     /**
-     * Waits for a Double from user, keeps asking again until the input is correct
+     * Waits for a Double from user, keeps asking  until the input is correct
      * @return the double
      */
 
@@ -368,6 +398,10 @@ public class Controller {
         return input;
     }
 
+    /**
+     * Waits for a Char from user, keeps asking until the input is correct
+     * @return the char
+     */
     public char scanChar(Scanner scanner){
         String input = null;
         char inputC = 'A';
@@ -383,6 +417,10 @@ public class Controller {
         }
         return inputC;
     }
+    /**
+     * Waits for a valid Supplier input from user, keeps asking until the input is correct
+     * @return the double
+     */
 
     public String scanSupplier(Scanner scanner){
         String supplier = null;
@@ -394,6 +432,10 @@ public class Controller {
         }
         return supplier;
     }
+    /**
+     * Waits for a valid Date input from user, keeps asking until the input is correct
+     * @return the double
+     */
 
     public LocalDateTime scanDate(Scanner scanner){
         String date = null;
@@ -410,8 +452,9 @@ public class Controller {
         return newDate;
     }
 
-
-
+    /**
+     * Functions that generates the Pages used for pagination/displaying purposes
+     */
 
     public static <T> List<List<T>> getPages(Collection<T> c, Integer pageSize) {
         if (c == null)
@@ -426,6 +469,9 @@ public class Controller {
         return pages;
     }
 
+    /**
+     * Functions that creates a Device as per requested by user & adds it to the model
+     */
 
     public void createDevice(){
         view.showCreateDeviceMenu();
@@ -501,6 +547,10 @@ public class Controller {
     }
 
 
+    /**
+     * Function that creates a House as per requested by user & adds it to the model
+     */
+
     public void createHouse(){
         // Casa:Vicente de Carvalho Castro,365597405,Iberdrola
         Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
@@ -524,6 +574,10 @@ public class Controller {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Functions that creates a Supplier as per requested by user & adds it to the model
+     */
 
     public void createSupplier(){
         // Fornecedor:MEO Energia
