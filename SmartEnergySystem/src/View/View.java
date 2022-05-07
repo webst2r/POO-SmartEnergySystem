@@ -232,15 +232,19 @@ public class View {
         System.out.flush();
     }
 
-    public void showTurnOnDevice(List<SmartDevice> devices) {
+    public void showTurnOnDevice(SmartHouse house,Map<String, List<SmartDevice>> turnedOffDevices) {
         Menu m = new Menu();
         m.setTitle("Choose device to turn ON:");
-        for(SmartDevice d : devices){
-            String smartDevice = d.getClass().getSimpleName();
-            if(!d.getOn()){
-                m.addOption(smartDevice);
+
+        for(String r : turnedOffDevices.keySet()){
+            for(SmartDevice d : house.getRoomDevices(r)){
+                String smartDevice = d.getClass().getSimpleName();
+                if(!d.getOn()){
+                    m.addOption(smartDevice + "\u001B[31m " + "(" + r + ")" + "\u001B[0m");
+                }
             }
         }
+
         m.show(true);
     }
 }

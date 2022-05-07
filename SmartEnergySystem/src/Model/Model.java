@@ -8,12 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Model implements Serializable {
-
-    // Maps of devices/houses/suppliers on the system
     private Map<String, SmartDevice> devices;
     private Map<Integer, SmartHouse> houses;
     private Map<String, Supplier> suppliers;
-    private List<Request> requests; // Change supplier / Turn ON-OFF
+    private List<Request> requests;
 
 
     public Model(){
@@ -65,6 +63,12 @@ public class Model implements Serializable {
         return clients;
     }
 
+    /**
+     * Returns a list of the house bills from a round of simulation
+     * @param nif
+     * @return
+     */
+
     public List<Invoice> getInvoices(int nif){
         List<Invoice> invoices = new ArrayList<>();
         if(houseExists(nif)){
@@ -72,6 +76,12 @@ public class Model implements Serializable {
         }
         return invoices;
     }
+
+    /**
+     * Adds an invoice to the list of bills of a house
+     * @param nif
+     * @param invoice
+     */
 
     public void addInvoiceToHouse(int nif, Invoice invoice){
         if(houseExists(nif)){
@@ -92,29 +102,33 @@ public class Model implements Serializable {
         // Sign new contract
         client.setSupplier(newSupplier.getSupplierID());
         newSupplier.addClient(client);
-
-
-    }
-
-    public int numberOfClients(String supplierID){
-        return this.suppliers.get(supplierID).getListClients().size();
     }
 
     /**
-     * remove a client from supplier's list of clients
+     * Removes a client from supplier's list of clients
      */
-
     public void removeClient(Supplier supplier, SmartHouse client){
         if(supplierExists(supplier.getSupplierID()) && houseExists(client.getOwnerNIF()) )
             this.suppliers.get(supplier.getSupplierID()).removeClient(client);
     }
 
+    /**
+     * Get a house by NIF
+     */
 
     public SmartHouse getHouse(int NIF){
-        return this.houses.get(NIF);
+        return this.houses.get(NIF).clone();
+    }
+    /**
+     * Get a supplier by ID
+     */
+    public Supplier getSupplier(String supplier) {
+        return this.suppliers.get(supplier).clone();
     }
 
-    public Supplier getSupplier(String supplier) { return this.suppliers.get(supplier); }
+    /**
+     * Get a list of the all the devices in the system
+     */
 
     public List<SmartDevice> getDevices(){
         List<SmartDevice> devs = new ArrayList<>();
@@ -124,19 +138,17 @@ public class Model implements Serializable {
         return devs;
     }
 
-    public List<SmartDevice> getHouseDevices(int nif){
-        List<SmartDevice> devs = new ArrayList<>();
-        return this.houses.get(nif).getDeviceList();
-    }
-
-    public boolean turnOffRoom(String room, int nif,LocalDateTime timeStamp){
-        return this.houses.get(nif).turnOffRoom(room,timeStamp);
-    }
+    /**
+     * Get a list of the rooms in a house identified by NIF
+     */
 
     public List<String> getRooms(int nif){
         return this.houses.get(nif).getRoomList();
     }
 
+    /**
+     * Get a list of all the houses in the system
+     */
     public List<SmartHouse> getHouses(){
         List<SmartHouse> smartHouses = new ArrayList<>();
         for(SmartHouse s : this.houses.values())
@@ -145,6 +157,9 @@ public class Model implements Serializable {
         return smartHouses;
     }
 
+    /**
+     * Get a list of all the suppliers in the system
+     */
     public List<Supplier> getSuppliers(){
         List<Supplier> sups = new ArrayList<>();
         for(Supplier s : this.suppliers.values())
@@ -153,6 +168,9 @@ public class Model implements Serializable {
         return sups;
     }
 
+    /**
+     * Get a list of all the supplier ID's in the system
+     */
     public List<String> getSupplierNames(){
         List<String> availableSuppliers = new ArrayList<>();
         for(Supplier s : this.suppliers.values())
@@ -160,14 +178,25 @@ public class Model implements Serializable {
         return availableSuppliers;
     }
 
+    /**
+     * Returns true if a Supplier exists.
+     */
+
     public boolean supplierExists(String supplier){
         return this.suppliers.containsKey(supplier);
     }
 
+    /**
+     * Returns true if a house identified by NIF exists.
+     */
     public boolean houseExists(int nif){
         return this.houses.containsKey(nif);
     }
 
+
+    /**
+     * Returns a list of all the existing requests in the system.
+     */
 
     public List<Request> getRequests(){
         List<Request> requestList = new ArrayList<>();
@@ -177,10 +206,16 @@ public class Model implements Serializable {
         return requestList;
     }
 
-    public void addRequest(Request req){
-        this.requests.add(req.clone());
+    /**
+     * Adds a request to the list of requests
+     */
+    public void addRequest(Request request){
+        this.requests.add(request.clone());
     }
 
+    /**
+     * Removes all the requests.
+     */
     public void clearRequests(){
         this.requests.clear();
     }
@@ -215,7 +250,11 @@ public class Model implements Serializable {
     }
 
 
-
+    /**
+     * Get the devices in a room of a house
+     * @param nif
+     * @param room
+     */
     public List<SmartDevice> getRoomDevices(int nif, String room) {
         List<SmartDevice> roomDevices = new ArrayList<>();
         SmartHouse house = this.houses.get(nif);
@@ -226,5 +265,25 @@ public class Model implements Serializable {
         return roomDevices;
     }
 
+    /**
+     * Returns a map containing the devices turned off in each room
+     * @param nif
+     * @return
+     */
 
+    public Map<String, List<SmartDevice>> getDevicesTurnedOff(int nif) {
+        SmartHouse house = this.houses.get(nif);
+        Map<String, List<SmartDevice>> res = new HashMap<>();
+
+        for(String r : house.getRoomsNDevices().keySet()){
+            List<SmartDevice> offDevices = new ArrayList<>();
+            for(SmartDevice d : house.getRoomDevices(r)){
+                if(!d.getOn()){
+                    offDevices.add(d);
+                }
+            }
+            res.put(r,offDevices);
+        }
+        return res;
+    }
 }

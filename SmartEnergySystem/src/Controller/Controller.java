@@ -314,6 +314,17 @@ public class Controller {
                     break;
                 case 5:
                     // Turn ON DEVICE
+                    Map<String, List<SmartDevice>> turnedOffDevices = this.model.getDevicesTurnedOff(nif);
+                    view.showTurnOnDevice(this.model.getHouse(nif),turnedOffDevices);
+                    int device = scanInteger(scanner);
+
+                    view.pressKeyToContinue(scanner);
+                    view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
+
+                    List<SmartDevice> devicesToTurnOn = new ArrayList<>();
+                    Request turnOnRequest = new Request("TON",nif,devicesToTurnOn);
+                    this.model.addRequest(turnOnRequest);
+
                     break;
             }
             option = scanInteger(scanner);
