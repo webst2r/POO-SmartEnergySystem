@@ -345,16 +345,15 @@ public class Controller {
                 case 5:
                     // Turn ON DEVICE
                     Map<String, List<SmartDevice>> turnedOffDevices = this.model.getDevicesTurnedOff(nif);
-                    view.showTurnOnDevice(this.model.getHouse(nif),turnedOffDevices);
-                    int device = scanInteger(scanner);
+                    SmartDevice device = view.showTurnOnDevice(this.model.getHouse(nif),turnedOffDevices,scanner);
 
                     view.pressKeyToContinue(scanner);
                     view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
 
                     List<SmartDevice> devicesToTurnOn = new ArrayList<>();
+                    devicesToTurnOn.add(device);
                     Request turnOnRequest = new Request("TON",nif,devicesToTurnOn);
                     this.model.addRequest(turnOnRequest);
-
                     break;
             }
             option = scanInteger(scanner);
@@ -569,7 +568,7 @@ public class Controller {
                 SmartHouse house = new SmartHouse(owner,NIF,supplier);
                 this.model.add(house);
                 this.model.addClient(supplier,house);
-            } else view.showln("A house associated with this NIF already exists...");
+            } else view.showln("Couldn't create house. Reason: A house associated with this NIF already exists...");
         } catch (InputMismatchException e){
             e.printStackTrace();
         }
