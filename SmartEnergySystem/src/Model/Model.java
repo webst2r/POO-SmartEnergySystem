@@ -2,10 +2,7 @@ package Model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Model implements Serializable {
     private Map<String, SmartDevice> devices;
@@ -121,6 +118,19 @@ public class Model implements Serializable {
             invoices = this.suppliers.get(supplier).getInvoices();
         }
         return invoices;
+    }
+
+    public Supplier getSupplierMostTurnOver(){
+        int maxInvoices = 0;
+        Supplier bestSupplier = null;
+        for(Supplier s : this.suppliers.values()){
+            int n = s.getInvoices().size();
+            if(n > maxInvoices){
+                maxInvoices = n;
+                bestSupplier = s.clone();
+            }
+        }
+        return bestSupplier;
     }
 
 
@@ -347,6 +357,32 @@ public class Model implements Serializable {
             supplier.setTax(tax);
             supplier.setDailyCost(baseValue);
         }
+    }
+
+    /**
+     * Returns an ordered list of the largest energy consumers during a period
+     * @param start
+     * @param end
+     * @return
+     */
+
+    public List<SmartHouse> getConsumersPeriod(LocalDateTime start, LocalDateTime end){
+        List<SmartHouse> consumers = new ArrayList<>();
+        List<Invoice> allInvoices = new ArrayList<>();
+        for(Supplier s : this.suppliers.values()){
+            List<Invoice> invoices = s.getInvoicesByPeriod(start,end);
+            for(Invoice i : invoices){
+                allInvoices.add(i);
+            }
+        }
+        Collections.sort(allInvoices, Comparator.comparingDouble((Invoice i) -> i.getConsumption()));
+
+        for(Invoice i : allInvoices){
+            consumers.add(this.houses.get(i.getNIF()));
+        }
+
+
+        return consumers;
     }
 
 }

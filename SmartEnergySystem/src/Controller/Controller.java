@@ -141,6 +141,8 @@ public class Controller {
 
     public void handleSimulation(LocalDateTime start, LocalDateTime end,Scanner scanner){
         int days = (int) ChronoUnit.DAYS.between(start,end);
+        double maxCost = 0.0;
+        SmartHouse maxCostHouse = null;
         List<Invoice> invoices = new ArrayList<>();
         for(SmartHouse house : this.model.getHouses()){
             Supplier supplier = this.model.getSupplier(house.getSupplier());
@@ -154,9 +156,17 @@ public class Controller {
             this.model.addInvoiceToHouse(NIF,invoice);
             this.model.addInvoiceToSupplier(supplier.getSupplierID(),invoice);
             invoices.add(invoice);
+
+            if(totalCost > maxCost){
+                maxCost = totalCost;
+                maxCostHouse = house;
+            }
         }
+
+
         List<List<Invoice>> pages = getPages(invoices, 5);
         invoicePagination(pages,scanner);
+        view.showln("\u001B[34m" + maxCostHouse.getOwnerName() + "\u001B[0m" + "'s house had the most costs" + "(" + "\u001B[32m" + maxCost + "\u001B[0m" + "€)" + " from " + start + " to " + end);
     }
 
     /**
@@ -273,10 +283,18 @@ public class Controller {
         while (option != 5){
             switch (option){
                 case 1:
-                    // Qual é a casa que mais gastou naquele perı́odo
+                    //
                     break;
                 case 2:
-                    //
+                    // Supplier com maior volume de faturacao
+                    Supplier best = this.model.getSupplierMostTurnOver();
+                    if(best != null){
+                        view.showln("🔋" + "Supplier with most turnover volume is " + "\u001B[32m" + best.getSupplierID() + "\u001B[0m" + " with " + best.getInvoices().size() + " invoices issued.");
+                    } else {
+                        view.showln("This operation cannot be performed as there have been no simulations yet.");
+                    }
+                    view.pressKeyToContinue(scanner);
+                    view.showStatsMenu();
                     break;
                 case 3:
                     // listar as facturas emitidas por um comercializador

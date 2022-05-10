@@ -1,6 +1,7 @@
 package Model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +51,15 @@ public class Supplier implements Serializable {
         List<Invoice> inv = new ArrayList<>();
         for(Invoice i : this.invoices){
             inv.add(i.clone());
+        }
+        return inv;
+    }
+
+    public List<Invoice> getInvoicesByPeriod(LocalDateTime start, LocalDateTime end) {
+        List<Invoice> inv = new ArrayList<>();
+        for(Invoice i : this.invoices){
+            if(i.getStart().equals(start) && i.getEnd().equals(end))
+                inv.add(i.clone());
         }
         return inv;
     }
