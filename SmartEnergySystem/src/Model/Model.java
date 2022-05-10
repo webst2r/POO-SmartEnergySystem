@@ -9,6 +9,7 @@ public class Model implements Serializable {
     private Map<Integer, SmartHouse> houses;
     private Map<String, Supplier> suppliers;
     private List<Request> requests;
+    private List<LocalDateTime> dates; // contem as datas
 
 
     public Model(){
@@ -16,6 +17,7 @@ public class Model implements Serializable {
         this.houses = new HashMap<>();
         this.suppliers = new HashMap<>();
         this.requests = new ArrayList<>();
+        this.dates = new ArrayList<>();
     }
 
 
@@ -184,6 +186,28 @@ public class Model implements Serializable {
 
         return devs;
     }
+
+    /**
+     * Get a list of the all the dates the system has advanced from/to
+     */
+
+    public List<LocalDateTime> getDates(){
+        List<LocalDateTime> rounds = new ArrayList<>();
+        for(LocalDateTime r : this.dates){
+            rounds.add(r);
+        }
+
+        return rounds;
+    }
+
+    /**
+     * Adds a date to the list of dates the system has advanced from/to
+     */
+
+    public void addDate(LocalDateTime date){
+        this.dates.add(date);
+    }
+
 
     /**
      * Get a list of the rooms in a house identified by NIF
@@ -386,4 +410,6 @@ public class Model implements Serializable {
 
         return consumers;
     }
+
+
 }

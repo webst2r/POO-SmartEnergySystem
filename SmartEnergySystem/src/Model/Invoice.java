@@ -1,8 +1,9 @@
 package Model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Invoice implements Comparable<Invoice>{
+public class Invoice implements Serializable, Comparable<Invoice>{
     private LocalDateTime start;
     private LocalDateTime end;
     private int NIF;

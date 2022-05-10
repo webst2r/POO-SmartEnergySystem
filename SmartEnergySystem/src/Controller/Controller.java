@@ -26,8 +26,6 @@ public class Controller {
         Scanner scanner = new Scanner(System.in);
         Parser parser = new Parser();
         LocalDateTime start = LocalDateTime.now();
-        List<LocalDateTime> dates = new ArrayList<>();
-        dates.add(start);
         boolean exit = false;
         int option = -1;
         while (!exit) {
@@ -37,6 +35,9 @@ public class Controller {
             option = scanInteger(scanner);
 
             switch (option) {
+                case 0:
+                    view.showln("DATA ATUAL: " + start);
+                    break;
                 case 1:
                     createDevice();
                     break;
@@ -47,8 +48,13 @@ public class Controller {
                     createSupplier();
                     break;
                 case 4:
+                    if(model.getDates().size() > 0){
+                        start = model.getDates().get(model.getDates().size()-1);
+                    } else {
+                        model.addDate(start);
+                    }
                     LocalDateTime newDate = scanDate(start, scanner);
-                    dates.add(newDate);
+                    model.addDate(newDate);
                     handleSimulation(start,newDate,scanner);
                     start = newDate;
 
@@ -97,16 +103,16 @@ public class Controller {
                 case 7:
                     // Stats
                     view.showStatsMenu();
-                    handleStatsOperations(scanner,dates);
-
+                    handleStatsOperations(scanner,model.getDates());
                     break;
                 case 8:
                     // Carregar estado
                     view.show("Load from file: ");
                     String filename = scanner.nextLine();
-                    model = parser.readBin("../data/" + filename);
-                    view.showln(model.getHouses().size() + " houses read from " + filename);
-                    view.showln(model.getDevices().size() + " devices read from " + filename);
+                    model = parser.readBin("SmartEnergySystem/data/"+filename);
+                    view.showln(model.getHouses().size() + " houses loaded from " + filename);
+                    view.showln(model.getDevices().size() + " devices loaded from " + filename);
+                    view.showln(model.getDates().size() + " dates loaded from " + filename);
                     view.pressKeyToContinue(scanner);
                     break;
                 case 9:
@@ -299,11 +305,15 @@ public class Controller {
                     break;
                 case 2:
                     // listar as facturas emitidas por um comercializador
-                    view.showSupplierInfoMenu(this.model.getSuppliers());
-                    String supplier = scanSupplier(scanner);
-                    List<Invoice> invoiceList = this.model.getInvoicesIssuedBySupplier(supplier);
-                    List<List<Invoice>> pages = getPages(invoiceList, 5);
-                    invoicePagination(pages,scanner);
+                    if(this.model.getSuppliers().size() > 0){
+                        if(this.model.getDates().size() > 0){
+                            view.showSupplierInfoMenu(this.model.getSuppliers());
+                            String supplier = scanSupplier(scanner);
+                            List<Invoice> invoiceList = this.model.getInvoicesIssuedBySupplier(supplier);
+                            List<List<Invoice>> pages = getPages(invoiceList, 5);
+                            invoicePagination(pages,scanner);
+                        } else view.showln("This operation cannot be performed as there have been no simulations yet.");
+                    } else view.showln("There are no suppliers yet.");
                     view.pressKeyToContinue(scanner);
                     view.showStatsMenu();
                     break;
@@ -375,6 +385,8 @@ public class Controller {
                     view.show("Insert new Tax(%):");
                     double tax = scanDouble(scanner);
                     tax /= 100;
+                    view.showln("Base value " + "\u001B[31m" + supplier.getDailyCost() + "\u001B[0m" + " updated to " + "\u001B[32m" + baseValue + "\u001B[0m");
+                    view.showln("Tax " + "\u001B[31m" + supplier.getTax() +"\u001B[0m" + " updated to " + "\u001B[32m" + tax + "\u001B[0m");
 
                     Request changeSupplierValuesRequest = new Request(supplier.getSupplierID(),tax,baseValue);
                     this.model.addRequest(changeSupplierValuesRequest);
