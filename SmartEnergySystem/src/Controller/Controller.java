@@ -91,6 +91,12 @@ public class Controller {
                         view.pressKeyToContinue(scanner);
                     }
                     break;
+                case 7:
+                    // Stats
+                    view.showStatsMenu();
+                    handleStatsOperations(scanner);
+
+                    break;
                 case 8:
                     // Carregar estado
                     view.show("Load from file: ");
@@ -146,6 +152,7 @@ public class Controller {
             Invoice invoice = new Invoice(start,end,NIF,owner,supplier.getSupplierID(),totalConsumption,totalCost);
 
             this.model.addInvoiceToHouse(NIF,invoice);
+            this.model.addInvoiceToSupplier(supplier.getSupplierID(),invoice);
             invoices.add(invoice);
         }
         List<List<Invoice>> pages = getPages(invoices, 5);
@@ -259,6 +266,36 @@ public class Controller {
         }
     }
 
+
+    public void handleStatsOperations(Scanner scanner){
+        int option = scanInteger(scanner);
+
+        while (option != 5){
+            switch (option){
+                case 1:
+                    // Qual é a casa que mais gastou naquele perı́odo
+                    break;
+                case 2:
+                    //
+                    break;
+                case 3:
+                    // listar as facturas emitidas por um comercializador
+                    view.showSupplierInfoMenu(this.model.getSuppliers());
+                    String supplier = scanSupplier(scanner);
+                    List<Invoice> invoiceList = this.model.getInvoicesIssuedBySupplier(supplier);
+                    List<List<Invoice>> pages = getPages(invoiceList, 5);
+                    invoicePagination(pages,scanner);
+                    view.pressKeyToContinue(scanner);
+                    view.showStatsMenu();
+                    break;
+                case 4:
+                    //
+                    break;
+            }
+            option = scanInteger(scanner);
+        }
+    }
+
     /**
      * Function that handles Energy Supplier operations
      * @param option
@@ -266,7 +303,6 @@ public class Controller {
      */
 
     public void handleSupplierOperations(String option, Scanner scanner){
-        List<SmartHouse> clients = null;
         Supplier supplier = this.model.getSupplier(option);
         view.showSupplierInfoOptions();
 
@@ -274,8 +310,8 @@ public class Controller {
         while(opt != 3){
             switch (opt){
                 case 1:
-                    clients = this.model.getClients(supplier.getSupplierID());
-                    view.showSupplierClients(supplier,clients);
+                    List<String> clients = this.model.getClientsNames(supplier.getSupplierID());
+                    view.showSupplierClients(supplier.getSupplierID(),clients);
                     view.showSupplierInfoOptions();
                     break;
                 case 2:

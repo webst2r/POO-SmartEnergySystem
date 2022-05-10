@@ -65,4 +65,15 @@ public class Invoice {
     public Invoice clone(){
         return new Invoice(this);
     }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("—————————————————————————— " + "\uD83E\uDDFE" + supplier + " Invoice "+ "——————————————————————————").append("\n");
+        sb.append(" House owner: ").append(this.houseOwner).append("\n");
+        sb.append(" NIF:: ").append(this.NIF).append("\n");
+        sb.append(" Consumption: ").append(this.consumption).append("\n");
+        sb.append(" Cost: ").append(this.cost).append("€\n");
+        sb.append(" \u001B[31m" + "Billing period: " + "\u001B[0m").append(start.toString()).append(" to ").append(end.toString()).append("\n");
+        return sb.toString();
+    }
 }

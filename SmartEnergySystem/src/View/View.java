@@ -42,7 +42,7 @@ public class View {
         menu.addOption("Advance to date");
         menu.addOption("Houses");
         menu.addOption("Suppliers");
-        menu.addOption("Queries");
+        menu.addOption("Stats");
         menu.addOption("Load");
         menu.addOption("Save");
         menu.addOption("Logs");
@@ -104,17 +104,36 @@ public class View {
         menu.show(true);
     }
 
+    public void showStatsMenu(){
+        clearScreen();
+        Menu menu = new Menu();
+        menu.setTitle("[STATS] Select option:");
+        menu.addOption("House with the highest energy expenditure");
+        menu.addOption("Supplier with the highest turnover volume");
+        menu.addOption("Invoices issued by a supplier");
+        menu.addOption("Largest energy consumers during a period");
+        menu.addOption("Exit");
+        menu.show(true);
+    }
 
-    public void showSupplierClients(Supplier supplier, List<SmartHouse> clients){
-        for(SmartHouse house : clients){
-            System.out.println("\uD83D\uDC68 " + house.getOwnerName());
+
+    public void showSupplierClients(String supplier, List<String> clients){
+        for(String client : clients){
+            System.out.println("\uD83D\uDC68 " + client);
         }
-        System.out.println("Supplier " + "\u001B[31m" + supplier.getSupplierID() + "\u001B[0m" + " has " + "\u001B[32m" + clients.size() + "\u001B[0m" + " clients");
+        System.out.println("Supplier " + "\u001B[31m" + supplier + "\u001B[0m" + " has " + "\u001B[32m" + clients.size() + "\u001B[0m" + " clients");
     }
 
     public void showChangeSupplierContract(String old, String newS){
         System.out.println("\uD83D\uDCDD Registered the request for changing from Energy Supplier " + "\u001B[31m" + old + "\u001B[0m" + " to "+ "\u001B[32m" + newS + "\u001B[0m");
         System.out.println("This contractual change will have effect when the next simulation period is opened.");
+    }
+
+    public void showInvoicesIssuedBySupplier(String supplier, List<Invoice> invoices){
+        System.out.println("\uD83D\uDCDD Invoices issued by Energy Supplier " + "\u001B[32m" + supplier + "\u001B[0m");
+        for(Invoice i : invoices){
+            System.out.println(i.toString());
+        }
     }
 
 

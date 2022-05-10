@@ -11,6 +11,7 @@ public class Supplier implements Serializable {
     private double dailyCost;
     private double tax;
     private Map<Integer, SmartHouse> clients;
+    private List<Invoice> invoices;
 
 
     public Supplier(String supplierID) {
@@ -18,6 +19,7 @@ public class Supplier implements Serializable {
         this.dailyCost = 5.0;
         this.tax = 0.15;
         this.clients = new HashMap<>();
+        this.invoices = new ArrayList<>();
     }
 
     public Supplier(String supplierID, double dailyCost, double tax) {
@@ -25,6 +27,7 @@ public class Supplier implements Serializable {
         this.dailyCost = dailyCost;
         this.tax = tax;
         this.clients = new HashMap<>();
+        this.invoices = new ArrayList<>();
     }
 
 
@@ -33,6 +36,7 @@ public class Supplier implements Serializable {
         this.dailyCost = supplier.getDailyCost();
         this.tax = supplier.getTax();
         this.clients = supplier.getClients();
+        this.invoices = supplier.getInvoices();
     }
 
 
@@ -41,6 +45,14 @@ public class Supplier implements Serializable {
     public double getDailyCost() { return this.dailyCost; }
 
     public double getTax() { return this.tax;}
+
+    public List<Invoice> getInvoices() {
+        List<Invoice> inv = new ArrayList<>();
+        for(Invoice i : this.invoices){
+            inv.add(i.clone());
+        }
+        return inv;
+    }
 
     public void setSupplierID(String supplierID) { this.supplierID = supplierID;}
 
@@ -70,6 +82,10 @@ public class Supplier implements Serializable {
         this.clients.put(client.getOwnerNIF(),client.clone());
     }
 
+    public void addInvoice(Invoice invoice) {
+        this.invoices.add(invoice.clone());
+    }
+
     public void removeClient(SmartHouse client){
         this.clients.remove(client.getOwnerNIF());
     }
@@ -93,5 +109,4 @@ public class Supplier implements Serializable {
     public Supplier clone(){
         return new Supplier(this);
     }
-
 }

@@ -62,6 +62,21 @@ public class Model implements Serializable {
         }
         return clients;
     }
+    /**
+     * Returns a list with the names of the clients of an Energy Supplier
+     */
+    public List<String> getClientsNames(String supplier){
+        List<SmartHouse> clients = new ArrayList<>();
+        List<String> names = new ArrayList<>();
+        if(supplierExists(supplier)){
+            clients = this.suppliers.get(supplier).getListClients();
+        }
+        for(SmartHouse client : clients){
+            names.add(client.getOwnerName());
+        }
+        return names;
+    }
+
 
     /**
      * Returns a list of the house bills from a round of simulation
@@ -88,6 +103,28 @@ public class Model implements Serializable {
             this.houses.get(nif).addInvoice(invoice);
         }
     }
+    /**
+     * Adds an invoice to the list of invoices issued by a supplier
+     * @param supplier
+     * @param invoice
+     */
+
+    public void addInvoiceToSupplier(String supplier, Invoice invoice){
+        if(supplierExists(supplier)){
+            this.suppliers.get(supplier).addInvoice(invoice);
+        }
+    }
+
+    public List<Invoice> getInvoicesIssuedBySupplier(String supplier){
+        List<Invoice> invoices = new ArrayList<>();
+        if(supplierExists(supplier)){
+            invoices = this.suppliers.get(supplier).getInvoices();
+        }
+        return invoices;
+    }
+
+
+
 
     /**
      * Sets a new energy supplier for a SmartHouse
