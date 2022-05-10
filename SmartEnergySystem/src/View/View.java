@@ -139,14 +139,8 @@ public class View {
 
     public void showInvoicePagination(int page, List<Invoice> invoices, int total){
 
-        for(Invoice i : invoices){
-            System.out.println("—————————————————————————— " + "\uD83E\uDDFE" + i.getSupplier() + " Invoice "+ "——————————————————————————");
-            System.out.println("House owner: " + i.getHouseOwner());
-            System.out.println("NIF: " + i.getNIF());
-            System.out.println("Total consumption: " + i.getConsumption());
-            System.out.println("Cost: " + i.getCost());
-            System.out.println("\u001B[31m" + "Billing period: " + "\u001B[0m" + i.getStart() + " to " + i.getEnd() + "\n");
-
+        for(Invoice invoice : invoices){
+            System.out.println(invoice);
         }
 
         System.out.println("\n——————————————————Page " + page + " of " + total + "——————————————————");
@@ -162,9 +156,7 @@ public class View {
         int i = (5 * (page -1)) + 1;
         for(SmartHouse house : content){
             System.out.println("—————————————————————————— House " + i + " ——————————————————————————");
-            System.out.println("\uD83C\uDFE0 House owner: " + house.getOwnerName());
-            System.out.println("NIF: " + house.getOwnerNIF());
-            System.out.println("Supplied by: " + house.getSupplier());
+            System.out.println(house);
             i++;
         }
 
@@ -240,18 +232,7 @@ public class View {
             }
         }
     }
-    /**
-     * Displays a message asking the user to press enter in order to continue
-     */
-    public static void pressKeyToContinue(Scanner scanner){
-        System.out.println("\n\n--- press enter to continue ---");
-        scanner.nextLine();
-    }
 
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
 
     public SmartDevice showTurnOnDevice(SmartHouse house,Map<String, List<SmartDevice>> turnedOffDevices, Scanner scanner) {
         Menu m = new Menu();
@@ -282,11 +263,11 @@ public class View {
         return chosenDevice;
     }
 
-    public SmartDevice showTurnOffDevice(SmartHouse house,Map<String, List<SmartDevice>> turnedOffDevices, Scanner scanner) {
+    public SmartDevice showTurnOffDevice(SmartHouse house,Map<String, List<SmartDevice>> turnedOnDevices, Scanner scanner) {
         Menu m = new Menu();
         m.setTitle("Choose one of the devices below:");
         List<SmartDevice> options = new ArrayList<>();
-        for(String r : turnedOffDevices.keySet()){
+        for(String r : turnedOnDevices.keySet()){
             for(SmartDevice d : house.getRoomDevicesON(r)){
                 String smartDevice = d.getClass().getSimpleName();
                 options.add(d);
@@ -309,6 +290,19 @@ public class View {
         System.out.println("\u001B[34m" + chosenDevice.getClass().getSimpleName() + "\u001B[0m" + " in " + "\u001B[31m" + house.getRoomOfDevice(chosenDevice) + "\u001B[0m" + " will be turned " + "\u001B[31m" + "OFF" + "\u001B[0m");
 
         return chosenDevice;
+    }
+
+    /**
+     * Displays a message asking the user to press enter in order to continue
+     */
+    public static void pressKeyToContinue(Scanner scanner){
+        System.out.println("\n\n--- press enter to continue ---");
+        scanner.nextLine();
+    }
+
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }
 

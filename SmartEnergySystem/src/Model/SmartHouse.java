@@ -216,8 +216,10 @@ public class SmartHouse implements Serializable {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Owner: ").append(this.ownerName).append("\n")
-                .append("NIF: ").append(this.ownerNIF).append("\n");
+        sb.append(" \uD83C\uDFE0 House owner: ").append(this.ownerName).append("\n");
+        sb.append(" NIF: ").append(this.ownerNIF).append("\n");
+        sb.append(" Supplied by: ").append(this.supplier).append("\n");
+
         return sb.toString();
     }
 
