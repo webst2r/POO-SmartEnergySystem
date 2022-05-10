@@ -108,7 +108,6 @@ public class View {
         clearScreen();
         Menu menu = new Menu();
         menu.setTitle("[STATS] Select option:");
-        menu.addOption("House with the highest energy expenditure");
         menu.addOption("Supplier with the highest turnover volume");
         menu.addOption("Invoices issued by a supplier");
         menu.addOption("Largest energy consumers during a period");

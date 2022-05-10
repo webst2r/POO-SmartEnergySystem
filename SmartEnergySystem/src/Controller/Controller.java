@@ -284,12 +284,9 @@ public class Controller {
         int option = scanInteger(scanner);
         LocalDateTime previousEnd = null, start = null, end = null;
 
-        while (option != 5){
+        while (option != 4){
             switch (option){
                 case 1:
-                    //
-                    break;
-                case 2:
                     // Supplier com maior volume de faturacao
                     Supplier best = this.model.getSupplierMostTurnOver();
                     if(best != null){
@@ -300,7 +297,7 @@ public class Controller {
                     view.pressKeyToContinue(scanner);
                     view.showStatsMenu();
                     break;
-                case 3:
+                case 2:
                     // listar as facturas emitidas por um comercializador
                     view.showSupplierInfoMenu(this.model.getSuppliers());
                     String supplier = scanSupplier(scanner);
@@ -310,7 +307,7 @@ public class Controller {
                     view.pressKeyToContinue(scanner);
                     view.showStatsMenu();
                     break;
-                case 4:
+                case 3:
                     view.showDateOptions(dates);
                     // Option1:   10-05 -> 30-05
                     // Option2:   30-05 -> 30-08
