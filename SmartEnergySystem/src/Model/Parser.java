@@ -14,7 +14,7 @@ public class Parser {
     private String path;
 
     public Parser(){
-        this.path = "SmartEnergySystem/data/logs2.txt";
+        this.path = "SmartEnergySystem/data/logs.txt";
     }
 
 

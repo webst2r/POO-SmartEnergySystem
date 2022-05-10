@@ -282,6 +282,7 @@ public class Controller {
 
     public void handleStatsOperations(Scanner scanner, List<LocalDateTime> dates){
         int option = scanInteger(scanner);
+        LocalDateTime previousEnd = null, start = null, end = null;
 
         while (option != 5){
             switch (option){
@@ -311,10 +312,24 @@ public class Controller {
                     break;
                 case 4:
                     view.showDateOptions(dates);
+                    // Option1:   10-05 -> 30-05
+                    // Option2:   30-05 -> 30-08
+                    // Option3:   30-08 -> 20-09
+                    // Option4:   EXIT
+
+                    // N_DATES = 4
+
                     int chosenPeriod = scanInteger(scanner);
-                    if(chosenPeriod != (dates.size() / 2) + 1){
-                        LocalDateTime start = dates.get(chosenPeriod -1);
-                        LocalDateTime end = dates.get(chosenPeriod);
+                    if(chosenPeriod != dates.size()){
+                        if(previousEnd == null){
+                            start = dates.get(chosenPeriod -1);
+                            end = dates.get(chosenPeriod);
+                            previousEnd = end;
+                        } else {
+                            start = previousEnd;
+                            end = dates.get(chosenPeriod);
+                            previousEnd = end;
+                        }
 
                         List<String> topConsumers = this.model.getConsumersPeriod(start,end);
                         view.show("Top (N):");
