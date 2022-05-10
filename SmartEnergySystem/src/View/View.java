@@ -40,10 +40,9 @@ public class View {
         menu.addOption("Create Smart House");
         menu.addOption("Create Energy Supplier");
         menu.addOption("Advance to date");
-        menu.addOption("House with most costs");
-        menu.addOption("Supplier with the most volume");
-        menu.addOption("Houses on the system");
-        menu.addOption("Suppliers on the system");
+        menu.addOption("Houses");
+        menu.addOption("Suppliers");
+        menu.addOption("Queries");
         menu.addOption("Load");
         menu.addOption("Save");
         menu.addOption("Logs");
@@ -99,11 +98,12 @@ public class View {
         clearScreen();
         Menu menu = new Menu();
         menu.setTitle("Select option");
-        menu.addOption("Clients (energy contracts)");
-        menu.addOption("Other");
-        menu.addOption("Cancel");
+        menu.addOption("Clients");
+        menu.addOption("Change values");
+        menu.addOption("Exit");
         menu.show(true);
     }
+
 
     public void showSupplierClients(Supplier supplier, List<SmartHouse> clients){
         for(SmartHouse house : clients){
@@ -163,7 +163,7 @@ public class View {
         clearScreen();
         Menu menu = new Menu();
         menu.setTitle(owner + "'s SmartHouse Options");
-        menu.addOption("Check devices");
+        menu.addOption("See devices");
         menu.addOption("See bills");
         menu.addOption("Request a change of energy supplier");
         menu.addOption("Turn ON device");

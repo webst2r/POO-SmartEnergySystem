@@ -8,45 +8,45 @@ import java.util.Map;
 
 public class Supplier implements Serializable {
     private String supplierID;
-    private double energyDailyCost;
+    private double dailyCost;
+    private double tax;
     private Map<Integer, SmartHouse> clients;
 
 
     public Supplier(String supplierID) {
         this.supplierID = supplierID;
-        this.energyDailyCost = 5.0;
+        this.dailyCost = 5.0;
+        this.tax = 0.15;
         this.clients = new HashMap<>();
     }
 
-    public Supplier(String supplierID, double energyDailyCost) {
+    public Supplier(String supplierID, double dailyCost, double tax) {
         this.supplierID = supplierID;
-        this.energyDailyCost = energyDailyCost;
+        this.dailyCost = dailyCost;
+        this.tax = tax;
         this.clients = new HashMap<>();
     }
 
 
     public Supplier(Supplier supplier){
         this.supplierID = supplier.getSupplierID();
-        this.energyDailyCost = supplier.getEnergyDailyCost();
+        this.dailyCost = supplier.getDailyCost();
+        this.tax = supplier.getTax();
         this.clients = supplier.getClients();
     }
 
 
-    public Supplier(String supplierID,
-                    double energyDailyCost,
-                    Map<Integer,SmartHouse> clients) {
-        this.supplierID = supplierID;
-        this.energyDailyCost = energyDailyCost;
-        setClients(clients);
-    }
-
     public String getSupplierID() { return this.supplierID; }
 
-    public double getEnergyDailyCost() { return this.energyDailyCost; }
+    public double getDailyCost() { return this.dailyCost; }
+
+    public double getTax() { return this.tax;}
 
     public void setSupplierID(String supplierID) { this.supplierID = supplierID;}
 
-    public void setEnergyDailyCost(double energyDailyCost) { this.energyDailyCost = energyDailyCost; }
+    public void setDailyCost(double dailyCost) { this.dailyCost = dailyCost; }
+
+    public void setTax(double tax) { this.tax = tax;}
 
     public void setClients(Map<Integer,SmartHouse> clients) {
         this.clients = new HashMap<Integer, SmartHouse>();
@@ -77,13 +77,12 @@ public class Supplier implements Serializable {
     public double determineCostPerDay(SmartHouse house){
         double consumption = house.getTotalDailyConsumption();
         double costPerDay = 0.0;
-        double tax = 0.15; // 15 % imposto
         int numberOfDevices = house.getNumberOfDevices();
 
         if( numberOfDevices > 10)
-            costPerDay = this.energyDailyCost * consumption * (1+tax) * 0.9;
+            costPerDay = this.dailyCost * consumption * (1+this.tax) * 0.9;
         else
-            costPerDay = this.energyDailyCost * consumption * (1+tax) * 0.75;
+            costPerDay = this.dailyCost * consumption * (1+this.tax) * 0.75;
 
         // Se tiver mais de 10 devices paga mais
         // Custo diário de uma casa = valorBase + consumoTotalDiario + imposto * 0.9 (ou 0.75)

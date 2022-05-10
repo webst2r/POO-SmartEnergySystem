@@ -302,4 +302,14 @@ public class Model implements Serializable {
         }
         return res;
     }
+
+
+    public void changeSupplierValues(String supplierID, double tax, double baseValue){
+        if(supplierExists(supplierID)){
+            Supplier supplier = this.suppliers.get(supplierID);
+            supplier.setTax(tax);
+            supplier.setDailyCost(baseValue);
+        }
+    }
+
 }

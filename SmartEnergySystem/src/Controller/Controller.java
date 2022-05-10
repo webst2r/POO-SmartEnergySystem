@@ -60,13 +60,15 @@ public class Controller {
                             this.model.TurnON(r.getNif(),r.getDevices());
                         } else if(requestType.equals("TOFF")){
                             this.model.TurnOFF(r.getNif(),r.getDevices(),start);
+                        } else if(requestType.equals("CSV")){
+                            this.model.changeSupplierValues(r.getOldSupplier(),r.getTax(), r.getBaseValue());
                         }
                     }
 
                     this.model.clearRequests();
                     view.pressKeyToContinue(scanner);
                     break;
-                case 7:
+                case 5:
                     // See houses on the system
                     List<List<SmartHouse>> pages = getPages(this.model.getHouses(), 5);
 
@@ -77,7 +79,7 @@ public class Controller {
                         view.pressKeyToContinue(scanner);
                     }
                     break;
-                case 8:
+                case 6:
                     // Supplier info
                     List<Supplier> listSuppliers = this.model.getSuppliers();
                     if(listSuppliers.size() > 0){
@@ -89,7 +91,7 @@ public class Controller {
                         view.pressKeyToContinue(scanner);
                     }
                     break;
-                case 9:
+                case 8:
                     // Carregar estado
                     view.show("Load from file: ");
                     String filename = scanner.nextLine();
@@ -98,7 +100,7 @@ public class Controller {
                     view.showln(model.getDevices().size() + " devices read from " + filename);
                     view.pressKeyToContinue(scanner);
                     break;
-                case 10:
+                case 9:
                     // Guardar estado
                     view.show("Save to file: ");
                     String filepath = scanner.nextLine();
@@ -106,13 +108,13 @@ public class Controller {
                     view.showln("Successfuly saved on: " + filepath);
                     view.pressKeyToContinue(scanner);
                     break;
-                case 11:
+                case 10:
                     // Logs
                     parser.parse(this.model);
                     view.showln("Successfully processed logs.");
                     view.pressKeyToContinue(scanner);
                     break;
-                case 12:
+                case 11:
                     // Exit
                     exit = true;
                     scanner.close();
@@ -277,7 +279,16 @@ public class Controller {
                     view.showSupplierInfoOptions();
                     break;
                 case 2:
-                    view.showln("Nothing to see here.");
+                    // change Base value of Energy Daily Cost
+                    view.show("Insert new Base Value:");
+                    double baseValue = scanDouble(scanner);
+                    view.show("Insert new Tax(%):");
+                    double tax = scanDouble(scanner);
+                    tax /= 100;
+
+                    Request changeSupplierValuesRequest = new Request(supplier.getSupplierID(),tax,baseValue);
+                    this.model.addRequest(changeSupplierValuesRequest);
+
                     view.showSupplierInfoOptions();
                     break;
             }
@@ -614,9 +625,11 @@ public class Controller {
         String supplierName = scanner.nextLine();
         view.show("Daily energy cost: ");
         double energyCost = scanDouble(scanner);
+        view.show("Tax amount: ");
+        double tax = scanDouble(scanner);
 
         if(!model.supplierExists(supplierName)){
-            Supplier supplier = new Supplier(supplierName,energyCost);
+            Supplier supplier = new Supplier(supplierName,energyCost,tax);
             this.model.add(supplier);
         } else view.showln("Couldn't create supplier. Reason: A supplier with this name already exists.");
     }
