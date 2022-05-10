@@ -366,8 +366,8 @@ public class Model implements Serializable {
      * @return
      */
 
-    public List<SmartHouse> getConsumersPeriod(LocalDateTime start, LocalDateTime end){
-        List<SmartHouse> consumers = new ArrayList<>();
+    public List<String> getConsumersPeriod(LocalDateTime start, LocalDateTime end){
+        List<String> consumers = new ArrayList<>();
         List<Invoice> allInvoices = new ArrayList<>();
         for(Supplier s : this.suppliers.values()){
             List<Invoice> invoices = s.getInvoicesByPeriod(start,end);
@@ -376,13 +376,14 @@ public class Model implements Serializable {
             }
         }
         Collections.sort(allInvoices, Comparator.comparingDouble((Invoice i) -> i.getConsumption()));
+        Collections.sort(allInvoices,Collections.reverseOrder());
 
         for(Invoice i : allInvoices){
-            consumers.add(this.houses.get(i.getNIF()));
+            StringBuilder sb = new StringBuilder();
+            sb.append(i.getHouseOwner()).append(" ").append("(").append(i.getConsumption()).append(" kWh)");
+            consumers.add(sb.toString());
         }
-
 
         return consumers;
     }
-
 }

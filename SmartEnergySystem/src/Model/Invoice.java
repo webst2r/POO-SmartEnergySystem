@@ -2,7 +2,7 @@ package Model;
 
 import java.time.LocalDateTime;
 
-public class Invoice {
+public class Invoice implements Comparable<Invoice>{
     private LocalDateTime start;
     private LocalDateTime end;
     private int NIF;
@@ -75,5 +75,10 @@ public class Invoice {
         sb.append(" Cost: ").append(this.cost).append("€\n");
         sb.append(" \u001B[31m" + "Billing period: " + "\u001B[0m").append(start.toString()).append(" to ").append(end.toString()).append("\n");
         return sb.toString();
+    }
+
+    @Override
+    public int compareTo(Invoice i) {
+        return Double.compare(this.consumption,i.getConsumption());
     }
 }

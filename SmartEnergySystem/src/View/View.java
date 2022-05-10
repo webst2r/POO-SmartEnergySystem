@@ -116,6 +116,19 @@ public class View {
         menu.show(true);
     }
 
+    public void showDateOptions(List<LocalDateTime> dates) {
+        clearScreen();
+        Menu menu = new Menu();
+        menu.setTitle("[PERIOD] Select option:");
+        for(int i = 0; i < dates.size() - 1; i++){
+            StringBuilder option = new StringBuilder();
+            option.append(dates.get(i)).append( " -> ").append(dates.get(i+1));
+            menu.addOption(option.toString());
+        }
+        menu.addOption("Exit");
+        menu.show(true);
+    }
+
 
     public void showSupplierClients(String supplier, List<String> clients){
         for(String client : clients){
@@ -304,5 +317,7 @@ public class View {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
+
+
 }
 

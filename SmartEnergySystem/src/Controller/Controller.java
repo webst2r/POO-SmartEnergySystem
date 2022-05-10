@@ -26,6 +26,8 @@ public class Controller {
         Scanner scanner = new Scanner(System.in);
         Parser parser = new Parser();
         LocalDateTime start = LocalDateTime.now();
+        List<LocalDateTime> dates = new ArrayList<>();
+        dates.add(start);
         boolean exit = false;
         int option = -1;
         while (!exit) {
@@ -46,6 +48,7 @@ public class Controller {
                     break;
                 case 4:
                     LocalDateTime newDate = scanDate(start, scanner);
+                    dates.add(newDate);
                     handleSimulation(start,newDate,scanner);
                     start = newDate;
 
@@ -94,7 +97,7 @@ public class Controller {
                 case 7:
                     // Stats
                     view.showStatsMenu();
-                    handleStatsOperations(scanner);
+                    handleStatsOperations(scanner,dates);
 
                     break;
                 case 8:
@@ -277,7 +280,7 @@ public class Controller {
     }
 
 
-    public void handleStatsOperations(Scanner scanner){
+    public void handleStatsOperations(Scanner scanner, List<LocalDateTime> dates){
         int option = scanInteger(scanner);
 
         while (option != 5){
@@ -307,7 +310,28 @@ public class Controller {
                     view.showStatsMenu();
                     break;
                 case 4:
-                    //
+                    view.showDateOptions(dates);
+                    int chosenPeriod = scanInteger(scanner);
+                    if(chosenPeriod != (dates.size() / 2) + 1){
+                        LocalDateTime start = dates.get(chosenPeriod -1);
+                        LocalDateTime end = dates.get(chosenPeriod);
+
+                        List<String> topConsumers = this.model.getConsumersPeriod(start,end);
+                        view.show("Top (N):");
+                        int n = scanInteger(scanner);
+                        while(n > topConsumers.size()){
+                            view.showln("Please try a lower number.");
+                            n = scanInteger(scanner);
+                        }
+
+                        for(int i = 0; i < n; i++){
+                            String consumer = topConsumers.get(i);
+                            view.showln((i+1) + ": " + consumer);
+                        }
+                        view.pressKeyToContinue(scanner);
+                        view.showStatsMenu();
+                    }
+                    view.showStatsMenu();
                     break;
             }
             option = scanInteger(scanner);
