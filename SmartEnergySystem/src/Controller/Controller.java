@@ -749,7 +749,7 @@ public class Controller {
                 this.model.add(house);
                 this.model.addClient(supplier,house);
                 if(roomsNDevices.size() > 0){
-                    this.model.getHouse(NIF).setRoomsNDevices(roomsNDevices);
+                    this.model.setRoomsNDevices(NIF,roomsNDevices);
                 }
             } else view.showln("Couldn't create house. Reason: A house associated with this NIF already exists...");
         } catch (InputMismatchException e){

@@ -221,6 +221,16 @@ public class Model implements Serializable {
         this.freeDevices.remove(index);
     }
 
+    /**
+     * Set rooms n devices for a house
+     * @param nif
+     */
+    public void setRoomsNDevices(int nif,Map<String, List<SmartDevice>> rnd){
+        if(houseExists(nif)){
+            this.houses.get(nif).setRoomsNDevices(rnd);
+        }
+    }
+
 
 
     /**
