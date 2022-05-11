@@ -8,6 +8,7 @@ public class Model implements Serializable {
     private Map<String, SmartDevice> devices;
     private Map<Integer, SmartHouse> houses;
     private Map<String, Supplier> suppliers;
+    private List<SmartDevice> freeDevices;
     private List<Request> requests;
     private List<LocalDateTime> dates; // contem as datas
 
@@ -16,6 +17,7 @@ public class Model implements Serializable {
         this.devices = new HashMap<>();
         this.houses = new HashMap<>();
         this.suppliers = new HashMap<>();
+        this.freeDevices = new ArrayList<>();
         this.requests = new ArrayList<>();
         this.dates = new ArrayList<>();
     }
@@ -26,6 +28,13 @@ public class Model implements Serializable {
      */
     public void add(SmartDevice s) {
         this.devices.put(s.getID(),s.clone());
+    }
+
+    /**
+     * Adds a free SmartDevice to the system
+     */
+    public void addFreeDevice(SmartDevice s) {
+        this.freeDevices.add(s.clone());
     }
 
     /**
@@ -51,6 +60,7 @@ public class Model implements Serializable {
         }
 
     }
+
     /**
      * Returns a list of clients of an Energy Supplier
      */
@@ -186,6 +196,32 @@ public class Model implements Serializable {
 
         return devs;
     }
+
+    /**
+     * Get a list of the all the devices that have not been integrated into a house
+     */
+
+    public List<SmartDevice> getFreeDevices(){
+        List<SmartDevice> devs = new ArrayList<>();
+        for(SmartDevice s : this.freeDevices)
+            devs.add(s.clone());
+
+        return devs;
+    }
+
+    public boolean freeDeviceExists(SmartDevice d){
+        return this.freeDevices.contains(d);
+    }
+
+    /**
+     * Removes a free Device
+     */
+
+    public void removeFreeDevice(int index){
+        this.freeDevices.remove(index);
+    }
+
+
 
     /**
      * Get a list of the all the dates the system has advanced from/to

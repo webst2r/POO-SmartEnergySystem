@@ -50,6 +50,28 @@ public class View {
         menu.showMainMenu();
     }
 
+    public void showCreateHouse(){
+        clearScreen();
+        Menu menu = new Menu();
+        menu.setTitle("Create a SmartHouse");
+        menu.addOption("Create a room");
+        menu.addOption("Exit");
+        menu.show(true);
+    }
+
+    public void showFreeDevices(String room, List<SmartDevice> freeDevices){
+        clearScreen();
+        Menu menu = new Menu();
+        menu.setTitle("Choose a free device to add to " + room);
+        for(SmartDevice d : freeDevices){
+            menu.addOption(d.getClass().getSimpleName());
+        }
+        menu.addOption("Exit");
+        menu.show(true);
+    }
+
+
+
     public void showCreateDeviceMenu(){
         clearScreen();
         Menu menu = new Menu();
@@ -57,7 +79,7 @@ public class View {
         menu.addOption("Smart Bulb");
         menu.addOption("Smart Camera");
         menu.addOption("Smart Speaker");
-        menu.addOption("Cancel");
+        menu.addOption("Exit");
         menu.show(true);
     }
 

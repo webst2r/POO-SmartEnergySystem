@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Controller {
     private Model model;
@@ -634,7 +636,7 @@ public class Controller {
                 bulb.setDiameter(diameter);
                 bulb.setConsumption(consumption);
 
-                this.model.add(bulb);
+                this.model.addFreeDevice(bulb);
                 break;
             case 2:
                 // SmartCamera: (1366x768), 63, 4.74
@@ -656,7 +658,7 @@ public class Controller {
                 camera.setFileSize(fileSize);
                 camera.setConsumption(consumptionC);
 
-                this.model.add(camera);
+                this.model.addFreeDevice(camera);
                 break;
             case 3:
                 // SmartSpeaker:30,RTP Antena 1 98.3 FM,JBL,5.53
@@ -678,7 +680,7 @@ public class Controller {
                 speaker.setBrand(brand);
                 speaker.setConsumption(consumptionS);
 
-                this.model.add(speaker);
+                this.model.addFreeDevice(speaker);
 
                 break;
             default:
@@ -704,11 +706,51 @@ public class Controller {
             List<String> availableSuppliers = this.model.getSupplierNames();
             view.showChooseSupplierMenu(availableSuppliers);
             String supplier = scanSupplier(scanner);
+            view.showCreateHouse();
+            int opt = scanInteger(scanner);
+            Map<String, List<SmartDevice>> roomsNDevices = new HashMap<>();
+            List<SmartDevice> roomDevices = new ArrayList<>();
+            while(opt != 2){
+                switch (opt){
+                    case 1:
+                        // create room
+                        List<SmartDevice> freeDevices = model.getFreeDevices();
+                        if(freeDevices.size() > 0){
+                            view.show("Room name: ");
+                            String room = scanner.nextLine();
+                            view.showFreeDevices(room,freeDevices);
+                            int chosenDevice = scanInteger(scanner);
+                            while(chosenDevice != freeDevices.size() + 1){
+                                SmartDevice chosen = freeDevices.get(chosenDevice -1);
+                                roomDevices.add(chosen.clone());
+                                freeDevices.remove(chosenDevice-1);
+                                model.removeFreeDevice(chosenDevice-1);
+                                view.showln("Device " + chosen.getClass().getSimpleName() + " added to " + room);
+                                if(freeDevices.size() == 0){
+                                    view.showln("There are no more available devices to add.");
+                                    break;
+                                }
+                                view.showFreeDevices(room,freeDevices);
+                                chosenDevice = scanInteger(scanner);
+                            }
+                            roomsNDevices.put(room,roomDevices);
+                        } else view.showln("There are no available devices to add to the room.");
+                        break;
+                    default:
+                        view.showln("Please insert a valid option.");
+                        break;
+                }
+                view.showCreateHouse();
+                opt = scanInteger(scanner);
+            }
 
             if(!this.model.houseExists(NIF)){
                 SmartHouse house = new SmartHouse(owner,NIF,supplier);
                 this.model.add(house);
                 this.model.addClient(supplier,house);
+                if(roomsNDevices.size() > 0){
+                    this.model.getHouse(NIF).setRoomsNDevices(roomsNDevices);
+                }
             } else view.showln("Couldn't create house. Reason: A house associated with this NIF already exists...");
         } catch (InputMismatchException e){
             e.printStackTrace();

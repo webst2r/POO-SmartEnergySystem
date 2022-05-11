@@ -58,7 +58,16 @@ public class SmartHouse implements Serializable {
 
     public void setSupplier(String supplier) { this.supplier = supplier; }
 
-
+    public void setRoomsNDevices(Map<String, List<SmartDevice>> rnd) {
+        this.roomsNdevices = new HashMap<>();
+        for(String k : rnd.keySet()){
+            List<SmartDevice> copy = new ArrayList<>();
+            for(SmartDevice d : rnd.get(k)){
+                copy.add(d.clone());
+            }
+            this.roomsNdevices.put(k,copy);
+        }
+    }
 
     public boolean roomExists (String room) {
         return this.roomsNdevices.containsKey(room);
@@ -226,5 +235,4 @@ public class SmartHouse implements Serializable {
     public SmartHouse clone(){
         return new SmartHouse(this);
     }
-
 }
