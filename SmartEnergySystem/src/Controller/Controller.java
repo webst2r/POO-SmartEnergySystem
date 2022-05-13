@@ -412,7 +412,7 @@ public class Controller {
             switch (option){
                 case 1:
                     // Check devices
-                    view.showHouseDevices(model.getHouse(nif));
+                    view.showHouseDevices(model.getRoomsNDevices(nif));
                     view.pressKeyToContinue(scanner);
                     view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
                     break;
@@ -442,8 +442,16 @@ public class Controller {
                     break;
                 case 4:
                     // Turn ON DEVICE
-                    Map<String, List<SmartDevice>> turnedOffDevices = this.model.getDevicesTurnedOff(nif);
-                    SmartDevice device = view.showTurnOnDevice(this.model.getHouse(nif),turnedOffDevices,scanner);
+                    List<SmartDevice> options = model.getTurnedOffDevices(nif);
+                    Map<String, List<String>> turnedOffDevices = this.model.getTurnedOffDevicesNames(nif);
+                    view.showTurnOnDevice(turnedOffDevices);
+
+                    int chosen = scanInteger(scanner);
+                    SmartDevice device = options.get(chosen -1);
+
+                    System.out.println("\u001B[34m" + device.getClass().getSimpleName() + "\u001B[0m" + " in " + "\u001B[31m" + this.model.getHouse(nif).getRoomOfDevice(device) + "\u001B[0m" + " will be turned " + "\u001B[32m"+ "ON" + "\u001B[0m");
+
+
 
                     view.pressKeyToContinue(scanner);
                     view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
@@ -455,8 +463,15 @@ public class Controller {
                     break;
                 case 5:
                     // turn OFF DEVICE
-                    Map<String, List<SmartDevice>> turnedOnDevices = this.model.getDevicesTurnedOn(nif);
-                    SmartDevice chosenDevice = view.showTurnOffDevice(this.model.getHouse(nif),turnedOnDevices,scanner);
+                    List<SmartDevice> optionsOFF = model.getTurnedOnDevices(nif);
+                    Map<String, List<String>> turnedOnDevices = this.model.getTurnedOnDevicesNames(nif);
+                    view.showTurnOffDevice(turnedOnDevices);
+
+                    int deviceOFF = scanInteger(scanner);
+                    SmartDevice chosenDevice = optionsOFF.get(deviceOFF -1);
+
+
+                    System.out.println("\u001B[34m" + chosenDevice.getClass().getSimpleName() + "\u001B[0m" + " in " + "\u001B[31m" + model.getHouse(nif).getRoomOfDevice(chosenDevice) + "\u001B[0m" + " will be turned " + "\u001B[31m" + "OFF" + "\u001B[0m");
 
                     view.pressKeyToContinue(scanner);
                     view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
@@ -559,6 +574,7 @@ public class Controller {
         }
         return supplier;
     }
+
     /**
      * Waits for a valid Date input from user, keeps asking until the input is correct
      * @return the double

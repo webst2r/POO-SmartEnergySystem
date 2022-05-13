@@ -119,7 +119,7 @@ public class View {
     public void showSupplierInfoOptions(){
         clearScreen();
         Menu menu = new Menu();
-        menu.setTitle("Select option");
+        menu.setTitle("[SUPPLIER] Select option");
         menu.addOption("Clients");
         menu.addOption("Change values");
         menu.addOption("Exit");
@@ -228,102 +228,43 @@ public class View {
     }
 
 
-    public void showHouseDevices(SmartHouse house){
-        Map<String,List<SmartDevice>> devices = house.getRoomsNDevices();
-        int i = 1;
-        String state = null;
-        for(String s : devices.keySet()){
-            System.out.println("\nRoom: " + "\u001B[34m" + s + "\u001B[0m");
-            List<SmartDevice> room = house.getRoomDevices(s);
-            for(SmartDevice device : room){
-                String smartDevice = device.getClass().getSimpleName();
-                if(smartDevice.startsWith("SmartBulb")){
-                    if(device.getOn()){
-                        state = "ON";
-                        System.out.println("\uD83D\uDCA1" + smartDevice + i + " state: " + "\u001B[32m" + state + "\u001B[0m");
-                    } else {
-                        state = "OFF";
-                        System.out.println("\uD83D\uDCA1" + smartDevice + i + " state: " + "\u001B[31m" + state + "\u001B[0m");
-                    }
-                } else if(smartDevice.startsWith("SmartSpeaker")){
-                    if(device.getOn()){
-                        state = "ON";
-                        System.out.println("\uD83D\uDCA1" + smartDevice + i + " state: " + "\u001B[32m" + state + "\u001B[0m");
-                    } else {
-                        state = "OFF";
-                        System.out.println("\uD83D\uDCA1" + smartDevice + i + " state: " + "\u001B[31m" + state + "\u001B[0m");
-                    }
-                } else {
-                    if(device.getOn()){
-                        state = "ON";
-                        System.out.println("\uD83D\uDCA1" + smartDevice + i + " state: " + "\u001B[32m" + state + "\u001B[0m");
-                    } else {
-                        state = "OFF";
-                        System.out.println("\uD83D\uDCA1" + smartDevice + i + " state: " + "\u001B[31m" + state + "\u001B[0m");
-                    }
-                }
-                i++;
+    public void showHouseDevices(Map<String,List<String>> devices){
+        for(String room : devices.keySet()){
+            System.out.println("\nRoom: " + "\u001B[34m" + room + "\u001B[0m");
+            List<String> roomDevices = devices.get(room);
+            for(String s : roomDevices){
+                System.out.println(s);
             }
         }
     }
 
 
-    public SmartDevice showTurnOnDevice(SmartHouse house,Map<String, List<SmartDevice>> turnedOffDevices, Scanner scanner) {
+    public void showTurnOnDevice(Map<String, List<String>> turnedOff) {
         Menu m = new Menu();
-        m.setTitle("Choose one of the devices below:");
-        List<SmartDevice> options = new ArrayList<>();
-        for(String r : turnedOffDevices.keySet()){
-            for(SmartDevice d : house.getRoomDevicesOFF(r)){
-                String smartDevice = d.getClass().getSimpleName();
-                options.add(d);
-                m.addOption(smartDevice + "\u001B[31m " + "(" + r + ")" + "\u001B[0m");
+        m.setTitle("Choose one of device to turn ON:");
+        List<String> options = new ArrayList<>();
+        for(String room : turnedOff.keySet()){
+            List<String> roomDevices = turnedOff.get(room);
+            for(String s :  roomDevices){
+                options.add(s);
+                m.addOption(s + "\u001B[31m " + "(" + room + ")" + "\u001B[0m");
             }
         }
         m.show(true);
-
-        int opt;
-        while(true) {
-            try {
-                opt = Integer.parseInt(scanner.nextLine());
-                break;
-            }catch (NumberFormatException e) {
-                System.out.println("Oops, wrong input... Please try again");
-                continue;
-            }
-        }
-        SmartDevice chosenDevice = options.get(opt-1);
-        System.out.println("\u001B[34m" + chosenDevice.getClass().getSimpleName() + "\u001B[0m" + " in " + "\u001B[31m" + house.getRoomOfDevice(chosenDevice) + "\u001B[0m" + " will be turned " + "\u001B[32m"+ "ON" + "\u001B[0m");
-
-        return chosenDevice;
     }
 
-    public SmartDevice showTurnOffDevice(SmartHouse house,Map<String, List<SmartDevice>> turnedOnDevices, Scanner scanner) {
+    public void showTurnOffDevice(Map<String, List<String>> turnedOn) {
         Menu m = new Menu();
-        m.setTitle("Choose one of the devices below:");
-        List<SmartDevice> options = new ArrayList<>();
-        for(String r : turnedOnDevices.keySet()){
-            for(SmartDevice d : house.getRoomDevicesON(r)){
-                String smartDevice = d.getClass().getSimpleName();
-                options.add(d);
-                m.addOption(smartDevice + "\u001B[31m " + "(" + r + ")" + "\u001B[0m");
+        m.setTitle("Choose one device to turn OFF:");
+        List<String> options = new ArrayList<>();
+        for(String room : turnedOn.keySet()){
+            List<String> roomDevices = turnedOn.get(room);
+            for(String s :  roomDevices){
+                options.add(s);
+                m.addOption(s + "\u001B[32m " + "(" + room + ")" + "\u001B[0m");
             }
         }
         m.show(true);
-
-        int opt;
-        while(true) {
-            try {
-                opt = Integer.parseInt(scanner.nextLine());
-                break;
-            }catch (NumberFormatException e) {
-                System.out.println("Oops, wrong input... Please try again");
-                continue;
-            }
-        }
-        SmartDevice chosenDevice = options.get(opt-1);
-        System.out.println("\u001B[34m" + chosenDevice.getClass().getSimpleName() + "\u001B[0m" + " in " + "\u001B[31m" + house.getRoomOfDevice(chosenDevice) + "\u001B[0m" + " will be turned " + "\u001B[31m" + "OFF" + "\u001B[0m");
-
-        return chosenDevice;
     }
 
     /**

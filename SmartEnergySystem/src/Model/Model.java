@@ -62,16 +62,6 @@ public class Model implements Serializable {
     }
 
     /**
-     * Returns a list of clients of an Energy Supplier
-     */
-    public List<SmartHouse> getClients(String supplier){
-        List<SmartHouse> clients = new ArrayList<>();
-        if(supplierExists(supplier)){
-            return this.suppliers.get(supplier).getListClients();
-        }
-        return clients;
-    }
-    /**
      * Returns a list with the names of the clients of an Energy Supplier
      */
     public List<String> getClientsNames(String supplier){
@@ -183,6 +173,35 @@ public class Model implements Serializable {
      */
     public Supplier getSupplier(String supplier) {
         return this.suppliers.get(supplier).clone();
+    }
+
+    /**
+     *
+     */
+
+    public Map<String,List<String>> getRoomsNDevices(int nif){
+        Map<String,List<String>> res = new HashMap<>();
+
+        if(houseExists(nif)){
+            SmartHouse house = this.houses.get(nif);
+            Map<String,List<SmartDevice>> rnd = house.getRoomsNDevices();
+
+            for(String k : rnd.keySet()){
+                List<SmartDevice> devs = getRoomDevices(nif,k);
+                List<String> listDevNames = new ArrayList<>();
+                for(SmartDevice d : devs){
+                    StringBuilder sb = new StringBuilder();
+                    if(d.getOn()){
+                        sb.append(d.getClass().getSimpleName()).append(" state: ").append("\u001B[32m" + "ON" + "\u001B[0m");
+                    } else {
+                        sb.append(d.getClass().getSimpleName()).append(" state: ").append("\u001B[31m" + "OFF" + "\u001B[0m");
+                    }
+                    listDevNames.add(sb.toString());
+                }
+                res.put(k,listDevNames);
+            }
+        }
+        return res;
     }
 
     /**
@@ -388,36 +407,77 @@ public class Model implements Serializable {
      * @return
      */
 
-    public Map<String, List<SmartDevice>> getDevicesTurnedOff(int nif) {
-        SmartHouse house = this.houses.get(nif);
-        Map<String, List<SmartDevice>> res = new HashMap<>();
+    public Map<String, List<String>> getTurnedOffDevicesNames(int nif) {
+        Map<String, List<String>> res = new HashMap<>();
+        if(houseExists(nif)){
+            SmartHouse house = this.houses.get(nif);
+            Map<String, List<SmartDevice>> rnd = house.getRoomsNDevices();
 
-        for(String r : house.getRoomsNDevices().keySet()){
-            List<SmartDevice> offDevices = new ArrayList<>();
-            for(SmartDevice d : house.getRoomDevices(r)){
-                if(!d.getOn()){
-                    offDevices.add(d.clone());
+
+            for(String room : rnd.keySet()){
+                List<String> offDevices = new ArrayList<>();
+                for(SmartDevice d : house.getRoomDevices(room)){
+                    if(!d.getOn()){
+                        offDevices.add(d.getClass().getSimpleName());
+                    }
                 }
+                res.put(room,offDevices);
             }
-            res.put(r,offDevices);
         }
         return res;
     }
 
-    public Map<String, List<SmartDevice>> getDevicesTurnedOn(int nif) {
-        SmartHouse house = this.houses.get(nif);
-        Map<String, List<SmartDevice>> res = new HashMap<>();
+    public List<SmartDevice> getTurnedOffDevices(int nif) {
+        List<SmartDevice> offDevices = new ArrayList<>();
+        if(houseExists(nif)){
+            SmartHouse house = this.houses.get(nif);
+            Map<String, List<SmartDevice>> rnd = house.getRoomsNDevices();
 
-        for(String r : house.getRoomsNDevices().keySet()){
-            List<SmartDevice> onDevices = new ArrayList<>();
-            for(SmartDevice d : house.getRoomDevices(r)){
-                if(d.getOn()){
-                    onDevices.add(d.clone());
+            for(String room : rnd.keySet()){
+                for(SmartDevice d : house.getRoomDevices(room)){
+                    if(!d.getOn()){
+                        offDevices.add(d.clone());
+                    }
                 }
             }
-            res.put(r,onDevices);
+        }
+        return offDevices;
+    }
+
+    public Map<String, List<String>> getTurnedOnDevicesNames(int nif) {
+        Map<String, List<String>> res = new HashMap<>();
+        if(houseExists(nif)){
+            SmartHouse house = this.houses.get(nif);
+            Map<String, List<SmartDevice>> rnd = house.getRoomsNDevices();
+
+            for(String room : rnd.keySet()){
+                List<String> onDevices = new ArrayList<>();
+                for(SmartDevice d : house.getRoomDevices(room)){
+                    if(d.getOn()){
+                        onDevices.add(d.getClass().getSimpleName());
+                    }
+                }
+                res.put(room,onDevices);
+            }
         }
         return res;
+    }
+
+    public List<SmartDevice> getTurnedOnDevices(int nif) {
+        List<SmartDevice> onDevices = new ArrayList<>();
+        if(houseExists(nif)){
+            SmartHouse house = this.houses.get(nif);
+            Map<String, List<SmartDevice>> rnd = house.getRoomsNDevices();
+
+            for(String room : rnd.keySet()){
+                for(SmartDevice d : house.getRoomDevices(room)){
+                    if(d.getOn()){
+                        onDevices.add(d.clone());
+                    }
+                }
+            }
+        }
+        return onDevices;
     }
 
 
@@ -456,6 +516,4 @@ public class Model implements Serializable {
 
         return consumers;
     }
-
-
 }
