@@ -19,10 +19,10 @@ public class Parser {
 
 
     /**
-     * Função que permite guardar o estado do modelo num ficheiro binário
+     * Save the state of the MODEL in a binary file
      */
-    public void saveBin(String nomeFicheiro,Model model) throws IOException {
-        FileOutputStream bf = new FileOutputStream(nomeFicheiro);
+    public void saveBin(String filename,Model model) throws IOException {
+        FileOutputStream bf = new FileOutputStream(filename);
         ObjectOutputStream oos = new ObjectOutputStream(bf);
         oos.writeObject(model);
         oos.flush();
@@ -30,10 +30,10 @@ public class Parser {
     }
 
     /**
-     * Função que permite ler um ficheiro binário com um estado da aplicação
+     * Read binary file with the state of the application
      */
-    public Model readBin(String nomeFich) throws IOException, ClassNotFoundException{
-        FileInputStream bf = new FileInputStream(nomeFich);
+    public Model readBin(String filename) throws IOException, ClassNotFoundException{
+        FileInputStream bf = new FileInputStream(filename);
         ObjectInputStream ois = new ObjectInputStream(bf);
         Model m = (Model) ois.readObject();
         ois.close();
@@ -120,7 +120,6 @@ public class Parser {
 
     /* Build SmartHouse*/
     public static SmartHouse buildSmartHouse(String[] args){
-        //Vicente de Carvalho Castro,365597405,Iberdrola
         String owner, supplier;
         int NIF;
 
@@ -138,9 +137,6 @@ public class Parser {
     }
 
 
-
-    /* Function that builds a smartBulb from an array of strings
-     */
     public static SmartBulb buildSmartBulb(String[] args){
         //Warm,15,5.05
         int tone = 1, diameter;

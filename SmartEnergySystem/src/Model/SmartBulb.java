@@ -79,5 +79,4 @@ public class SmartBulb extends SmartDevice{
     public SmartBulb clone () {
         return new SmartBulb(this);
     }
-
 }

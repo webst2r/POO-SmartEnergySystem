@@ -24,7 +24,7 @@ public class Request {
     }
 
     public Request(String supplier, double t, double v){
-        this.type = "CSV";
+        this.type = "CSV"; // change supplier values
         this.nif = 0;
         this.tax = t;
         this.baseValue = v;
@@ -33,7 +33,6 @@ public class Request {
         this.devices = new ArrayList<>();
     }
 
-    // Request to Turn ON or Turn OFF some devices
     public Request(String type, int nif, List<SmartDevice> devices){
         this.type = type; // TON  or TOFF
         this.nif = nif;
