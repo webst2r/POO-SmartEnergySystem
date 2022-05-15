@@ -1,6 +1,6 @@
 package Model;
 
-import Exceptions.LinhaIncorretaException;
+import Exceptions.IncorrectLineException;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -40,7 +40,7 @@ public class Parser {
         return m;
     }
 
-    public void parse(Model model) throws LinhaIncorretaException {
+    public void parse(Model model) throws IncorrectLineException {
         List<String> linhas = lerFicheiro(getPath());
         SmartHouse ultimaCasa = null;
         String ultimaDivisao = null;

@@ -56,7 +56,7 @@ public class SmartCamera extends SmartDevice{
     }
 
     public double determineConsumption(){
-        return 1.0;
+        return (this.fileSize / 1000.0) * ((this.resolutionY + this.resolutionY) / 1000.0);
     }
 
     public String toString(){ return super.toString(); }

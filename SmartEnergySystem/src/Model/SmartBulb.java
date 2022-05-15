@@ -58,10 +58,10 @@ public class SmartBulb extends SmartDevice{
                 multiplier = 1.0;
                 break;
             case COLD:
-                multiplier = 1.25;
+                multiplier = 1.11;
                 break;
             case WARM:
-                multiplier = 1.15;
+                multiplier = 1.07;
                 break;
         }
         return (consumption * multiplier);

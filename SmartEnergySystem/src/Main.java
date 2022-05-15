@@ -1,12 +1,12 @@
 import Controller.Controller;
 import Model.Model;
-import Exceptions.LinhaIncorretaException;
+import Exceptions.IncorrectLineException;
 import View.View;
 
 import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws LinhaIncorretaException, IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IncorrectLineException, IOException, ClassNotFoundException {
 
         Model model = new Model();
         View view = new View();

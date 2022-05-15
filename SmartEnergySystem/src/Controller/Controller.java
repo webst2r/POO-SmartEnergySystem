@@ -1,7 +1,7 @@
 package Controller;
 
 import Model.*;
-import Exceptions.LinhaIncorretaException;
+import Exceptions.IncorrectLineException;
 import Model.Parser;
 import View.*;
 
@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Controller {
     private Model model;
@@ -24,7 +22,7 @@ public class Controller {
     }
 
     /** Function that starts the program and puts the system running */
-    public void run() throws LinhaIncorretaException, IOException, ClassNotFoundException {
+    public void run() throws IncorrectLineException, IOException, ClassNotFoundException {
         Scanner scanner = new Scanner(System.in);
         Parser parser = new Parser();
         LocalDateTime start = LocalDateTime.now();
@@ -376,12 +374,13 @@ public class Controller {
         while(opt != 3){
             switch (opt){
                 case 1:
+                    // See supplier's clients
                     List<String> clients = this.model.getClientsNames(supplier.getSupplierID());
                     view.showSupplierClients(supplier.getSupplierID(),clients);
                     view.showSupplierInfoOptions();
                     break;
                 case 2:
-                    // change Base value of Energy Daily Cost
+                    // Change supplier values
                     view.show("Insert new Base Value:");
                     double baseValue = scanDouble(scanner);
                     view.show("Insert new Tax(%):");
@@ -426,7 +425,7 @@ public class Controller {
                     view.showHouseOperationsMenu(model.getHouse(nif).getOwnerName());
                     break;
                 case 3:
-                    // request a change of energy supplier
+                    // Request a change of energy supplier
                     view.showSupplierInfoMenu(this.model.getSuppliers());
 
                     Supplier oldSupplier = this.model.getSupplier(this.model.getHouse(nif).getSupplier());
@@ -462,7 +461,7 @@ public class Controller {
                     this.model.addRequest(turnOnRequest);
                     break;
                 case 5:
-                    // turn OFF DEVICE
+                    // Turn OFF device
                     List<SmartDevice> optionsOFF = model.getTurnedOnDevices(nif);
                     Map<String, List<String>> turnedOnDevices = this.model.getTurnedOnDevicesNames(nif);
                     view.showTurnOffDevice(turnedOnDevices);
@@ -482,6 +481,7 @@ public class Controller {
                     this.model.addRequest(turnOffRequest);
                     break;
                 case 6:
+                    // Turn OFF room
                     List<String> rooms = model.getRooms(nif);
                     view.displayRooms(rooms);
                     view.show("Select: ");
@@ -638,8 +638,6 @@ public class Controller {
 
         switch(option) {
             case 1:
-                // SmartBulb:Neutral,7,0.24
-                // SmartBulb:<Tonalidade>,<Diametro>,<Consumo>
                 view.showSmartBulbMenu();
                 int tone = scanInteger(scanner);
                 view.show("Diameter: ");
@@ -655,9 +653,6 @@ public class Controller {
                 this.model.addFreeDevice(bulb);
                 break;
             case 2:
-                // SmartCamera: (1366x768), 63, 4.74
-                // <Resolucao>,<Tamanho>,<Consumo>
-
                 view.showln("Insert the resolution(x,y).");
                 view.show("x:");
                 int resolutionX = scanInteger(scanner);
@@ -677,9 +672,6 @@ public class Controller {
                 this.model.addFreeDevice(camera);
                 break;
             case 3:
-                // SmartSpeaker:30,RTP Antena 1 98.3 FM,JBL,5.53
-                // SmartSpeaker:<Volume>,<CanalRadio>,<Marca>,<Consumo>
-
                 view.show("Volume: ");
                 double volume = scanDouble(scanner);
                 view.show("Radio station: ");
@@ -710,7 +702,6 @@ public class Controller {
      */
 
     public void createHouse(){
-        // Casa:Vicente de Carvalho Castro,365597405,Iberdrola
         Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
 
         try {
@@ -729,7 +720,7 @@ public class Controller {
             while(opt != 2){
                 switch (opt){
                     case 1:
-                        // create room
+                        // Create room
                         List<SmartDevice> freeDevices = model.getFreeDevices();
                         if(freeDevices.size() > 0){
                             view.show("Room name: ");
@@ -778,7 +769,6 @@ public class Controller {
      */
 
     public void createSupplier(){
-        // Fornecedor:MEO Energia
         Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
         view.showCreateMenu("Create an Energy Supplier");
         view.show("Name: ");

@@ -64,16 +64,9 @@ public class Supplier implements Serializable {
         return inv;
     }
 
-    public void setSupplierID(String supplierID) { this.supplierID = supplierID;}
-
     public void setDailyCost(double dailyCost) { this.dailyCost = dailyCost; }
 
     public void setTax(double tax) { this.tax = tax;}
-
-    public void setClients(Map<Integer,SmartHouse> clients) {
-        this.clients = new HashMap<Integer, SmartHouse>();
-        clients.forEach((k,v) -> this.clients.put(k,v.clone()));
-    }
 
     public Map<Integer,SmartHouse> getClients(){
         HashMap<Integer,SmartHouse> map = new HashMap<>();
@@ -105,13 +98,15 @@ public class Supplier implements Serializable {
         double costPerDay = 0.0;
         int numberOfDevices = house.getNumberOfDevices();
 
-        if( numberOfDevices > 10)
-            costPerDay = this.dailyCost * consumption * (1+this.tax) * 0.9;
+        if(numberOfDevices < 10){
+            costPerDay = this.dailyCost * consumption * (1+this.tax) * 0.1;
+        }
+        if( numberOfDevices > 10 && numberOfDevices <= 15)
+            costPerDay = this.dailyCost * consumption * (1+this.tax) * 0.15;
         else
-            costPerDay = this.dailyCost * consumption * (1+this.tax) * 0.75;
+            costPerDay = this.dailyCost * consumption * (1+this.tax) * 0.35;
 
-        // Se tiver mais de 10 devices paga mais
-        // Custo diário de uma casa = valorBase + consumoTotalDiario + imposto * 0.9 (ou 0.75)
+
         return costPerDay;
     }
 

@@ -1,11 +1,11 @@
 package Exceptions;
 
-public class LinhaIncorretaException extends Exception {
+public class IncorrectLineException extends Exception {
 
     /**
      * Exceção para uma linha incorreta.
      */
-    public LinhaIncorretaException(){
+    public IncorrectLineException(){
         super();
     }
 
@@ -13,7 +13,7 @@ public class LinhaIncorretaException extends Exception {
      * Exceção para uma linha incorreta que envia uma mensagem.
      * @param s
      */
-    public LinhaIncorretaException(String s){
+    public IncorrectLineException(String s){
         super(s);
     }
 }

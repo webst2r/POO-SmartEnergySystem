@@ -163,13 +163,6 @@ public class View {
         System.out.println("This contractual change will have effect when the next simulation period is opened.");
     }
 
-    public void showInvoicesIssuedBySupplier(String supplier, List<Invoice> invoices){
-        System.out.println("\uD83D\uDCDD Invoices issued by Energy Supplier " + "\u001B[32m" + supplier + "\u001B[0m");
-        for(Invoice i : invoices){
-            System.out.println(i.toString());
-        }
-    }
-
 
     public void showInvoicePagination(int page, List<Invoice> invoices, int total){
 
@@ -267,9 +260,6 @@ public class View {
         m.show(true);
     }
 
-    /**
-     * Displays a message asking the user to press enter in order to continue
-     */
     public static void pressKeyToContinue(Scanner scanner){
         System.out.println("\n\n--- press enter to continue ---");
         scanner.nextLine();
@@ -279,7 +269,5 @@ public class View {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
-
-
 }
 

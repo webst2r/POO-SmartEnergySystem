@@ -52,7 +52,15 @@ public class SmartSpeaker extends SmartDevice{
 
 
     public double determineConsumption() {
-        return 1.0;
+        double multiplier = 1.0;
+
+        if(this.volume > 10 && this.volume < 50) {
+            multiplier = 1.05;
+        } else {
+            multiplier = 1.09;
+        }
+
+        return (this.consumption * multiplier);
     }
 
     public String toString(){ return super.toString(); }

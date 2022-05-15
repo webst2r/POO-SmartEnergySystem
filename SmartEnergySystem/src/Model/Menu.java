@@ -20,10 +20,6 @@ public class Menu {
         this.options.add(opcao);
     }
 
-    public void removeOption(String opcao){
-        this.options.remove(opcao);
-    }
-
     /**
      * Show Menu Options.
      */
