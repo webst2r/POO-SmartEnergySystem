@@ -103,7 +103,7 @@ public class Model implements Serializable {
         }
     }
     /**
-     * Adds an invoice to the list of invoices issued by a supplier
+     * Add an invoice to the list of invoices issued by a supplier
      * @param supplier
      * @param invoice
      */
@@ -114,6 +114,12 @@ public class Model implements Serializable {
         }
     }
 
+    /**
+     * Get List of invoices issued by a supplier
+     * @param supplier
+     * @return
+     */
+
     public List<Invoice> getInvoicesIssuedBySupplier(String supplier){
         List<Invoice> invoices = new ArrayList<>();
         if(supplierExists(supplier)){
@@ -121,6 +127,11 @@ public class Model implements Serializable {
         }
         return invoices;
     }
+
+    /**
+     * Get the supplier with the most turn over
+     * @return
+     */
 
     public Supplier getSupplierMostTurnOver(){
         int maxInvoices = 0;
@@ -176,7 +187,7 @@ public class Model implements Serializable {
     }
 
     /**
-     *
+     * Get a map with the rooms and its devices
      */
 
     public Map<String,List<String>> getRoomsNDevices(int nif){
@@ -228,10 +239,6 @@ public class Model implements Serializable {
         return devs;
     }
 
-    public boolean freeDeviceExists(SmartDevice d){
-        return this.freeDevices.contains(d);
-    }
-
     /**
      * Removes a free Device
      */
@@ -249,8 +256,6 @@ public class Model implements Serializable {
             this.houses.get(nif).setRoomsNDevices(rnd);
         }
     }
-
-
 
     /**
      * Get a list of the all the dates the system has advanced from/to

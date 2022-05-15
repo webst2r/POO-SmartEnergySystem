@@ -52,17 +52,6 @@ public class Invoice implements Serializable, Comparable<Invoice>{
 
     public double getCost() { return cost; }
 
-
-    public void setStart(LocalDateTime start) { this.start = start; }
-
-    public void setEnd(LocalDateTime end) { this.end = end; }
-
-    public void setConsumption(double consumption) { this.consumption = consumption; }
-
-    public void setCost(double cost) { this.cost = cost; }
-
-    public void setNIF(int NIF) { this.NIF = NIF; }
-
     public Invoice clone(){
         return new Invoice(this);
     }
