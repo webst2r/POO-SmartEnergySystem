@@ -12,13 +12,5 @@ public class Main {
         View view = new View();
         Controller c = new Controller(model,view);
         c.run();
-
-
-        /*
-        Model model = new Model();
-        Parser p = new Parser();
-        p.parse(model);
-
-         */
     }
 }
