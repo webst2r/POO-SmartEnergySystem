@@ -4,7 +4,6 @@ public class SmartBulb extends SmartDevice{
     private int tone;
     private int diameter;
     private double consumption;
-
     public static final int WARM = 2;
     public static final int NEUTRAL = 1;
     public static final int COLD = 0;
